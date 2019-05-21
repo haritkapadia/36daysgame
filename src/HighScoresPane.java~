@@ -1,9 +1,3 @@
-/**
- * Harit Kapadia, Jack Farley
- * Ms. Krasteva
- * 2019/May/21
- */
-
 import java.io.*;
 import java.util.*;
 import javafx.application.*;
@@ -15,21 +9,9 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
 
-/**
- * A pane displaying high scores for each mode.
- *
- * @author Harit Kapadia, Jack Farley
- * @see LevelSelectPane
- */
 public class HighScoresPane extends BorderPane {
 	private Stage stage;
 
-	/**
-	 * The pane constructor.
-	 * The pane is initialised with a title, the high scores for each level, and a button to return to the main menu.
-	 *
-	 * @param stage The window on which the pane will be displayed.
-	 */
 	HighScoresPane(Stage stage) {
 		this.stage = stage;
 		setTop(new Label("High Scores"));
@@ -49,21 +31,7 @@ public class HighScoresPane extends BorderPane {
 	}
 }
 
-/**
- * A class representing one high scores table for a level.
- *
- * @author Harit Kapadia, Jack Farley
- * @see HighScoresPane
- */
 class HighScores extends VBox {
-	/**
-	 * The class constructor.
-	 * The pane is initialised with a list of high scores, read from a file.
-	 *
-	 * @param stage The window on which the pane will be displayed.
-	 * @param name The name of the level.
-	 * @param file The file from which to read the high scores from.
-	 */
 	HighScores(Stage stage, String name, File file) throws IOException {
 		List<String[]> scores = new ArrayList<String[]>();
 		new BufferedReader(new FileReader(file)){{
