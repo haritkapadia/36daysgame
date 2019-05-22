@@ -21,6 +21,7 @@ import javafx.stage.*;
  */
 public class Main extends Application {
 	public static HashMap<String, Scene> scenes;
+	public World world = new World();
 
 	/**
 	 * Initialises the scene map in preparation of the full program.

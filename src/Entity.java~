@@ -1,0 +1,14 @@
+import java.awt.Point;
+
+public abstract Entity {
+	Point position; // in 2^-6 blocks
+	int health;
+	int stomachFullness;
+	int maxStomach;
+	public static final int STOMACH_REDUCTION_TIME;
+	World world;
+	Item hand;
+	public void move();
+	public void useHand();
+	public void interact(Block block);
+}
