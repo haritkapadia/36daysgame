@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+	  overflow-x: hidden;
+	  overflow-y: hidden;
+      }
+
+      .hidden {
+	  display: none;
+      }
+    </style>
+    <script type="text/javascript">
+      var currentShown = 0;
+      var showDiv = (section) => {
+	  var bodyChildren = document.getElementById('b').children;
+	  console.log(bodyChildren);
+	  bodyChildren[currentShown].style.display = 'none';
+	  bodyChildren[section].style.display = 'block';
+	  currentShown = section;
+      }
+    </script>
+  </head>
+  <body id="b">
+    <div class="hidden">
+      <h1>This is the first section</h1>
+      <p>Some sample text here.</p>
+    </div>
+    <div class="hidden">
+      <h1>This is the second section</h1>
+      <p>Some more sample text here.</p>
+    </div>
+    <div class="hidden">
+      <h1>This is the third section</h1>
+      <p>Some sample text here.</p>
+    </div>
+    <div class="hidden">
+      <h1>This is the fourth section</h1>
+      <p>Some more sample text here.</p>
+    </div>
+  </body>
+</html>
