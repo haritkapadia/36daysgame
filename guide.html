@@ -10,7 +10,18 @@
       .hidden {
 	  display: none;
       }
-    </style>
+      .bigText {
+          font-size: 1.5em;
+      }
+     @font-face {
+         font-family: "My Custom Font";
+         src: url(ChicagoFLF.ttf) format("truetype");
+     }
+     body { 
+         font-family: "My Custom Font", Verdana, Tahoma;
+     }
+     </style>
+
     <script type="text/javascript">
       var currentShown = 0;
       var showDiv = (section) => {
@@ -23,21 +34,67 @@
     </script>
   </head>
   <body id="b">
+    <div class="hidden"></div>
+
     <div class="hidden">
-      <h1>This is the first section</h1>
-      <p>Some sample text here.</p>
+      <h1>Introduction</h1>
+      <p>So, you’re lost in the woods. First thing you need to do is STOP.</p>
+      <ul>
+        <li><div class = "bigText"><b>S</b>tay calm</div>
+          <ul>
+            <li>Take deep breaths</li>
+          </ul>
+        </li>
+        <li><div class = "bigText"><b>T</b>hink</div>
+          <ul>
+            <li>How far are you from the last place where you knew where you were?</li>
+            <li>What direction were you travelling?</li>
+            <li>Who knows where you are?</li>
+            <li>What are you carrying on you?</li>
+          </ul>
+        </li>
+        <li><div class = "bigText"><b>O</b>bserve</div>
+          <ul>
+            <li>What do you see around you?</li>
+            <li>Can you see/hear any signs of people?</li>
+          </ul>
+        </li>
+        <li><div class = "bigText"><b>Plan</b></div>
+          <ul>
+            <li>How are you going to find your way out?</li>
+          </ul>
+        </li>
+      </ul>
     </div>
+
     <div class="hidden">
-      <h1>This is the second section</h1>
-      <p>Some more sample text here.</p>
+      <h1>First steps</h1>
+      <p>If you do not know where you are and do not detect any signs of nearby people it is advisable that you stay where you are.</p>
+      <p>Travelling further will likely result in you getting more lost and it will make it more difficult for the search parties to locate you.</p>
+      <p>If it’s getting late and you have no idea where you are it’s advisable that you begin to think about what you are going to do for the night.</p>
+      <p>Temperatures can drop quickly at night and you don’t want to be out in the open.</p>
     </div>
+
     <div class="hidden">
-      <h1>This is the third section</h1>
-      <p>Some sample text here.</p>
+      <h1>Rule of threes</h1>
+      <p>When creating a long term survival plan the first thing you have to know is the “rule of threes” which states that you can survive:</p>
+      <ul>
+        <li>Three minutes without oxygen</li>
+        <li>Three hours in an extreme environment (heat or cold)</li>
+        <li>Three days without water</li>
+        <li>Three weeks without food</li>
+      </ul>
+      <p>The key to wilderness survival is prioritizing. You most likely won’t have to worry about oxygen, so for now your priorities are shelter, water, and food.</p>
     </div>
+
     <div class="hidden">
-      <h1>This is the fourth section</h1>
-      <p>Some more sample text here.</p>
+      <h1>Shelters</h1>
+      <p>A shelter is vital if you wish to be somewhat comfortable at night. Building a shelter will also give you something to do, it is important to keep yourself occupied.</p>
+      <p>First you’ll want to find a location. A nice dry flat area that is readily visible to anyone who might be looking for you is preferable. The easiest shelter to make is an A-Frame to make a A-Frame first you must find a long sturdy branch and prop it up against a lot. Then lean shorter branches against the main branch. Now cover the frame with leaves and branches. </p>
+    </div>
+
+    <div class="hidden">
+      <img src="shelter.png">
     </div>
   </body>
 </html>
