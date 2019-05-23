@@ -20,10 +20,10 @@ public class Camera {
 		this.scene = scene;
 		this.world = world;
 		this.position = position;
-		blockFactor = 10;
+		scaleFactor = 10;
 	}
 
-	public Point2D getPosition() {
+	public Point3D getPosition() {
 		return position;
 	}
 
@@ -33,14 +33,9 @@ public class Camera {
 		double max = Math.max(width, height);
 		Rectangle2D out;
 		if(max == width)
-			return new Rectangle2D(position.getX() - Chunk.CHUNK_SIDE_LENGTH / 2.0,
-					       position.getY() - Chunk.CHUNK_SIDE_LENGTH * height / width / 2.0,
-					       Chunk.CHUNK_SIDE_LENGTH,
-					       Chunk.CHUNK_SIDE_LENGTH * height / width);
+			Rectangle2D out = new Rectangle2D(position.getX() - 0.5, position.getY() - 0.5 * width / height, 1, width / height);
 		else
-			return new Rectangle2D(position.getX() - Chunk.CHUNK_SIDE_LENGTH * width / height / 2.0,
-					       position.getY() - Chunk.CHUNK_SIDE_LENGTH / 2.0,
-					       Chunk.CHUNK_SIDE_LENGTH * height / width,
-					       Chunk.CHUNK_SIDE_LENGTH);
+			Rectangle2D out = new Rectangle2D(position.getX() - 0.5 * width / height, position.getY() - 0.5, width / height, 1);
+		return new Rectangle2D(out.getX(), out.getY(), out.getWidth() * blockFactor, out.getHeight() * blockFactor);
 	}
 }

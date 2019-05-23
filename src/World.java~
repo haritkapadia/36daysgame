@@ -17,8 +17,4 @@ public class World {
 	public Chunk getChunk(int x, int y) {
 		return chunks.get(new Point(x, y));
 	}
-
-	public Chunk getChunk(Point p) {
-		return chunks.get(p);
-	}
 }

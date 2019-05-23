@@ -9,7 +9,6 @@ import javafx.scene.shape.*;
 import javafx.scene.canvas.*;
 import javafx.stage.*;
 import javafx.geometry.*;
-import java.awt.Point;
 
 public class Game extends StackPane {
 	private Scene scene;
@@ -29,20 +28,19 @@ public class Game extends StackPane {
 
 	public void update() {
 		GraphicsContext g = canvas.getGraphicsContext2D();
-		Rectangle2D r = camera.getViewBounds();
-		Point2D cameraLeft = Chunk.chunkToGlobalPoint(Chunk.globalToChunkPoint(camera.getPosition()));
-		Point sw = Chunk.globalToChunkPoint(new Point2D(r.getMinX(), r.getMinY()));
-		Point se = Chunk.globalToChunkPoint(new Point2D(r.getMaxX(), r.getMinY()));
-		Point nw = Chunk.globalToChunkPoint(new Point2D(r.getMinX(), r.getMaxY()));
+		Rectangle2D p = camera.getViewBounds();
 
-		for(int i = (int)sw.getX(); i <= (int)se.getX(); i++) {
-			for(int j = (int)sw.getY(); j <= (int)nw.getY(); j++) {
-				Point2D chunkPos = Chunk.chunkToGlobalPoint(new Point(i, j));
-				g.drawImage(world.getChunk((int)chunkPos.getX(), (int)chunkPos.getY()).getChunkImage(),
-					    (int)(chunkPos.getX() - cameraLeft.getX()),
-					    (int)(scene.getHeight() - (chunkPos.getY() - cameraLeft.getY())),
-					    (int)(Math.max(scene.getWidth(), scene.getHeight()) / Chunk.CHUNK_SIDE_LENGTH),
-					    (int)(Math.max(scene.getWidth(), scene.getHeight()) / Chunk.CHUNK_SIDE_LENGTH));
+		Point nw = globalToChunkPoint(new Point2D(p.getMinX(), p.getMinY()));
+		Point ne = globalToChunkPoint(new Point2D(p.getMaxX(), p.getMinY()));
+		Point sw = globalToChunkPoint(new Point2D(p.getMinX(), p.getMaxY()));
+		Point se = globalToChunkPoint(new Point2D(p.getMaxX(), p.getMaxY()));
+
+		for(int i = nw.getX(); i <= ne.getX(); i++) {
+			for(int j = nw.getY(); j <= sw.getY(); j++) {
+				Chunk c = world.getChunk(new Point(i, j));
+				if(c != null) {
+
+				}
 			}
 		}
 	}
