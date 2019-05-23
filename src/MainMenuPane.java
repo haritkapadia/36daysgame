@@ -19,23 +19,23 @@ import javafx.stage.*;
  * @author Harit Kapadia, Jack Farley
  */
 public class MainMenuPane extends VBox {
-	Stage stage;
+	Scene scene;
 
 	/**
 	 * The class constructor.
 	 * The pane is initialised with a list of buttons allowing the user to travel to the other panes of the program.
 	 *
-	 * @param stage The window on which the pane will be displayed.
+	 * @param scene The window on which the pane will be displayed.
 	 */
-	MainMenuPane(Stage stage) {
-		this.stage = stage;
+	MainMenuPane(Scene scene) {
+		this.scene = scene;
 		getChildren().add(new Label("36 Days - Wilderness Survival Game"));
 		for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About"})
 			getChildren().add(new Button(s){{
-				setOnAction(e -> stage.setScene(Main.scenes.get(s)));
+				setOnAction(e -> Main.setPane(scene, s));
 			}});
 		getChildren().add(new Button("Exit"){{
-			setOnAction(e -> stage.close());
+			//setOnAction(e -> scene.close());
 		}});
 	}
 }

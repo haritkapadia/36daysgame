@@ -20,14 +20,22 @@ import javafx.stage.*;
  * @author Harit Kapadia, Jack Farley
  */
 public class Main extends Application {
-	public static HashMap<String, Scene> scenes;
+	public static HashMap<String, Parent> panes;
+
+	public static void setPane(Scene scene, String name) {
+		scene.setRoot(panes.get(name));
+	}
+
+	public static void setPane(Scene scene, Parent node) {
+		scene.setRoot(node);
+	}
 
 	/**
 	 * Initialises the scene map in preparation of the full program.
 	 */
 	@Override
 	public void init() {
-		scenes = new HashMap<String, Scene>();
+		panes = new HashMap<String, Parent>();
 	}
 
 	/**
@@ -37,13 +45,19 @@ public class Main extends Application {
 	 */
 	@Override
 	public void start(Stage primaryStage) {
-		scenes.put("Main Menu", new Scene(new MainMenuPane(primaryStage)));
-		scenes.put("Level Select", new Scene(new LevelSelectPane(primaryStage)));
-		scenes.put("High Scores", new Scene(new HighScoresPane(primaryStage)));
-		scenes.put("About", new Scene(new AboutPane(primaryStage)));
-		scenes.put("Survival Guide", new Scene(new SurvivalGuidePane(primaryStage)));
+		Scene main = new Scene(new BorderPane());
+
+		panes.put("Main Menu", new MainMenuPane(main));
+		panes.put("Level Select", new LevelSelectPane(main));
+		panes.put("High Scores", new HighScoresPane(main));
+		panes.put("About", new AboutPane(main));
+		panes.put("Survival Guide", new SurvivalGuidePane(main));
+		// panes.put("Game", new Game(main));
+
 		primaryStage.setTitle("36 Days - Wilderness Survival Game");
-		primaryStage.setScene(scenes.get("Main Menu"));
+		primaryStage.setScene(main);
+		Main.setPane(main, "Main Menu");
+		primaryStage.setFullScreen(true);
 		primaryStage.show();
 	}
 

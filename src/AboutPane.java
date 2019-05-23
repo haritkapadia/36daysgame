@@ -21,23 +21,23 @@ import javafx.stage.*;
  * @author Harit Kapadia, Jack Farley
  */
 public class AboutPane extends VBox {
-	private Stage stage;
+	private Scene scene;
 
 	/**
 	 * The pane constructor.
 	 * The pane is initialised with a title, the company logo, information about the creators, and a button to return to the main menu.
 	 *
-	 * @param stage The window on which the pane will be displayed.
+	 * @param scene The window on which the pane will be displayed.
 	 */
-	AboutPane(Stage stage) {
-		this.stage = stage;
+	AboutPane(Scene scene) {
+		this.scene = scene;
 		getChildren().add(new Label("About"));
 		getChildren().add(new ImageView(){{
 			setImage(new Image("sierratech-logo.png"));
 		}});
 		getChildren().add(new Label("Game and assets created by Harit Kapadia and Jack Farley."));
 		getChildren().add(new Button("Return"){{
-			setOnAction(e -> stage.setScene(Main.scenes.get("Main Menu")));
+			setOnAction(e -> Main.setPane(scene, "Main Menu"));
 		}});
 	}
 }

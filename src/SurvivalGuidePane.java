@@ -25,16 +25,16 @@ import javafx.concurrent.*;
  * @author Harit Kapadia, Jack Farley
  */
 public class SurvivalGuidePane extends HBox {
-	private Stage stage;
+	private Scene scene;
 
 	/**
 	 * The class constructor.
 	 * The pane is initialised with placeholders for the survival guide.
 	 *
-	 * @param stage The window on which the pane will be displayed.
+	 * @param scene The window on which the pane will be displayed.
 	 */
-	SurvivalGuidePane(Stage stage) {
-		this.stage = stage;
+	SurvivalGuidePane(Scene scene) {
+		this.scene = scene;
 		WebView leftPage = new WebView();
 		WebView rightPage = new WebView();
 		WebView[] pages = new WebView[]{leftPage, rightPage};
@@ -52,7 +52,7 @@ public class SurvivalGuidePane extends HBox {
 		getChildren().add(new VBox(){{
 			AtomicInteger page = new AtomicInteger(0);
 			getChildren().add(new Button("Return"){{
-				setOnAction(e -> stage.setScene(Main.scenes.get("Main Menu")));
+				setOnAction(e -> Main.setPane(scene, "Main Menu"));
 			}});
 			getChildren().add(new Button("Next Page"){{
 				setOnAction((e) -> {

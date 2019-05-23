@@ -22,29 +22,28 @@ import javafx.stage.*;
  * @see LevelSelectPane
  */
 public class HighScoresPane extends BorderPane {
-	private Stage stage;
+	private Scene scene;
 
 	/**
 	 * The pane constructor.
 	 * The pane is initialised with a title, the high scores for each level, and a button to return to the main menu.
 	 *
-	 * @param stage The window on which the pane will be displayed.
+	 * @param scene The window on which the pane will be displayed.
 	 */
-	HighScoresPane(Stage stage) {
-		this.stage = stage;
+	HighScoresPane(Scene scene) {
+		this.scene = scene;
 		setTop(new Label("High Scores"));
 		setCenter(new HBox(){{
 			try {
-				getChildren().add(new HighScores(stage, "Deficiency", new File("deficiency.dat")));
-				getChildren().add(new HighScores(stage, "Panic", new File("deficiency.dat")));
-				getChildren().add(new HighScores(stage, "Escape", new File("deficiency.dat")));
+				getChildren().add(new HighScores(scene, "Deficiency", new File("deficiency.dat")));
+				getChildren().add(new HighScores(scene, "Panic", new File("deficiency.dat")));
+				getChildren().add(new HighScores(scene, "Escape", new File("deficiency.dat")));
 			} catch(IOException e) {
 				e.printStackTrace();
-				stage.close();
 			}
 		}});
 		setBottom(new Button("Return"){{
-			setOnAction(e -> stage.setScene(Main.scenes.get("Main Menu")));
+			setOnAction(e -> Main.setPane(scene, "Main Menu"));
 		}});
 	}
 }
@@ -60,11 +59,11 @@ class HighScores extends VBox {
 	 * The class constructor.
 	 * The pane is initialised with a list of high scores, read from a file.
 	 *
-	 * @param stage The window on which the pane will be displayed.
+	 * @param scene The window on which the pane will be displayed.
 	 * @param name The name of the level.
 	 * @param file The file from which to read the high scores from.
 	 */
-	HighScores(Stage stage, String name, File file) throws IOException {
+	HighScores(Scene scene, String name, File file) throws IOException {
 		List<String[]> scores = new ArrayList<String[]>();
 		new BufferedReader(new FileReader(file)){{
 			String line;
