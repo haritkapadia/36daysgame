@@ -11,4 +11,5 @@ import javafx.stage.*;
 
 public interface Block {
 	public Image getImage();
+	public boolean isTransparent();
 }

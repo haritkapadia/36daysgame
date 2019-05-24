@@ -67,7 +67,7 @@ class LevelPane extends VBox {
 		if(playable)
 			getChildren().add(new Button("Enter"){{
 				setOnAction(e -> {
-						Main.setPane(scene, new Game(scene).getPane());
+						Main.setPane(scene, new Game(scene){{start();}}.getPane());
 					});
 			}});
 		else

@@ -19,8 +19,8 @@ public class Game extends AnimationTimer {
 	Camera camera;
 	StackPane gamePane;
 	Canvas canvas;
+	InputManager i = new InputManager(this);
 
-	double vx, vy;
 	long prevTime = -1;
 
 	Game(Scene scene) {
@@ -32,39 +32,8 @@ public class Game extends AnimationTimer {
 
 		gamePane.getChildren().add(canvas);
 
-		final double SPEED = 10;
-		scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
-				if(e.getCode() == KeyCode.W)
-					vy = SPEED;
-				else if(e.getCode() == KeyCode.S)
-					vy = -SPEED;
-				else if(e.getCode() == KeyCode.A)
-					vx = -SPEED;
-				else if(e.getCode() == KeyCode.D)
-					vx = SPEED;
-				else if(e.getCode() == KeyCode.Q) {
-					stop();
-					Main.setPane(scene, "Main Menu");
-				}
-			});
-
-		scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
-				if(e.getCode() == KeyCode.W)
-					vy = 0;
-				else if(e.getCode() == KeyCode.S)
-					vy = 0;
-				else if(e.getCode() == KeyCode.A)
-					vx = 0;
-				else if(e.getCode() == KeyCode.D)
-					vx = 0;
-				else if(e.getCode() == KeyCode.Q) {
-					stop();
-					Main.setPane(scene, "Main Menu");
-				}
-			});
-
-
-		start();
+		scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> i.keyPressed(e));
+		scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> i.keyReleased(e));
 	}
 
 	public StackPane getPane() {
@@ -78,8 +47,7 @@ public class Game extends AnimationTimer {
 		}
 
 		long dt = time - prevTime;
-		System.out.println(vx * dt / 1e9);
-		camera.move(vx * dt / 1e9, vy * dt / 1e9);
+		camera.move(i.getDisplacement().multiply(dt / 1e9));
 
 
 		prevTime = time;
@@ -111,10 +79,10 @@ public class Game extends AnimationTimer {
 				int screenW = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
 				int screenH = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
 				if(c != null) {
-					System.out.print("screenX: " + screenX + "\t");
-					System.out.print("screenY: " + screenY + "\t");
-					System.out.print("screenW: " + screenW + "\t");
-					System.out.print("screenH: " + screenH + "\n");
+					// System.out.print("screenX: " + screenX + "\t");
+					// System.out.print("screenY: " + screenY + "\t");
+					// System.out.print("screenW: " + screenW + "\t");
+					// System.out.print("screenH: " + screenH + "\n");
 
 					g.drawImage(c.getChunkImage(),
 						    screenX,
@@ -124,5 +92,9 @@ public class Game extends AnimationTimer {
 				}
 			}
 		}
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 }

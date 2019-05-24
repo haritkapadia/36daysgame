@@ -17,12 +17,45 @@ public class InputManager {
 	double vx = 0, vy = 0;
 	private final double SPEED = 10;
 	EnumMap<KeyCode, Boolean> pressed;
+	Game game;
 
-	InputManager() {
-		pressed = new EnumMap<KeyCode, Boolean>(KeyCode.class);
+	InputManager(Game game) {
+		this.game = game;
+		pressed = new EnumMap<KeyCode, Boolean>(KeyCode.class){{
+				for(KeyCode k : KeyCode.values())
+					put(k, false);
+			}};
 	}
 
 	public void keyPressed(KeyEvent e) {
-		pressed.set(e.getKeyCode(), true);
+		if(e.getCode() == KeyCode.Q) {
+			game.stop();
+			Main.setPane(game.getScene(), "Main Menu");
+		}
+		if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W)
+			vy += SPEED;
+		if(!pressed.get(KeyCode.S) && e.getCode() == KeyCode.S)
+			vy += -SPEED;
+		if(!pressed.get(KeyCode.D) && e.getCode() == KeyCode.D)
+			vx += SPEED;
+		if(!pressed.get(KeyCode.A) && e.getCode() == KeyCode.A)
+			vx += -SPEED;
+		pressed.put(e.getCode(), true);
+	}
+
+	public void keyReleased(KeyEvent e) {
+		if(pressed.get(KeyCode.W) && e.getCode() == KeyCode.W)
+			vy -= SPEED;
+		if(pressed.get(KeyCode.S) && e.getCode() == KeyCode.S)
+			vy -= -SPEED;
+		if(pressed.get(KeyCode.D) && e.getCode() == KeyCode.D)
+			vx -= SPEED;
+		if(pressed.get(KeyCode.A) && e.getCode() == KeyCode.A)
+			vx -= -SPEED;
+		pressed.put(e.getCode(), false);
+	}
+
+	public Point2D getDisplacement() {
+		return new Point2D(vx, vy);
 	}
 }

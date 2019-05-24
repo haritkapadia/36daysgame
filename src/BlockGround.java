@@ -19,4 +19,8 @@ public class BlockGround implements Block {
 	public Image getImage() {
 		return image;
 	}
+
+	public boolean isTransparent() {
+		return false;
+	}
 }

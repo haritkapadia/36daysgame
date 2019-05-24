@@ -52,6 +52,10 @@ public class Camera {
 		position = position.add(dx, dy);
 	}
 
+	public void move(Point2D p) {
+		position = position.add(p);
+	}
+
 	public double getX() {
 		return position.getX();
 	}
