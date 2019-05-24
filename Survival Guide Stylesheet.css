@@ -1,0 +1,42 @@
+.root{
+    -fx-background-image: url("book.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: stretch;
+}
+
+#nextbutton{
+    -fx-font-family: "ChicagoFLF";
+    -fx-padding: 10 30 10 30;
+    -fx-background-color: green;
+    -fx-text-fill:white;
+    -fx-margin: auto;
+    -fx-text-alignment: center;
+    -fx-shape: "M200 150 L75 200 L75 100 Z"; 
+}
+
+#prevbutton{
+    -fx-font-family: "ChicagoFLF";
+    -fx-padding: 10 30 10 30;
+    -fx-background-color: green;
+    -fx-text-fill:white;
+    -fx-margin: auto;
+    -fx-text-alignment: center;
+    -fx-shape: "M200 150 L325 200 L325 100 Z"; 
+}
+
+#returnbutton{
+    -fx-font-family: "ChicagoFLF";
+    -fx-padding: 10 30 10 30;
+    -fx-background-color: green;
+    -fx-text-fill:white;
+    -fx-margin: auto;
+    -fx-text-alignment: center;
+    -fx-shape: "M200 150 L250 200 L250 175 L400 175 L400 25 L350 25 L350 125 L250 125 L250 100Z"; 
+}
+
+
+.button:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-scale-z: 1.1;
+}

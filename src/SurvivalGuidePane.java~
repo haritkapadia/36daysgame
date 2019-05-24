@@ -1,46 +1,106 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/May/21
+ */
+
 import java.util.*;
+import java.util.concurrent.atomic.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import javafx.scene.web.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
+import javafx.beans.*;
+import javafx.beans.value.*;
+import javafx.concurrent.*;
+import javafx.geometry.Insets;
 
+/**
+ * A pane displaying the survival guide.
+ *
+ * @author Harit Kapadia, Jack Farley
+ */
 public class SurvivalGuidePane extends HBox {
-	private Stage stage;
+ private Stage stage;
 
-	SurvivalGuidePane(Stage stage) {
-		this.stage = stage;
-		getChildren().add(new VBox());
-		getChildren().add(new HBox(){{
-			getChildren().add(new Label("Left Page"));
-			getChildren().add(new Label("Right Page"));
-		}});
-	}
-}
-
-class SurvivalGuideBook {
-
-}
-
-class SurvivalGuideSection {
-	private String title;
-	private SurvivalGuideContent[] content;
-
-	SurvivalGuideSection(String title, SurvivalGuideContent[] content) {
-		this.title = title;
-		this.content = content;
-	}
-}
-
-class SurvivalGuideContent {
-	private String text;
-	private String type;
-
-	SurvivalGuideContent(String text, String type) {
-		this.text = text;
-		this.type = type;
-	}
+ /**
+  * The class constructor.
+  * The pane is initialised with placeholders for the survival guide.
+  *
+  * @param stage The window on which the pane will be displayed.
+  */
+ SurvivalGuidePane(Stage stage) {
+  this.stage = stage;
+  StackPane stackPane = new StackPane();
+  Pane buttons = new Pane();
+  WebView leftPage = new WebView();
+  WebView rightPage = new WebView();
+  WebView[] pages = new WebView[]{leftPage, rightPage};
+  AtomicInteger pageCount = new AtomicInteger();
+   AtomicInteger page = new AtomicInteger(0);
+  for(int i : new int[]{0, 1}) {
+   pages[i].setContextMenuEnabled(false);
+   pages[i].getEngine().load(this.getClass().getResource("/guide.html").toString());
+   pages[i].getEngine().getLoadWorker().stateProperty().addListener((ov, t, t1) -> {
+     if(t1 == Worker.State.SUCCEEDED) {
+      pages[i].getEngine().executeScript("showDiv(" + i + ")");
+      pageCount.set(((Integer)leftPage.getEngine().executeScript("document.getElementById('b').children.length")).intValue());
+     }
+    });
+  }
+  
+  HBox guide = new HBox(5);
+  rightPage.setMaxSize(MainMenuPane.SGWIDTH/2.8, MainMenuPane.SGHEIGHT*0.9);
+  leftPage.setMaxSize(MainMenuPane.SGWIDTH/2.8, MainMenuPane.SGHEIGHT*0.85);
+  guide.getChildren().add(leftPage);
+  guide.getChildren().add(rightPage);
+  guide.setMargin(leftPage, new Insets(20, 50, 20, 50));
+  guide.setMargin(rightPage, new Insets(20, 50, 20, 150));
+  
+  stackPane.getChildren().add(guide);
+  
+  Button returnButton = new Button(""){{
+    setId("returnbutton");
+    setLayoutX(100);
+    setLayoutY(MainMenuPane.SGHEIGHT-100);
+    setOnAction(e -> MainMenuPane.setScene(stage, "Main Menu"));
+   }};
+  
+  Button nextButton = new Button(""){{
+     setId("nextbutton");
+    setLayoutX(MainMenuPane.SGWIDTH-100);
+    setLayoutY(MainMenuPane.SGHEIGHT-100);
+    setOnAction((e) -> {
+      if(page.get() < pageCount.get() - 2) {
+       page.addAndGet(2);
+       leftPage.getEngine().executeScript("showDiv(" + (page.get()) + ")");
+       rightPage.getEngine().executeScript("showDiv(" + (page.get() + 1) + ")");
+      }
+     });
+   }};
+  
+  Button prevButton = new Button(""){{
+    setId("prevbutton");
+    setLayoutX(30);
+    setLayoutY(MainMenuPane.SGHEIGHT-100);
+    setOnAction((e) -> {
+      if(page.get() >= 2) {
+       page.addAndGet(-2);
+       leftPage.getEngine().executeScript("showDiv(" + (page.get()) + ")");
+       rightPage.getEngine().executeScript("showDiv(" + (page.get() + 1) + ")");
+      }
+     });
+   }};
+  
+  buttons.getChildren().add(nextButton);
+  buttons.getChildren().add(prevButton);
+  buttons.getChildren().add(returnButton);
+  stackPane.getChildren().add(buttons);
+  getChildren().add(stackPane);
+ }
 }

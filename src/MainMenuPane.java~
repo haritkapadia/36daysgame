@@ -1,3 +1,9 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/May/21
+ */
+
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -6,22 +12,48 @@ import javafx.scene.text.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
-
+import javafx.geometry.*;
+/**
+ * A pane displaying the main menu.
+ *
+ * @author Harit Kapadia, Jack Farley
+ */
 public class MainMenuPane extends VBox {
-	Stage stage;
+ Stage stage;
+ public static final int SGWIDTH = 1095;
+ public static final int SGHEIGHT = 718;
 
-	MainMenuPane(Stage stage) {
-		this.stage = stage;
-		// getColumnConstraints.add(new ColumnConstraints(){{
-		//         setHGrow(Priority.NEVER);
-		// }});
-		getChildren().add(new Label("36 Days - Wilderness Survival Game"));
-		for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About"})
-			getChildren().add(new Button(s){{
-				setOnAction(e -> stage.setScene(Main.scenes.get(s)));
-			}});
-		getChildren().add(new Button("Exit"){{
-			setOnAction(e -> stage.close());
-		}});
-	}
+ /**
+  * The class constructor.
+  * The pane is initialised with a list of buttons allowing the user to travel to the other panes of the program.
+  *
+  * @param stage The window on which the pane will be displayed.
+  */
+ 
+ public static void setScene(Stage stage, String s){
+   if (s.equals("Survival Guide")){
+     stage.setResizable(false);
+     stage.setHeight(SGHEIGHT);
+     stage.setWidth(SGWIDTH);
+   }
+   else
+     stage.setResizable(true);
+   stage.setScene(Main.scenes.get(s));
+ }
+ 
+ MainMenuPane(Stage stage) {
+   setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
+  setAlignment(Pos.CENTER);
+  setPadding(new Insets(50, 50, 50, 50));
+  setSpacing(10);
+  this.stage = stage;
+  getChildren().add(new Label("36 Days - Wilderness Survival Game"));
+  for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About"})
+   getChildren().add(new Button(s){{
+    setOnAction(e -> setScene(stage, s));
+   }});
+  getChildren().add(new Button("Exit"){{
+   setOnAction(e -> stage.close());
+  }});
+ }
 }
