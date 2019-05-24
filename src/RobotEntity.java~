@@ -1,6 +1,0 @@
-import java.util.*;
-
-public class RobotEntity extends Entity {
-	boolean isBlockImportant(Block block);
-	List<Entity> getEntitiesInView();
-}
