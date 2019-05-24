@@ -20,27 +20,43 @@ public class Camera {
 		this.scene = scene;
 		this.world = world;
 		this.position = position;
-		blockFactor = 10;
+		blockFactor = 20;
 	}
 
 	public Point2D getPosition() {
 		return position;
 	}
 
+	// works as intended
 	public Rectangle2D getViewBounds() {
 		double width = scene.getWidth();
 		double height = scene.getHeight();
 		double max = Math.max(width, height);
-		Rectangle2D out;
 		if(max == width)
-			return new Rectangle2D(position.getX() - Chunk.CHUNK_SIDE_LENGTH / 2.0,
-					       position.getY() - Chunk.CHUNK_SIDE_LENGTH * height / width / 2.0,
-					       Chunk.CHUNK_SIDE_LENGTH,
-					       Chunk.CHUNK_SIDE_LENGTH * height / width);
+			return new Rectangle2D(position.getX() - blockFactor / 2.0,
+					       position.getY() - blockFactor * height / width / 2.0,
+					       blockFactor,
+					       blockFactor * height / width);
 		else
-			return new Rectangle2D(position.getX() - Chunk.CHUNK_SIDE_LENGTH * width / height / 2.0,
-					       position.getY() - Chunk.CHUNK_SIDE_LENGTH / 2.0,
-					       Chunk.CHUNK_SIDE_LENGTH * height / width,
-					       Chunk.CHUNK_SIDE_LENGTH);
+			return new Rectangle2D(position.getX() - blockFactor * width / height / 2.0,
+					       position.getY() - blockFactor / 2.0,
+					       blockFactor * height / width,
+					       blockFactor);
+	}
+
+	public double getBlockFactor() {
+		return blockFactor;
+	}
+
+	public void move(double dx, double dy) {
+		position = position.add(dx, dy);
+	}
+
+	public double getX() {
+		return position.getX();
+	}
+
+	public double getY() {
+		return position.getY();
 	}
 }

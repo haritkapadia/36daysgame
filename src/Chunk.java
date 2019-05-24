@@ -33,16 +33,15 @@ public class Chunk {
 		return blocks;
 	}
 
+	// 90% sure this works
 	public Image getChunkImage() {
 		WritableImage outImage = new WritableImage(32 * CHUNK_SIDE_LENGTH, 32 * CHUNK_SIDE_LENGTH);
-		PixelWriter out = outImage.getPixelWriter();
 		for(int i = 0; i < blocks.length; i++) {
 			for(int j = 0; j < blocks[i].length; j++) {
 				for(int k = 0; k < blocks[i][j].length; k++) {
-					Image srcImage = blocks[i][j][k].getImage();
-					PixelReader src = srcImage.getPixelReader();
 					if(blocks[i][j][k] != null) {
-						out.setPixels(i * 32, (32 * CHUNK_SIDE_LENGTH - j) * 32, 32, 32, src, 0, 1);
+						PixelReader src = blocks[i][j][k].getImage().getPixelReader();
+						outImage.getPixelWriter().setPixels(i * 32, (CHUNK_SIDE_LENGTH - j - 1) * 32, 32, 32, src, 0, 0);
 					}
 				}
 			}
@@ -51,8 +50,9 @@ public class Chunk {
 		return outImage;
 	}
 
+	// This works
 	public static Point globalToChunkPoint(Point2D p) {
-		return new Point((int)Math.floor(p.getX()), (int)Math.floor(p.getY()));
+		return new Point((int)Math.floor(p.getX()/CHUNK_SIDE_LENGTH), (int)Math.floor(p.getY()/CHUNK_SIDE_LENGTH));
 	}
 
 	public static Point2D chunkToGlobalPoint(Point p) {
