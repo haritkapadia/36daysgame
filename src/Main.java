@@ -67,13 +67,11 @@ public class Main extends Application {
 		primaryStage.setFullScreen(true);
 		primaryStage.show();
 
-		panes.put("Main Menu", new MainMenuPane(main));
+		panes.put("Main Menu", new MainMenuPane(main, primaryStage));
 		panes.put("Level Select", new LevelSelectPane(main));
 		panes.put("High Scores", new HighScoresPane(main));
 		panes.put("About", new AboutPane(main));
 		panes.put("Survival Guide", new SurvivalGuidePane(main));
-		panes.put("Exit", new StackPane());
-		// panes.put("Game", new Game(main));
 
 		Main.setPane(main, "Main Menu");
 		((MainMenuPane)panes.get("Main Menu")).getParallelTransition().play();

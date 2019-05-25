@@ -48,6 +48,10 @@ public class Camera {
 		return blockFactor;
 	}
 
+	public void setPosition(Point2D position) {
+		this.position = position;
+	}
+
 	public void move(double dx, double dy) {
 		position = position.add(dx, dy);
 	}

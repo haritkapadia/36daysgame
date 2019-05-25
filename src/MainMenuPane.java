@@ -25,6 +25,7 @@ import javafx.util.Duration;
  */
 public class MainMenuPane extends VBox {
 	Scene scene;
+	Stage stage;
 	ParallelTransition pt;
 
 	/**
@@ -33,13 +34,14 @@ public class MainMenuPane extends VBox {
 	 *
 	 * @param scene The window on which the pane will be displayed.
 	 */
-	MainMenuPane(Scene scene) {
+	MainMenuPane(Scene scene, Stage stage) {
 		this.scene = scene;
+		this.stage = stage;
 		pt = new ParallelTransition();
 
 		getChildren().add(new Label("36 Days - Wilderness Survival Game"));
 		AtomicInteger n = new AtomicInteger();
-		for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About", "Exit"}) {
+		for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About"}) {
 			getChildren().add(new Button(s){{
 				TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
 				t.setFromX(getLayoutX()-1000);
@@ -54,6 +56,18 @@ public class MainMenuPane extends VBox {
 
 			n.addAndGet(500);
 		}
+		//exit button
+		getChildren().add(new Button("Exit"){{
+			TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
+			t.setFromX(getLayoutX()-1000);
+			t.setToX(getLayoutX());
+			t.setDelay(Duration.millis(n.get()));
+			pt.getChildren().add(t);
+
+			setCache(true);
+			setCacheHint(CacheHint.SPEED);
+			setOnAction(e -> stage.close());
+		}});
 
 		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
 		setAlignment(Pos.CENTER);

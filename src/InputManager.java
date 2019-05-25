@@ -18,9 +18,11 @@ public class InputManager {
 	private final double SPEED = 10;
 	EnumMap<KeyCode, Boolean> pressed;
 	Game game;
+	Player player;
 
-	InputManager(Game game) {
+	InputManager(Game game, Player player) {
 		this.game = game;
+		this.player = player;
 		pressed = new EnumMap<KeyCode, Boolean>(KeyCode.class){{
 				for(KeyCode k : KeyCode.values())
 					put(k, false);
@@ -32,26 +34,40 @@ public class InputManager {
 			game.stop();
 			Main.setPane(game.getScene(), "Main Menu");
 		}
-		if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W)
+		if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
 			vy += SPEED;
-		if(!pressed.get(KeyCode.S) && e.getCode() == KeyCode.S)
+			player.setFacing(Direction.UP);
+			player.play();
+		} else if(!pressed.get(KeyCode.S) && e.getCode() == KeyCode.S) {
 			vy += -SPEED;
-		if(!pressed.get(KeyCode.D) && e.getCode() == KeyCode.D)
+			player.setFacing(Direction.DOWN);
+			player.play();
+		} else if(!pressed.get(KeyCode.D) && e.getCode() == KeyCode.D) {
 			vx += SPEED;
-		if(!pressed.get(KeyCode.A) && e.getCode() == KeyCode.A)
+			player.setFacing(Direction.RIGHT);
+			player.play();
+		} else if(!pressed.get(KeyCode.A) && e.getCode() == KeyCode.A) {
 			vx += -SPEED;
+			player.setFacing(Direction.LEFT);
+			player.play();
+		}
 		pressed.put(e.getCode(), true);
 	}
 
 	public void keyReleased(KeyEvent e) {
-		if(pressed.get(KeyCode.W) && e.getCode() == KeyCode.W)
+		if(pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
 			vy -= SPEED;
-		if(pressed.get(KeyCode.S) && e.getCode() == KeyCode.S)
+			player.stop();
+		} else if(pressed.get(KeyCode.S) && e.getCode() == KeyCode.S) {
 			vy -= -SPEED;
-		if(pressed.get(KeyCode.D) && e.getCode() == KeyCode.D)
+			player.stop();
+		} else if(pressed.get(KeyCode.D) && e.getCode() == KeyCode.D) {
 			vx -= SPEED;
-		if(pressed.get(KeyCode.A) && e.getCode() == KeyCode.A)
+			player.stop();
+		} else if(pressed.get(KeyCode.A) && e.getCode() == KeyCode.A) {
 			vx -= -SPEED;
+			player.stop();
+		}
 		pressed.put(e.getCode(), false);
 	}
 
