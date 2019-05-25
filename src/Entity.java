@@ -1,7 +1,16 @@
-import java.awt.Point;
+import java.util.*;
+import javafx.application.*;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.*;
+import javafx.scene.paint.*;
+import javafx.scene.shape.*;
+import javafx.stage.*;
+import javafx.geometry.*;
 
 public abstract class Entity {
-	Point position; // in 2^-6 blocks
+	Point2D position;
 	int health;
 	int stomachFullness;
 	int maxStomach;

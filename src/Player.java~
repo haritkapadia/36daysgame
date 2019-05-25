@@ -1,6 +1,0 @@
-import java.awt.Point;
-
-public class Player {
-	Item[] inventory;
-	public void activateItem(int inventoryIndex) {}
-}
