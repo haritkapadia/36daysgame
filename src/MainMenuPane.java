@@ -24,46 +24,54 @@ import javafx.util.Duration;
  * @author Harit Kapadia, Jack Farley
  */
 public class MainMenuPane extends VBox {
-	Scene scene;
-	ParallelTransition pt;
+ Scene scene;
+ ParallelTransition pt;
 
-	/**
-	 * The class constructor.
-	 * The pane is initialised with a list of buttons allowing the user to travel to the other panes of the program.
-	 *
-	 * @param scene The window on which the pane will be displayed.
-	 */
-	MainMenuPane(Scene scene) {
-		this.scene = scene;
-		pt = new ParallelTransition();
+ /**
+  * The class constructor.
+  * The pane is initialised with a list of buttons allowing the user to travel to the other panes of the program.
+  *
+  * @param scene The window on which the pane will be displayed.
+  */
+ MainMenuPane(Scene scene) {
+  this.scene = scene;
+  pt = new ParallelTransition();
+  
+  getChildren().add(new Label("36 Days - Wilderness Survival Game"){{
+    setId("title");
+  }});
+  AtomicInteger n = new AtomicInteger();
+  for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About", "Exit"}) {
+   getChildren().add(new Button(s){{
+    TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
+    t.setFromX(getLayoutX()-1000);
+    t.setToX(getLayoutX());
+    t.setDelay(Duration.millis(n.get()));
+    pt.getChildren().add(t);
 
-		getChildren().add(new Label("36 Days - Wilderness Survival Game"));
-		AtomicInteger n = new AtomicInteger();
-		for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About", "Exit"}) {
-			getChildren().add(new Button(s){{
-				TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
-				t.setFromX(getLayoutX()-1000);
-				t.setToX(getLayoutX());
-				t.setDelay(Duration.millis(n.get()));
-				pt.getChildren().add(t);
+    setCache(true);
+    setCacheHint(CacheHint.SPEED);
+    setOnAction(e -> Main.setPane(scene, s));
+   }});
 
-				setCache(true);
-				setCacheHint(CacheHint.SPEED);
-				setOnAction(e -> Main.setPane(scene, s));
-			}});
+   n.addAndGet(500);
+  }
+  
+  getChildren().add(new Button(){{
+    setId("mutebutton");
+    setOnAction(e -> Main.mediaPlayer.setVolume(0));
+  }});
 
-			n.addAndGet(500);
-		}
 
-		setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
-		setAlignment(Pos.CENTER);
-		setPadding(new Insets(50, 50, 50, 50));
-		setSpacing(10);
+  setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
+  setAlignment(Pos.CENTER);
+  setPadding(new Insets(50, 50, 50, 50));
+  setSpacing(10);
 
-		getStylesheets().add("stylesheet.css");
-	}
+  getStylesheets().add("stylesheet.css");
+ }
 
-	public ParallelTransition getParallelTransition() {
-		return pt;
-	}
+ public ParallelTransition getParallelTransition() {
+  return pt;
+ }
 }
