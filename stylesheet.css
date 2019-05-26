@@ -20,6 +20,11 @@
     -fx-font-size: 30px;
 }
 
+#bigtitle{
+    //-fx-alignment: center;
+    -fx-font-size: 50px;
+}
+
 #heading{
     -fx-font-size: 22px;
 }
@@ -37,7 +42,7 @@
 
 
 #mutebutton{
-    -fx-graphic: url("mutebutton.png");
+    -fx-graphic: url("unmutebutton.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
@@ -48,16 +53,8 @@
     -fx-font-size: 0;
 }
 
-#unmutebutton{
-    -fx-graphic: url("unmutebutton.png");
-    -fx-background-color: white, white;
-    -fx-background-radius: 16.4, 15;
-    -fx-background-insets: -1.4, 0;
-    -fx-border-radius: 15;
-    -fx-border-width: 2;
-    -fx-border-color: dimgrey;
-    -fx-padding: 0;
-    -fx-font-size: 0;
+#mutebutton:selected{
+    -fx-graphic: url("mutebutton.png");
 }
 
 

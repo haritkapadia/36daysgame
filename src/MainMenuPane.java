@@ -57,9 +57,10 @@ public class MainMenuPane extends VBox {
    n.addAndGet(500);
   }
   
-  getChildren().add(new Button(){{
+  getChildren().add(new ToggleButton(){{
     setId("mutebutton");
-    setOnAction(e -> Main.mediaPlayer.setVolume(0));
+    System.out.println(1-Main.mediaPlayer.getVolume());
+    setOnAction(e -> Main.mediaPlayer.setVolume(1-Main.mediaPlayer.getVolume()));
   }});
 
 
