@@ -22,7 +22,9 @@ public class Game extends AnimationTimer {
 	StackPane gamePane;
 	Canvas canvas;
 	Player player;
+	ProgressIndicator health;
 	InputManager i;
+	Point2D prevPosition;
 
 	long prevTime = -1;
 
@@ -31,15 +33,20 @@ public class Game extends AnimationTimer {
 		world = new World();
 		player = new Player(world);
 		world.addEntity(player);
-		i = new InputManager(this, player);
 		camera = new Camera(scene, world, player.getPosition());
-		canvas = new Canvas((int)scene.getWidth(), (int)scene.getHeight());
+
 		gamePane = new StackPane();
-
+		canvas = new Canvas((int)scene.getWidth(), (int)scene.getHeight());
+		health = new ProgressIndicator((double)player.getHealth() / player.getMaximumHealth());
 		gamePane.getChildren().add(canvas);
+		gamePane.getChildren().add(new VBox(){{
+			getChildren().add(health);
+		}});
 
+		i = new InputManager(this, world, player);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> i.keyPressed(e));
 		scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> i.keyReleased(e));
+		// scene.addEventHandler(QuestEvent.QUEST_COMPLETED, e -> );
 	}
 
 	public StackPane getPane() {
@@ -49,15 +56,27 @@ public class Game extends AnimationTimer {
 	private void processInput(long time) {
 		if(prevTime == -1) {
 			prevTime = time;
+			prevPosition = player.getPosition();
 			return;
 		}
 
 		long dt = time - prevTime;
 		player.move(i.getDisplacement().multiply(dt / 1e9));
+		Point2D p = player.getPosition();
+		Block b = world.getBlock((int)p.getX(), (int)p.getY(), 1);
+		if(b != null && b.isSolid()) {
+			player.setPosition(prevPosition);
+		}
 		camera.setPosition(player.getPosition());
+
+		if(player.getPosition().equals(prevPosition))
+			player.stop();
+		else
+			player.play();
 
 
 		prevTime = time;
+		prevPosition = player.getPosition();
 	}
 
 	public void handle(long time) {
@@ -79,21 +98,18 @@ public class Game extends AnimationTimer {
 
 		for(int i = (int)sw.getX(); i <= (int)se.getX(); i++) {
 			for(int j = (int)sw.getY(); j <= (int)nw.getY(); j++) {
-				Point2D chunkPos = Chunk.chunkToGlobalPoint(new Point(i, j));
-				Chunk c = world.getChunk((int)chunkPos.getX(), (int)chunkPos.getY());
+				Point chunkPoint = new Point(i, j);
+				Point2D chunkPos = Chunk.chunkToGlobalPoint(chunkPoint);
+				Chunk c = world.getChunk(chunkPoint);
 				int screenX = (int)((chunkPos.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
 				int screenY = (int)(scene.getHeight() - ((chunkPos.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
 				int screenW = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
 				int screenH = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
 				if(c == null) {
-					world.putChunk(new Point((int)chunkPos.getX(), (int)chunkPos.getY()));
-					c = world.getChunk(new Point((int)chunkPos.getX(), (int)chunkPos.getY()));
+					world.generateChunk(chunkPoint);
+					c = world.getChunk(chunkPoint);
 				}
-				g.drawImage(SwingFXUtils.toFXImage(c.getChunkImage(), null),
-					    screenX,
-					    screenY - screenH,
-					    screenW,
-					    screenH);
+				g.drawImage(SwingFXUtils.toFXImage(c.getChunkImage(), null), screenX, screenY - screenH, screenW, screenH);
 			}
 		}
 
@@ -102,8 +118,8 @@ public class Game extends AnimationTimer {
 			Dimension2D d = e.getDimension();
 			int screenX = (int)((p.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
 			int screenY = (int)(scene.getHeight() - ((p.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
-			int screenW = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * d.getWidth());
-			int screenH = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * d.getHeight());
+			int screenW = (int)(1 / camera.getBlockFactor() * maxS);
+			int screenH = (int)(1 / camera.getBlockFactor() * maxS);
 			g.drawImage(SwingFXUtils.toFXImage((BufferedImage)e.getImage(), null), screenX, screenY - screenH, screenW, screenH);
 		}
 	}

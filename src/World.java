@@ -1,7 +1,11 @@
 import java.awt.Point;
+import javafx.geometry.Point2D;
 import java.util.*;
 
 public class World {
+	public static final int TREE_CAP = 10;
+	public static final int HOGWEED_CAP = 10;
+	public static final int PUDDLE_CAP = 5;
 	Map<Point, Chunk> chunks;
 	List<Entity> entities;
 	Player player;
@@ -14,6 +18,24 @@ public class World {
 		seed = 128;
 	}
 
+	public void generateChunk(Point p) {
+		Chunk c = new Chunk(this);
+		Block[][][] blocks = c.getBlocks();
+		Random g = new Random(seed + (((long)p.getY() << 32) | (long)p.getX()));
+		for(int i = g.nextInt(TREE_CAP); i > 0; i--)
+			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = new BlockTree();
+		for(int i = g.nextInt(HOGWEED_CAP); i > 0; i--)
+			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = new BlockHogweed();
+		for(int i = g.nextInt(PUDDLE_CAP); i > 0; i--)
+			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][0] = new BlockWater();
+
+		for(int i = 0; i < blocks.length; i++)
+			for(int j = 0; j < blocks[i].length; j++)
+				if(blocks[i][j][0] == null)
+					blocks[i][j][0] = new BlockGround();
+		putChunk(p, c);
+	}
+
 	public Chunk getChunk(int x, int y) {
 		return chunks.get(new Point(x, y));
 	}
@@ -22,12 +44,38 @@ public class World {
 		return chunks.get(p);
 	}
 
+	public Block getBlock(int x, int y, int z) {
+		Chunk c = getChunk(Chunk.globalToChunkPoint(new Point2D(x, y)));
+		int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
+		int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
+		int k = (Chunk.CHUNK_SIDE_LENGTH + z % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
+		Block b = c.getBlock(i, j, k);
+		return b;
+	}
+
+	public void setBlock(int x, int y, int z, Block block) {
+		Chunk c = getChunk(Chunk.globalToChunkPoint(new Point2D(x, y)));
+		int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
+		int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
+		int k = (Chunk.CHUNK_SIDE_LENGTH + z % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
+		c.setBlock(i, j, k, block);
+		c.updateChunkImage(i, j);
+	}
+
+	public void destroyBlock(int x, int y, int z) {
+		Block b = getBlock(x, y, z);
+		if(b != null && b.isDestroyable()) {
+			b.destroy(this, x, y, z);
+			setBlock(x, y, z, null);
+		}
+	}
+
 	public long getSeed() {
 		return seed;
 	}
 
-	public void putChunk(Point p) {
-		chunks.put(p, new Chunk(this, p));
+	public void putChunk(Point p, Chunk c) {
+		chunks.put(p, c);
 	}
 
 	public List<Entity> getEntities() {

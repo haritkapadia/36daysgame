@@ -2,13 +2,11 @@ import java.awt.Image;
 import java.io.File;
 import javax.imageio.ImageIO;
 
-public class BlockTree extends Block {
+public class BlockPoison extends Block {
 	Image image;
 
-	BlockTree() {
-		super(new File("Artwork/tree_small.png"));
-		destroyable = false;
-		solid = false;
+	BlockPoison() {
+		super(new File("Artwork/poison_small.png"));
 	}
 
 	public void interact(Entity e) {}

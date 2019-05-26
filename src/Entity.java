@@ -29,7 +29,7 @@ public abstract class Entity extends Transition implements Drawable {
 	public Entity(World world, double speed) {
 		this.world = world;
 		SPEED = speed;
-		health = 10;
+		health = 6;
 		MAX_HEALTH = 10;
 		stomachFullness = 10;
 		MAX_STOMACH = 10;
@@ -43,8 +43,20 @@ public abstract class Entity extends Transition implements Drawable {
 		return position;
 	}
 
+	public void setPosition(Point2D position) {
+		this.position = position;
+	}
+
 	public Dimension2D getDimension() {
 		return dimension;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public int getMaximumHealth() {
+		return MAX_HEALTH;
 	}
 
 	public void interact(Block block) {

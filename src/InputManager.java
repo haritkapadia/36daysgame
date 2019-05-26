@@ -18,10 +18,12 @@ public class InputManager {
 	private final double SPEED = 10;
 	EnumMap<KeyCode, Boolean> pressed;
 	Game game;
+	World world;
 	Player player;
 
-	InputManager(Game game, Player player) {
+	InputManager(Game game, World world, Player player) {
 		this.game = game;
+		this.world = world;
 		this.player = player;
 		pressed = new EnumMap<KeyCode, Boolean>(KeyCode.class){{
 				for(KeyCode k : KeyCode.values())
@@ -37,19 +39,15 @@ public class InputManager {
 		if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
 			vy += SPEED;
 			player.setFacing(Direction.UP);
-			player.play();
 		} else if(!pressed.get(KeyCode.S) && e.getCode() == KeyCode.S) {
 			vy += -SPEED;
 			player.setFacing(Direction.DOWN);
-			player.play();
 		} else if(!pressed.get(KeyCode.D) && e.getCode() == KeyCode.D) {
 			vx += SPEED;
 			player.setFacing(Direction.RIGHT);
-			player.play();
 		} else if(!pressed.get(KeyCode.A) && e.getCode() == KeyCode.A) {
 			vx += -SPEED;
 			player.setFacing(Direction.LEFT);
-			player.play();
 		}
 		pressed.put(e.getCode(), true);
 	}
@@ -57,16 +55,15 @@ public class InputManager {
 	public void keyReleased(KeyEvent e) {
 		if(pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
 			vy -= SPEED;
-			player.stop();
 		} else if(pressed.get(KeyCode.S) && e.getCode() == KeyCode.S) {
 			vy -= -SPEED;
-			player.stop();
 		} else if(pressed.get(KeyCode.D) && e.getCode() == KeyCode.D) {
 			vx -= SPEED;
-			player.stop();
 		} else if(pressed.get(KeyCode.A) && e.getCode() == KeyCode.A) {
 			vx -= -SPEED;
-			player.stop();
+		} else if(pressed.get(KeyCode.SPACE) && e.getCode() == KeyCode.SPACE) {
+			Point2D p = player.getPosition();
+			world.destroyBlock((int)p.getX(), (int)p.getY(), 1);
 		}
 		pressed.put(e.getCode(), false);
 	}

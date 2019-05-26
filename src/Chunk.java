@@ -18,46 +18,27 @@ import javafx.geometry.*;
 
 public class Chunk {
 	public static final int CHUNK_SIDE_LENGTH = 32;
-	public static final int TREE_CAP = 10;
-	public static final int PUDDLE_CAP = 5;
 	Block[][][] blocks = new Block[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH][2];
-	Point location;
 	BufferedImage chunkImage;
 	World world;
 	long seed;
 
-	Chunk(World world, Point location) {
+	Chunk(World world) {
 		this.world = world;
-		this.location = location;
-		seed = world.getSeed() + (((long)location.getY() << 32) | (long)location.getX());
-		generateChunk();
-	}
-
-	Chunk(String test) {
-		location = new Point(0, 0);
-		blocks[0][0][0] = new BlockGround();
-		blocks[2][3][0] = new BlockGround();
-		blocks[4][5][0] = new BlockGround();
 	}
 
 	public Block[][][] getBlocks() {
 		return blocks;
 	}
 
-	public void generateChunk() {
-		Random g = new Random(seed);
-		for(int i = g.nextInt(TREE_CAP); i > 0; i--)
-			blocks[g.nextInt(CHUNK_SIDE_LENGTH)][g.nextInt(CHUNK_SIDE_LENGTH)][1] = new BlockTree();
-		for(int i = g.nextInt(PUDDLE_CAP); i > 0; i--)
-			blocks[g.nextInt(CHUNK_SIDE_LENGTH)][g.nextInt(CHUNK_SIDE_LENGTH)][0] = new BlockWater();
-
-		for(int i = 0; i < blocks.length; i++)
-			for(int j = 0; j < blocks[i].length; j++)
-				if(blocks[i][j][0] == null)
-					blocks[i][j][0] = new BlockGround();
+	public Block getBlock(int x, int y, int z) {
+		return blocks[x][y][z];
 	}
 
-	// 90% sure this works
+	public void setBlock(int x, int y, int z, Block block) {
+		blocks[x][y][z] = block;
+	}
+
 	public BufferedImage getChunkImage() {
 		if(chunkImage == null) {
 			chunkImage = new BufferedImage(32 * CHUNK_SIDE_LENGTH, 32 * CHUNK_SIDE_LENGTH, BufferedImage.TYPE_INT_ARGB);
@@ -77,6 +58,19 @@ public class Chunk {
 			}
 		}
 		return chunkImage;
+	}
+
+	public void updateChunkImage(int i, int j) {
+		Graphics2D g = chunkImage.createGraphics();
+		int k = blocks[i][j].length - 1;
+		while(k > 0 && (blocks[i][j][k] == null || blocks[i][j][k].isTransparent()))
+			k -= 1;
+		for(; k < blocks[i][j].length; k++) {
+			if(blocks[i][j][k] != null) {
+				AffineTransform t = AffineTransform.getTranslateInstance(i * 32, (CHUNK_SIDE_LENGTH - j - 1) * 32);
+				g.drawImage(blocks[i][j][k].getImage(), t, null);
+			}
+		}
 	}
 
 	// This works
