@@ -2,11 +2,11 @@ import java.awt.Image;
 import java.io.File;
 import javax.imageio.ImageIO;
 
-public class BlockGround extends Block {
+public class BlockWater extends Block {
 	Image image;
 
-	BlockGround() {
-		super(new File("Artwork/grass_small.png"));
+	BlockWater() {
+		super(new File("Artwork/water_small.png"));
 	}
 
 	public void interact(Entity e) {}

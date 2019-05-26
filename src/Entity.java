@@ -8,20 +8,68 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
 import javafx.geometry.*;
+import javafx.animation.*;
 
-public abstract class Entity {
-	Point2D position;
-	int health;
-	int stomachFullness;
-	int maxStomach;
-	public static final int STOMACH_REDUCTION_TIME = 1000;
-	World world;
-	Item hand;
-	public abstract void move();
+public abstract class Entity extends Transition implements Drawable {
+	protected Point2D position;
+	protected Direction facing;
+	protected Dimension2D dimension;
+	protected int health;
+	protected final int MAX_HEALTH;
+	protected int stomachFullness;
+	protected final int MAX_STOMACH;
+	public static final double STOMACH_REDUCTION_TIME = 1;
+	protected World world;
+	protected Item hand;
+	protected final double SPEED;
+
+	public Entity(World world) {
+		this(world, 10);
+	}
+	public Entity(World world, double speed) {
+		this.world = world;
+		SPEED = speed;
+		health = 6;
+		MAX_HEALTH = 10;
+		stomachFullness = 10;
+		MAX_STOMACH = 10;
+		facing = Direction.DOWN;
+	}
+	public double getSpeed() {
+		return SPEED;
+	}
+
+	public Point2D getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point2D position) {
+		this.position = position;
+	}
+
+	public Dimension2D getDimension() {
+		return dimension;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public int getMaximumHealth() {
+		return MAX_HEALTH;
+	}
+
+	public void interact(Block block) {
+		block.interact(this);
+	}
+
+	public Direction getFacing() {
+		return facing;
+	}
+
+	public void setFacing(Direction facing) {
+		this.facing = facing;
+	}
+
 	public abstract void useHand();
-	public abstract void interact(Block block);
-
-	// Entity(World world) {
-	//	this.world = world;
-	// }
 }
