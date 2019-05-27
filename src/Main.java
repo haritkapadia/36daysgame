@@ -30,10 +30,22 @@ public class Main extends Application {
 	public static HashMap<String, Parent> panes;
 	public static MediaPlayer mediaPlayer;
 
+	/**
+	 * Sets the root of a specified scene to be one of the panes from the panes HashMap.
+	 *
+	 * @param scene The scene of which to set the pane for.
+	 * @param name The name of the pane.
+	 */
 	public static void setPane(Scene scene, String name) {
 		scene.setRoot(panes.get(name));
 	}
 
+	/**
+	 * Sets the root of a specified scene to be a certain pane.
+	 *
+	 * @param scene The scene of which to set the pane for.
+	 * @param node The pane.
+	 */
 	public static void setPane(Scene scene, Parent node) {
 		scene.setRoot(node);
 	}
@@ -57,6 +69,7 @@ public class Main extends Application {
 
 		Main.mediaPlayer = new MediaPlayer(new Media(MUSIC.toURI().toString()));
 		Main.mediaPlayer.setAutoPlay(true);
+		Main.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 
 
 		Scene main = new Scene(new BorderPane()); // placeholder

@@ -63,8 +63,9 @@ public class Game extends AnimationTimer {
 		long dt = time - prevTime;
 		player.move(i.getDisplacement().multiply(dt / 1e9));
 		Point2D p = player.getPosition();
-		Block b = world.getBlock((int)p.getX(), (int)p.getY(), 1);
-		if(b != null && b.isSolid()) {
+		Point blockPos = World.blockCoordinate(p);
+		int b = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
+		if(b != 0 && ResourceManager.getBlock(b).isSolid()) {
 			player.setPosition(prevPosition);
 		}
 		camera.setPosition(player.getPosition());

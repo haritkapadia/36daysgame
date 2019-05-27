@@ -20,19 +20,19 @@ public class World {
 
 	public void generateChunk(Point p) {
 		Chunk c = new Chunk(this);
-		Block[][][] blocks = c.getBlocks();
+		int[][][] blocks = c.getBlocks();
 		Random g = new Random(seed + (((long)p.getY() << 32) | (long)p.getX()));
 		for(int i = g.nextInt(TREE_CAP); i > 0; i--)
-			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = new BlockTree();
+			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = 4;
 		for(int i = g.nextInt(HOGWEED_CAP); i > 0; i--)
-			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = new BlockHogweed();
+			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = 5;
 		for(int i = g.nextInt(PUDDLE_CAP); i > 0; i--)
-			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][0] = new BlockWater();
+			blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][0] = 2;
 
 		for(int i = 0; i < blocks.length; i++)
 			for(int j = 0; j < blocks[i].length; j++)
-				if(blocks[i][j][0] == null)
-					blocks[i][j][0] = new BlockGround();
+				if(blocks[i][j][0] == 0)
+					blocks[i][j][0] = 1;
 		putChunk(p, c);
 	}
 
@@ -44,16 +44,15 @@ public class World {
 		return chunks.get(p);
 	}
 
-	public Block getBlock(int x, int y, int z) {
+	public int getBlock(int x, int y, int z) {
 		Chunk c = getChunk(Chunk.globalToChunkPoint(new Point2D(x, y)));
 		int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int k = (Chunk.CHUNK_SIDE_LENGTH + z % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
-		Block b = c.getBlock(i, j, k);
-		return b;
+		return c.getBlock(i, j, k);
 	}
 
-	public void setBlock(int x, int y, int z, Block block) {
+	public void setBlock(int x, int y, int z, int block) {
 		Chunk c = getChunk(Chunk.globalToChunkPoint(new Point2D(x, y)));
 		int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
@@ -63,10 +62,10 @@ public class World {
 	}
 
 	public void destroyBlock(int x, int y, int z) {
-		Block b = getBlock(x, y, z);
-		if(b != null && b.isDestroyable()) {
-			b.destroy(this, x, y, z);
-			setBlock(x, y, z, null);
+		int b = getBlock(x, y, z);
+		if(b != 0 && ResourceManager.getBlock(b) instanceof Destroyable) {
+			((Destroyable)ResourceManager.getBlock(b)).onDestroy(this, x, y, z);
+			setBlock(x, y, z, 0);
 		}
 	}
 
@@ -84,5 +83,9 @@ public class World {
 
 	public void addEntity(Entity e) {
 		entities.add(e);
+	}
+
+	public static Point blockCoordinate(Point2D p) {
+		return new Point((int)Math.floor(p.getX()), (int)Math.floor(p.getY()));
 	}
 }

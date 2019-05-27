@@ -1,11 +1,20 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/May/26
+ */
+
 import java.awt.Image;
 import java.io.File;
 import javax.imageio.ImageIO;
 
+/**
+ * An abstract class representing a block, the basic unit of the world.
+ *
+ * @author Harit Kapadia, Jack Farley
+ */
 public abstract class Block implements Drawable {
 	Image image;
-	protected boolean destroyable;
-	protected boolean solid;
 
 	Block(File file) {
 		try {
@@ -13,22 +22,11 @@ public abstract class Block implements Drawable {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		destroyable = false;
-		solid = true;
 	}
 
 	public Image getImage() {
 		return image;
 	}
 
-	public boolean isDestroyable() {
-		return destroyable;
-	}
-
-	public boolean isSolid() {
-		return destroyable;
-	}
-
-	public abstract void interact(Entity e);
-	public void destroy(World world, int x, int y, int z) {}
+	public abstract boolean isSolid();
 }

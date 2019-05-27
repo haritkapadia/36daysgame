@@ -59,8 +59,8 @@ public abstract class Entity extends Transition implements Drawable {
 		return MAX_HEALTH;
 	}
 
-	public void interact(Block block) {
-		block.interact(this);
+	public void interact(Interactable interactable) {
+		interactable.onInteract(this);
 	}
 
 	public Direction getFacing() {

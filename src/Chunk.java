@@ -18,7 +18,7 @@ import javafx.geometry.*;
 
 public class Chunk {
 	public static final int CHUNK_SIDE_LENGTH = 32;
-	Block[][][] blocks = new Block[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH][2];
+	int[][][] blocks = new int[CHUNK_SIDE_LENGTH][CHUNK_SIDE_LENGTH][2];
 	BufferedImage chunkImage;
 	World world;
 	long seed;
@@ -27,15 +27,15 @@ public class Chunk {
 		this.world = world;
 	}
 
-	public Block[][][] getBlocks() {
+	public int[][][] getBlocks() {
 		return blocks;
 	}
 
-	public Block getBlock(int x, int y, int z) {
+	public int getBlock(int x, int y, int z) {
 		return blocks[x][y][z];
 	}
 
-	public void setBlock(int x, int y, int z, Block block) {
+	public void setBlock(int x, int y, int z, int block) {
 		blocks[x][y][z] = block;
 	}
 
@@ -46,12 +46,12 @@ public class Chunk {
 			for(int i = 0; i < blocks.length; i++) {
 				for(int j = 0; j < blocks[i].length; j++) {
 					int k = blocks[i][j].length - 1;
-					while(k > 0 && (blocks[i][j][k] == null || blocks[i][j][k].isTransparent()))
+					while(k > 0 && (blocks[i][j][k] == 0 || ResourceManager.getBlock(blocks[i][j][k]).isTransparent()))
 						k -= 1;
 					for(; k < blocks[i][j].length; k++) {
-						if(blocks[i][j][k] != null) {
+						if(blocks[i][j][k] != 0) {
 							AffineTransform t = AffineTransform.getTranslateInstance(i * 32, (CHUNK_SIDE_LENGTH - j - 1) * 32);
-							g.drawImage(blocks[i][j][k].getImage(), t, null);
+							g.drawImage(ResourceManager.getBlock(blocks[i][j][k]).getImage(), t, null);
 						}
 					}
 				}
@@ -63,12 +63,12 @@ public class Chunk {
 	public void updateChunkImage(int i, int j) {
 		Graphics2D g = chunkImage.createGraphics();
 		int k = blocks[i][j].length - 1;
-		while(k > 0 && (blocks[i][j][k] == null || blocks[i][j][k].isTransparent()))
+		while(k > 0 && (blocks[i][j][k] == 0 || ResourceManager.getBlock(blocks[i][j][k]).isTransparent()))
 			k -= 1;
 		for(; k < blocks[i][j].length; k++) {
-			if(blocks[i][j][k] != null) {
+			if(blocks[i][j][k] != 0) {
 				AffineTransform t = AffineTransform.getTranslateInstance(i * 32, (CHUNK_SIDE_LENGTH - j - 1) * 32);
-				g.drawImage(blocks[i][j][k].getImage(), t, null);
+				g.drawImage(ResourceManager.getBlock(blocks[i][j][k]).getImage(), t, null);
 			}
 		}
 	}
