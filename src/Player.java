@@ -22,7 +22,6 @@ public class Player extends Entity {
 	Player(World world) {
 		super(world);
 		position = new Point2D(0, 0);
-		dimension = new Dimension2D(32, 32);
 
 		try {
 		sprites = new EnumMap<Direction, Image[]>(Direction.class){{

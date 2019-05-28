@@ -26,7 +26,6 @@ public class Game extends AnimationTimer {
 	ProgressIndicator health;
 	InputManager i;
 	QuestManager questManager;
-	Point2D prevPosition;
 
 	long prevTime = -1;
 
@@ -51,7 +50,7 @@ public class Game extends AnimationTimer {
 
 
 
-		questManager = new QuestManager();
+		questManager = new QuestManager(ui);
 		initialiseQuests();
 	}
 
@@ -62,32 +61,26 @@ public class Game extends AnimationTimer {
 	private void processInput(long time) {
 		if(prevTime == -1) {
 			prevTime = time;
-			prevPosition = player.getPosition();
 			return;
 		}
-
 		long dt = time - prevTime;
 		player.move(i.getDisplacement().multiply(dt / 1e9));
-		Point2D p = player.getPosition();
-		Point blockPos = World.blockCoordinate(p);
-		BlockKey b = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
-		if(b != null && ResourceManager.getBlock(b).isSolid()) {
-			player.setPosition(prevPosition);
-		}
-		camera.setPosition(player.getPosition());
-
-		if(player.getPosition().equals(prevPosition))
-			player.stop();
-		else
-			player.play();
-
-
 		prevTime = time;
-		prevPosition = player.getPosition();
+	}
+
+	public void updateWorld() {
+		for(Entity e : entities) {
+			Point ne = World.blockCoordinate(e.getPosition().add(e.getWidth(), e.getHeight()));
+			Point nw = World.blockCoordinate(e.getPosition().add(0, e.getHeight()));
+			Point sw = World.blockCoordinate(e.getPosition().add(0, 0));
+			Point se = World.blockCoordinate(e.getPosition().add(e.getWidth(), 0));
+
+		}
 	}
 
 	public void handle(long time) {
 		processInput(time);
+		updateWorld();
 		drawScreen();
 	}
 
@@ -121,49 +114,30 @@ public class Game extends AnimationTimer {
 		}
 
 		for(Entity e : world.getEntities()) {
-			Point2D p = e.getPosition();
-			Dimension2D d = e.getDimension();
-			int screenX = (int)((p.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
-			int screenY = (int)(scene.getHeight() - ((p.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
-			int screenW = (int)(1 / camera.getBlockFactor() * maxS);
-			int screenH = (int)(1 / camera.getBlockFactor() * maxS);
+			int screenX = (int)((e.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
+			int screenY = (int)(scene.getHeight() - ((e.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
+			int screenW = (int)(e.getWidth() / camera.getBlockFactor() * maxS);
+			int screenH = (int)(e.getHeight() / camera.getBlockFactor() * maxS);
 			g.drawImage(SwingFXUtils.toFXImage((BufferedImage)e.getImage(), null), screenX, screenY - screenH, screenW, screenH);
 		}
 	}
 
 	private void initialiseQuests() {
-		Quest touchingPoison = new Quest("Touching Poison", "What happens when you touch poison? Nothing!", 1){
-				public void run() {
-					synchronized(ResourceManager.getBlock(BlockKey.POISON)) {
-						try {
-							ResourceManager.getBlock(BlockKey.POISON).wait();
-						} catch(Exception e) {
-							e.printStackTrace();
-							System.exit(0);
-						}
-					}
-					addStep();
-				}
-			};
-		Quest breakingHogweed = new Quest("Breaking Weeds", "See the effects of breaking hogweed!", 5){
-				public void run() {
-					while(getStepsTaken() < getMaxSteps()) {
-						synchronized(ResourceManager.getBlock(BlockKey.HOGWEED)) {
-							try {
-								ResourceManager.getBlock(BlockKey.HOGWEED).wait();
-							} catch(Exception e) {
-								e.printStackTrace();
-								System.exit(0);
-							}
-							addStep();
-						}
-					}
-					Platform.runLater(() -> questManager.startQuest(ui, touchingPoison));
-				}
-			};
+		Quest touchingPoison = new Quest(questManager,
+						 "Touching Poison",
+						 "What happens when you touch poison? Nothing!",
+						 1,
+						 ResourceManager.getBlock(BlockKey.POISON),
+						 null);
+		Quest breakingHogweed = new Quest(questManager,
+						  "Breaking Weeds",
+						  "See the effects of breaking hogweed!",
+						  5,
+						  ResourceManager.getBlock(BlockKey.HOGWEED),
+						  new Quest[]{touchingPoison});
 		questManager.addQuest(breakingHogweed);
 		questManager.addQuest(touchingPoison);
-		questManager.startQuest(ui, breakingHogweed);
+		questManager.startQuest(breakingHogweed);
 	}
 
 	public Scene getScene() {
