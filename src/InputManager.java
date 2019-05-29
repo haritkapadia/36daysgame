@@ -15,6 +15,7 @@ import java.awt.Point;
 
 public class InputManager {
 	double vx = 0, vy = 0;
+	private final double SPEED = 10;
 	EnumMap<KeyCode, Boolean> pressed;
 	Game game;
 	World world;
@@ -36,16 +37,16 @@ public class InputManager {
 			Main.setPane(game.getScene(), "Main Menu");
 		}
 		if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
-			vy += 1;
+			vy += SPEED;
 			player.setFacing(Direction.UP);
 		} else if(!pressed.get(KeyCode.S) && e.getCode() == KeyCode.S) {
-			vy += -1;
+			vy += -SPEED;
 			player.setFacing(Direction.DOWN);
 		} else if(!pressed.get(KeyCode.D) && e.getCode() == KeyCode.D) {
-			vx += 1;
+			vx += SPEED;
 			player.setFacing(Direction.RIGHT);
 		} else if(!pressed.get(KeyCode.A) && e.getCode() == KeyCode.A) {
-			vx += -1;
+			vx += -SPEED;
 			player.setFacing(Direction.LEFT);
 		}
 		pressed.put(e.getCode(), true);
@@ -53,13 +54,13 @@ public class InputManager {
 
 	public void keyReleased(KeyEvent e) {
 		if(pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
-			vy -= 1;
+			vy -= SPEED;
 		} else if(pressed.get(KeyCode.S) && e.getCode() == KeyCode.S) {
-			vy -= -1;
+			vy -= -SPEED;
 		} else if(pressed.get(KeyCode.D) && e.getCode() == KeyCode.D) {
-			vx -= 1;
+			vx -= SPEED;
 		} else if(pressed.get(KeyCode.A) && e.getCode() == KeyCode.A) {
-			vx -= -1;
+			vx -= -SPEED;
 		} else if(pressed.get(KeyCode.SPACE) && e.getCode() == KeyCode.SPACE) {
 			Point2D p = player.getPosition();
 			world.destroyBlock((int)p.getX(), (int)p.getY(), 1);
@@ -67,7 +68,7 @@ public class InputManager {
 		pressed.put(e.getCode(), false);
 	}
 
-	public Point2D getDirection() {
-		return new Point2D(vx, vy).normalize();
+	public Point2D getDisplacement() {
+		return new Point2D(vx, vy);
 	}
 }

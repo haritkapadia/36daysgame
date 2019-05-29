@@ -20,7 +20,7 @@ public class Player extends Entity {
 	Image image;
 
 	Player(World world) {
-		super(world, 10);
+		super(world);
 		position = new Point2D(0, 0);
 
 		try {

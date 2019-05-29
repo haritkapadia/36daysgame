@@ -52,10 +52,6 @@ public class World {
 		return c.getBlock(i, j, k);
 	}
 
-	public BlockKey getBlock(Point p, int z) {
-		return getBlock((int)p.getX(), (int)p.getY(), z);
-	}
-
 	public void setBlock(int x, int y, int z, BlockKey block) {
 		Chunk c = getChunk(Chunk.globalToChunkPoint(new Point2D(x, y)));
 		int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
@@ -91,9 +87,5 @@ public class World {
 
 	public static Point blockCoordinate(Point2D p) {
 		return new Point((int)Math.floor(p.getX()), (int)Math.floor(p.getY()));
-	}
-
-	public static Point blockCoordinate(double x, double y) {
-		return new Point((int)Math.floor(x), (int)Math.floor(y));
 	}
 }
