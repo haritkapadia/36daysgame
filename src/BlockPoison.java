@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 
 public class BlockPoison extends Block implements Destroyable {
 	BlockPoison() {
-		super(new File("Artwork/poison_small.png"), false);
+		super(new File("Artwork/poison_small.png"));
 	}
 
 	public boolean isTransparent() {

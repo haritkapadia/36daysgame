@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 
 public class BlockWater extends Block {
 	BlockWater() {
-		super(new File("Artwork/water_small.png"), true);
+		super(new File("Artwork/water_small.png"));
 	}
 
 	public boolean isTransparent() {

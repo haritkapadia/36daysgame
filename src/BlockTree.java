@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 
 public class BlockTree extends Block {
 	BlockTree() {
-		super(new File("Artwork/tree_small.png"), false);
+		super(new File("Artwork/tree_small.png"));
 	}
 
 	public boolean isTransparent() {

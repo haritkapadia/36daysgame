@@ -47,7 +47,7 @@ public class Game extends AnimationTimer {
 		i = new InputManager(this, world, player);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> i.keyPressed(e));
 		scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> i.keyReleased(e));
-		scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> i.mouseClicked(e));
+
 
 
 		questManager = new QuestManager(ui);
@@ -60,19 +60,42 @@ public class Game extends AnimationTimer {
 
 	public void processInput(long time) {
 		long dt = time - prevTime;
-		player.move(i.getDirection().multiply(player.getSpeed() * dt / 1e9));
-		Point2D p = player.getPosition();
-		Point blockPos = World.blockCoordinate(p);
-		BlockKey b = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
-		if(b != null && ResourceManager.getBlock(b).isSolid()) {
-			player.setPosition(prevPosition);
-		}
-		camera.setPosition(player.getPosition());
 
-		if(player.getPosition().equals(prevPosition))
-			player.stop();
-		else
-			player.play();
+		Point2D newPos = player.getPosition().add(i.getDirection().multiply(player.getSpeed() * dt / 1e9));
+		// for(double i = newPos.getX(); i < newPos.getX() + player.getWidth(); i++) {
+		//	for(double j = newPos.getY(); j < newPos.getY() + player.getHeight(); j++) {
+		//		Point blockPoint = World.blockCoordinate(i, j);
+		//		BlockKey blockKey = world.getBlock(blockPoint, 1);
+		//		if(blockKey != null && ResourceManager.getBlock(blockKey).isSolid()) {
+		//			//Find min entry
+		//			Direction min = Direction.DOWN;
+		//			double minLength = Math.abs(i - blockPoint.getY());
+		//			if(minLength > Math.abs(i - (blockPoint.getY() + 1))) {
+		//				min = Direction.UP;
+		//				minLength = Math.abs(i - (blockPoint.getY() + 1));
+		//			}
+		//			if(minLength > Math.abs(j - blockPoint.getX())) {
+		//				min = Direction.LEFT;
+		//				minLength = Math.abs(j - blockPoint.getX());
+		//			}
+		//			if(minLength > Math.abs(j - (blockPoint.getX() + 1))) {
+		//				min = Direction.RIGHT;
+		//				minLength = Math.abs(j - (blockPoint.getX() + 1));
+		//			}
+
+		//			if(min == Direction.DOWN)
+		//				newPos.add(0, -minLength);
+		//			else if(min == Direction.UP)
+		//				newPos.add(0, minLength);
+		//			else if(min == Direction.LEFT)
+		//				newPos.add(-minLength, 0);
+		//			else if(min == Direction.RIGHT)
+		//				newPos.add(minLength, 0);
+		//		}
+		//	}
+		// }
+
+		player.setPosition(newPos);
 		prevTime = time;
 	}
 
@@ -139,9 +162,5 @@ public class Game extends AnimationTimer {
 
 	public Scene getScene() {
 		return scene;
-	}
-
-	public Camera getCamera() {
-		return camera;
 	}
 }
