@@ -5,20 +5,16 @@
 }
 
 #nextbutton{
-    -fx-font-family: "ChicagoFLF";
     -fx-padding: 10 30 10 30;
     -fx-background-color: green;
-    -fx-text-fill:white;
     -fx-margin: auto;
     -fx-text-alignment: center;
     -fx-shape: "M200 150 L75 200 L75 100 Z"; 
 }
 
 #prevbutton{
-    -fx-font-family: "ChicagoFLF";
     -fx-padding: 10 30 10 30;
     -fx-background-color: green;
-    -fx-text-fill:white;
     -fx-margin: auto;
     -fx-text-alignment: center;
     -fx-shape: "M200 150 L325 200 L325 100 Z"; 

@@ -66,16 +66,16 @@ public class Main extends Application {
          */
         @Override
         public void start(Stage primaryStage) {
-                final File MUSIC = new File("Walking-dreamy-bass-synth-loop.wav");
+                // final File MUSIC = new File("Walking-dreamy-bass-synth-loop.wav");
+                final Media MUSIC = new Media(new File("Netherplace.wav").toURI().toString());                
                 
-                Scene main = new Scene(new Pane());// placeholder
-                
-                
-                Main.mediaPlayer = new MediaPlayer(new Media(MUSIC.toURI().toString()));
+                Main.mediaPlayer = new MediaPlayer(MUSIC);
                 Main.mediaPlayer.setAutoPlay(true);
                 Main.mediaPlayer.setStartTime(Duration.seconds(0));
                 Main.mediaPlayer.setStopTime(Duration.INDEFINITE);
                 Main.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+                
+                Scene main = new Scene(new Pane());// placeholder
                 
                 primaryStage.setFullScreenExitHint("");
                 primaryStage.setFullScreenExitKeyCombination(null);

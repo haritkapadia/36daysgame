@@ -18,6 +18,7 @@ import javafx.scene.media.*;
 import java.io.*;
 import javafx.animation.*;
 import javafx.util.*;
+import javafx.scene.control.*;
 
 /**
  * The main class, creating the window, scenes, and starting the program.
@@ -67,7 +68,7 @@ public class Main extends Application {
         public void start(Stage primaryStage) {
                 final File MUSIC = new File("Walking-dreamy-bass-synth-loop.wav");
                 
-                Scene main = new Scene(new BorderPane());// placeholder
+                Scene main = new Scene(new Pane());// placeholder
                 
                 
                 Main.mediaPlayer = new MediaPlayer(new Media(MUSIC.toURI().toString()));
@@ -76,20 +77,20 @@ public class Main extends Application {
                 Main.mediaPlayer.setStopTime(Duration.INDEFINITE);
                 Main.mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
                 
-                
-                panes.put("Main Menu", new MainMenuPane(main, primaryStage));
-                panes.put("Level Select", new LevelSelectPane(main));
-                panes.put("High Scores", new HighScoresPane(main));
-                panes.put("About", new AboutPane(main));
-                panes.put("Survival Guide", new SurvivalGuidePane(main));
-                panes.put("Splash Screen", new SplashPane(main));
-                
                 primaryStage.setFullScreenExitHint("");
                 primaryStage.setFullScreenExitKeyCombination(null);
                 primaryStage.setTitle("36 Days - Wilderness Survival Game");
                 primaryStage.setScene(main);
                 primaryStage.setFullScreen(true);
-                primaryStage.show();        
+                primaryStage.show();
+                
+                panes.put("Main Menu", new MainMenuPane(main, primaryStage));
+                panes.put("Level Select", new LevelSelectPane(main, primaryStage));
+                panes.put("High Scores", new HighScoresPane(main, primaryStage));
+                panes.put("About", new AboutPane(main, primaryStage));
+                panes.put("Survival Guide", new SurvivalGuidePane(main, primaryStage));
+                panes.put("Splash Screen", new SplashPane(main));
+                
                 
                 Main.setPane(main, "Splash Screen");
                 ((SplashPane)panes.get("Splash Screen")).ft.play();

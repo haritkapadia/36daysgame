@@ -31,9 +31,8 @@ import javafx.event.*;
  *
  * @author Harit Kapadia, Jack Farley
  */
-public class SettingsMenu extends HBox {
+public class SettingsMenu extends StackPane {
         private Scene scene;
-        FadeTransition ft;
         
         /**
          * The pane constructor.
@@ -42,22 +41,31 @@ public class SettingsMenu extends HBox {
          * @param stage The stage on which the scene is displayed
          */
         SettingsMenu (Scene scene, Stage stage) {
-                setManaged(false);
-                setPrefWidth(150);
-                setSpacing(30);             
-                
-                getChildren().add(new ToggleButton(){{
-                        setId("mutebutton");
-                        setOnAction(e -> Main.mediaPlayer.setVolume(1-Main.mediaPlayer.getVolume()));
+                getChildren().add(new HBox(){{
+                        setManaged(false);
+                        setPrefWidth(150);
+                        setSpacing(30);  
+//                        getChildren().add(new ToggleButton(){{
+//                                setId("mutebutton");
+//                                setOnAction(e -> Main.mediaPlayer.setVolume(1-Main.mediaPlayer.getVolume()));
+//                        }});
+                        
+                        getChildren().add(new Button(){{
+                                setId("exitbutton");
+                                setOnAction(e -> Main.setPane(scene, "Main Menu"));
+                        }});
+                        
+                        getChildren().add(new Button(){{
+                                setId("pausebutton");
+                                setOnAction(e-> SettingsMenu.this.getChildren().add(new PauseMenu(scene, stage)));
+                        }});
+                        
+                        
+                        getStylesheets().add("stylesheet.css");
+                        relocate(scene.getWidth()-150,50);
+                        
                 }});
-                
-                getChildren().add(new Button(){{
-                        setId("exitbutton");
-                        setOnAction(e -> Main.setPane(scene, "Main Menu"));
-                }});
-                
-                getStylesheets().add("stylesheet.css");
-                relocate(scene.getWidth()-150,50);
+               
                 
                 
         }

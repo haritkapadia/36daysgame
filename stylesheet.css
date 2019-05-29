@@ -29,6 +29,12 @@
     -fx-font-size: 22px;
 }
 
+#pausebutton{
+    -fx-background-color: white;
+    -fx-margin: auto;
+    -fx-shape: "M150 130 L150 200 L175 200 L175 130 Z M190 130 L190 200 L215 200 L215 130 Z"; 
+}
+
 
 
 .button {
