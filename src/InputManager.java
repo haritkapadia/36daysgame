@@ -15,11 +15,11 @@ import java.awt.Point;
 
 public class InputManager {
 	double vx = 0, vy = 0;
-	private final double SPEED = 10;
 	EnumMap<KeyCode, Boolean> pressed;
 	Game game;
 	World world;
 	Player player;
+	Point target;
 
 	InputManager(Game game, World world, Player player) {
 		this.game = game;
@@ -31,22 +31,28 @@ public class InputManager {
 			}};
 	}
 
+	public void mouseClicked(MouseEvent e) {
+		target = new Point((int)e.getX(), (int)e.getY());
+		System.out.println(screenToWorldCoordinate(target));
+
+	}
+
 	public void keyPressed(KeyEvent e) {
 		if(e.getCode() == KeyCode.Q) {
 			game.stop();
 			Main.setPane(game.getScene(), "Main Menu");
 		}
 		if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
-			vy += SPEED;
+			vy += 1;
 			player.setFacing(Direction.UP);
 		} else if(!pressed.get(KeyCode.S) && e.getCode() == KeyCode.S) {
-			vy += -SPEED;
+			vy += -1;
 			player.setFacing(Direction.DOWN);
 		} else if(!pressed.get(KeyCode.D) && e.getCode() == KeyCode.D) {
-			vx += SPEED;
+			vx += 1;
 			player.setFacing(Direction.RIGHT);
 		} else if(!pressed.get(KeyCode.A) && e.getCode() == KeyCode.A) {
-			vx += -SPEED;
+			vx += -1;
 			player.setFacing(Direction.LEFT);
 		}
 		pressed.put(e.getCode(), true);
@@ -54,13 +60,13 @@ public class InputManager {
 
 	public void keyReleased(KeyEvent e) {
 		if(pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
-			vy -= SPEED;
+			vy -= 1;
 		} else if(pressed.get(KeyCode.S) && e.getCode() == KeyCode.S) {
-			vy -= -SPEED;
+			vy -= -1;
 		} else if(pressed.get(KeyCode.D) && e.getCode() == KeyCode.D) {
-			vx -= SPEED;
+			vx -= 1;
 		} else if(pressed.get(KeyCode.A) && e.getCode() == KeyCode.A) {
-			vx -= -SPEED;
+			vx -= -1;
 		} else if(pressed.get(KeyCode.SPACE) && e.getCode() == KeyCode.SPACE) {
 			Point2D p = player.getPosition();
 			world.destroyBlock((int)p.getX(), (int)p.getY(), 1);
@@ -68,7 +74,17 @@ public class InputManager {
 		pressed.put(e.getCode(), false);
 	}
 
-	public Point2D getDisplacement() {
-		return new Point2D(vx, vy);
+	public Point2D getDirection() {
+		return new Point2D(vx, vy).normalize();
+	}
+
+	private Point2D screenToWorldCoordinate(Point p) {
+		Camera camera = game.getCamera();
+		Rectangle2D r = camera.getViewBounds(); // works as intended
+		Scene scene = game.getScene();
+		double maxRatio = Math.max(scene.getWidth(), scene.getHeight()) / Math.max(r.getWidth(), r.getHeight());
+		double worldX = (p.getX() - scene.getWidth() / 2) / maxRatio + camera.getX();
+		double worldY = (scene.getHeight() / 2 - p.getY()) / maxRatio + camera.getY();
+		return new Point2D(worldX, worldY);
 	}
 }

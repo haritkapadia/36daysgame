@@ -48,7 +48,7 @@ public class Game extends AnimationTimer {
 		i = new InputManager(this, world, player);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> i.keyPressed(e));
 		scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> i.keyReleased(e));
-
+		scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> i.mouseClicked(e));
 
 
 		questManager = new QuestManager();
@@ -67,7 +67,7 @@ public class Game extends AnimationTimer {
 		}
 
 		long dt = time - prevTime;
-		player.move(i.getDisplacement().multiply(dt / 1e9));
+		player.move(i.getDirection().multiply(player.getSpeed() * dt / 1e9));
 		Point2D p = player.getPosition();
 		Point blockPos = World.blockCoordinate(p);
 		BlockKey b = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
@@ -80,8 +80,6 @@ public class Game extends AnimationTimer {
 			player.stop();
 		else
 			player.play();
-
-
 		prevTime = time;
 		prevPosition = player.getPosition();
 	}
@@ -168,5 +166,9 @@ public class Game extends AnimationTimer {
 
 	public Scene getScene() {
 		return scene;
+	}
+
+	public Camera getCamera() {
+		return camera;
 	}
 }

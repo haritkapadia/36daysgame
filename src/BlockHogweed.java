@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 
 public class BlockHogweed extends Block implements Destroyable {
 	BlockHogweed() {
-		super(new File("Artwork/gianthogweed_small.png"));
+		super(new File("Artwork/gianthogweed_small.png"), false);
 	}
 
 	public void onDestroy(World world, int x, int y, int z) {
