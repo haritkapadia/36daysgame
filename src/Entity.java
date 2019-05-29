@@ -29,7 +29,7 @@ public abstract class Entity extends Transition implements Drawable {
 	public Entity(World world, double speed) {
 		this.world = world;
 		position = new Point2D(0, 0);
-		dimension = new Dimension2D(1, 1);
+		dimension = new Point2D(1, 1);
 		SPEED = speed;
 		health = 6;
 		MAX_HEALTH = 10;

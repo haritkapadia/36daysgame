@@ -27,7 +27,7 @@ public class Game extends AnimationTimer {
 	InputManager i;
 	QuestManager questManager;
 
-	long prevTime = -1;
+	long prevTime = 0;
 
 	Game(Scene scene) {
 		this.scene = scene;
@@ -58,30 +58,50 @@ public class Game extends AnimationTimer {
 		return gamePane;
 	}
 
-	private void processInput(long time) {
-		if(prevTime == -1) {
-			prevTime = time;
-			return;
-		}
+	public void processInput(long time) {
 		long dt = time - prevTime;
-		player.move(i.getDisplacement().multiply(dt / 1e9));
+
+		Point2D newPos = player.getPosition().add(i.getDirection().multiply(player.getSpeed() * dt / 1e9));
+		// for(double i = newPos.getX(); i < newPos.getX() + player.getWidth(); i++) {
+		//	for(double j = newPos.getY(); j < newPos.getY() + player.getHeight(); j++) {
+		//		Point blockPoint = World.blockCoordinate(i, j);
+		//		BlockKey blockKey = world.getBlock(blockPoint, 1);
+		//		if(blockKey != null && ResourceManager.getBlock(blockKey).isSolid()) {
+		//			//Find min entry
+		//			Direction min = Direction.DOWN;
+		//			double minLength = Math.abs(i - blockPoint.getY());
+		//			if(minLength > Math.abs(i - (blockPoint.getY() + 1))) {
+		//				min = Direction.UP;
+		//				minLength = Math.abs(i - (blockPoint.getY() + 1));
+		//			}
+		//			if(minLength > Math.abs(j - blockPoint.getX())) {
+		//				min = Direction.LEFT;
+		//				minLength = Math.abs(j - blockPoint.getX());
+		//			}
+		//			if(minLength > Math.abs(j - (blockPoint.getX() + 1))) {
+		//				min = Direction.RIGHT;
+		//				minLength = Math.abs(j - (blockPoint.getX() + 1));
+		//			}
+
+		//			if(min == Direction.DOWN)
+		//				newPos.add(0, -minLength);
+		//			else if(min == Direction.UP)
+		//				newPos.add(0, minLength);
+		//			else if(min == Direction.LEFT)
+		//				newPos.add(-minLength, 0);
+		//			else if(min == Direction.RIGHT)
+		//				newPos.add(minLength, 0);
+		//		}
+		//	}
+		// }
+
+		player.setPosition(newPos);
 		prevTime = time;
 	}
 
-	public void updateWorld() {
-		for(Entity e : entities) {
-			Point ne = World.blockCoordinate(e.getPosition().add(e.getWidth(), e.getHeight()));
-			Point nw = World.blockCoordinate(e.getPosition().add(0, e.getHeight()));
-			Point sw = World.blockCoordinate(e.getPosition().add(0, 0));
-			Point se = World.blockCoordinate(e.getPosition().add(e.getWidth(), 0));
-
-		}
-	}
-
 	public void handle(long time) {
-		processInput(time);
-		updateWorld();
 		drawScreen();
+		processInput(time);
 	}
 
 	public void drawScreen() {
