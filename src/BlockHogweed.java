@@ -8,14 +8,17 @@ public class BlockHogweed extends Block implements Destroyable {
 	}
 
 	public void onDestroy(World world, int x, int y, int z) {
-		if(world.getBlock(x - 1, y, z) == 0)
-			world.setBlock(x - 1, y, z, 3);
-		if(world.getBlock(x + 1, y, z) == 0)
-			world.setBlock(x + 1, y, z, 3);
-		if(world.getBlock(x, y - 1, z) == 0)
-			world.setBlock(x, y - 1, z, 3);
-		if(world.getBlock(x, y + 1, z) == 0)
-			world.setBlock(x, y + 1, z, 3);
+		if(world.getBlock(x - 1, y, z) == null)
+			world.setBlock(x - 1, y, z, BlockKey.POISON);
+		if(world.getBlock(x + 1, y, z) == null)
+			world.setBlock(x + 1, y, z, BlockKey.POISON);
+		if(world.getBlock(x, y - 1, z) == null)
+			world.setBlock(x, y - 1, z, BlockKey.POISON);
+		if(world.getBlock(x, y + 1, z) == null)
+			world.setBlock(x, y + 1, z, BlockKey.POISON);
+		synchronized(this) {
+			notifyAll();
+		}
 	}
 
 	public boolean isTransparent() {

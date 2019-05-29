@@ -21,9 +21,11 @@ public class Game extends AnimationTimer {
         Camera camera;
         StackPane gamePane;
         Canvas canvas;
+        VBox ui = null;
         Player player;
         ProgressIndicator health;
         InputManager i;
+        QuestManager questManager;
         Point2D prevPosition;
         
         long prevTime = -1;
@@ -38,15 +40,19 @@ public class Game extends AnimationTimer {
                 gamePane = new StackPane();
                 canvas = new Canvas((int)scene.getWidth(), (int)scene.getHeight());
                 health = new ProgressIndicator((double)player.getHealth() / player.getMaximumHealth());
-                gamePane.getChildren().add(canvas);
-                gamePane.getChildren().add(new VBox(){{
+                ui = new VBox(){{
                         getChildren().add(health);
-                }});
+                }};
+                gamePane.getChildren().addAll(canvas, ui);
                 
                 i = new InputManager(this, world, player);
                 scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> i.keyPressed(e));
                 scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> i.keyReleased(e));
-                // scene.addEventHandler(QuestEvent.QUEST_COMPLETED, e -> );
+                
+                
+                
+                questManager = new QuestManager();
+                initialiseQuests();
                 gamePane.getChildren().add(new SettingsMenu(scene, stage));
         }
         
@@ -65,8 +71,8 @@ public class Game extends AnimationTimer {
                 player.move(i.getDisplacement().multiply(dt / 1e9));
                 Point2D p = player.getPosition();
                 Point blockPos = World.blockCoordinate(p);
-                int b = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
-                if(b != 0 && ResourceManager.getBlock(b).isSolid()) {
+                BlockKey b = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
+                if(b != null && ResourceManager.getBlock(b).isSolid()) {
                         player.setPosition(prevPosition);
                 }
                 camera.setPosition(player.getPosition());
@@ -124,6 +130,41 @@ public class Game extends AnimationTimer {
                         int screenH = (int)(1 / camera.getBlockFactor() * maxS);
                         g.drawImage(SwingFXUtils.toFXImage((BufferedImage)e.getImage(), null), screenX, screenY - screenH, screenW, screenH);
                 }
+        }
+        
+        private void initialiseQuests() {
+                Quest touchingPoison = new Quest("Touching Poison", "What happens when you touch poison? Nothing!", 1){
+                        public void run() {
+                                synchronized(ResourceManager.getBlock(BlockKey.POISON)) {
+                                        try {
+                                                ResourceManager.getBlock(BlockKey.POISON).wait();
+                                        } catch(Exception e) {
+                                                e.printStackTrace();
+                                                System.exit(0);
+                                        }
+                                }
+                                addStep();
+                        }
+                };
+                Quest breakingHogweed = new Quest("Breaking Weeds", "See the effects of breaking hogweed!", 5){
+                        public void run() {
+                                while(getStepsTaken() < getMaxSteps()) {
+                                        synchronized(ResourceManager.getBlock(BlockKey.HOGWEED)) {
+                                                try {
+                                                        ResourceManager.getBlock(BlockKey.HOGWEED).wait();
+                                                } catch(Exception e) {
+                                                        e.printStackTrace();
+                                                        System.exit(0);
+                                                }
+                                                addStep();
+                                        }
+                                }
+                                Platform.runLater(() -> questManager.startQuest(ui, touchingPoison));
+                        }
+                };
+                questManager.addQuest(breakingHogweed);
+                questManager.addQuest(touchingPoison);
+                questManager.startQuest(ui, breakingHogweed);
         }
         
         public Scene getScene() {

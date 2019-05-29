@@ -1,0 +1,3 @@
+public enum QuestKey {
+	BREAKING_HOGWEED, TOUCHING_POISON
+}

@@ -1,14 +1,15 @@
-public final class ResourceManager {
-	private static Block[] blocks = {
-		null,
-		new BlockGround(),
-		new BlockWater(),
-		new BlockPoison(),
-		new BlockTree(),
-		new BlockHogweed()
-	};
+import java.util.*;
 
-	public static Block getBlock(int i) {
-		return blocks[i];
+public final class ResourceManager {
+	private static final EnumMap<BlockKey, Block> blocks = new EnumMap<BlockKey, Block>(BlockKey.class){{
+			put(BlockKey.GROUND, new BlockGround());
+			put(BlockKey.WATER, new BlockWater());
+			put(BlockKey.POISON, new BlockPoison());
+			put(BlockKey.TREE, new BlockTree());
+			put(BlockKey.HOGWEED, new BlockHogweed());
+		}};
+
+	public static Block getBlock(BlockKey b) {
+		return blocks.get(b);
 	}
 }
