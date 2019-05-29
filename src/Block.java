@@ -15,8 +15,10 @@ import javax.imageio.ImageIO;
  */
 public abstract class Block implements Drawable {
 	Image image;
+	boolean solid;
 
-	Block(File file) {
+	Block(File file, boolean solid) {
+		this.solid = solid;
 		try {
 			image = ImageIO.read(file);
 		} catch(Exception e) {
@@ -28,5 +30,7 @@ public abstract class Block implements Drawable {
 		return image;
 	}
 
-	public abstract boolean isSolid();
+	public boolean isSolid() {
+		return solid;
+	}
 }

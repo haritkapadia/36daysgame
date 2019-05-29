@@ -19,6 +19,7 @@ public class InputManager {
 	Game game;
 	World world;
 	Player player;
+	Point target;
 
 	InputManager(Game game, World world, Player player) {
 		this.game = game;
@@ -28,6 +29,12 @@ public class InputManager {
 				for(KeyCode k : KeyCode.values())
 					put(k, false);
 			}};
+	}
+
+	public void mouseClicked(MouseEvent e) {
+		target = new Point((int)e.getX(), (int)e.getY());
+		System.out.println(screenToWorldCoordinate(target));
+
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -69,5 +76,15 @@ public class InputManager {
 
 	public Point2D getDirection() {
 		return new Point2D(vx, vy).normalize();
+	}
+
+	private Point2D screenToWorldCoordinate(Point p) {
+		Camera camera = game.getCamera();
+		Rectangle2D r = camera.getViewBounds(); // works as intended
+		Scene scene = game.getScene();
+		double maxRatio = Math.max(scene.getWidth(), scene.getHeight()) / Math.max(r.getWidth(), r.getHeight());
+		double worldX = (p.getX() - scene.getWidth() / 2) / maxRatio + camera.getX();
+		double worldY = (scene.getHeight() / 2 - p.getY()) / maxRatio + camera.getY();
+		return new Point2D(worldX, worldY);
 	}
 }
