@@ -39,6 +39,7 @@ public class Chunk {
 		blocks[x][y][z] = block;
 	}
 
+	/*
 	public BufferedImage getChunkImage() {
 		if(chunkImage == null) {
 			chunkImage = new BufferedImage(32 * CHUNK_SIDE_LENGTH, 32 * CHUNK_SIDE_LENGTH, BufferedImage.TYPE_INT_ARGB);
@@ -72,6 +73,7 @@ public class Chunk {
 			}
 		}
 	}
+	*/
 
 	// This works
 	public static Point globalToChunkPoint(Point2D p) {

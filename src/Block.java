@@ -4,9 +4,7 @@
  * 2019/May/26
  */
 
-import java.awt.Image;
-import java.io.File;
-import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
 
 /**
  * An abstract class representing a block, the basic unit of the world.
@@ -16,9 +14,9 @@ import javax.imageio.ImageIO;
 public abstract class Block implements Drawable {
 	Image image;
 
-	Block(File file) {
+	Block(String file) {
 		try {
-			image = ImageIO.read(file);
+			image = new Image(file);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

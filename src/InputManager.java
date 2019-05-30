@@ -71,40 +71,6 @@ public class InputManager {
 	public Point2D getDesiredDisplacement() {
 		Point2D displacement = clickPosition.subtract(player.getPosition());
 		return displacement;
-		// // I am only checking if their next block is solid
-		// double x = player.getX();
-		// double y = player.getY();
-		// if(displacement.getX() < 0) {
-		//	if(displacement.getY() == 0)
-		//		x -= player.getRadius();
-		//	else
-		//		x -= player.getRadius() * displacement.getX() / displacement.getY();
-		//	y += displacement.getY() / displacement.getX();
-		// } else if(displacement.getX() > 0) {
-		//	if(displacement.getY() == 0)
-		//		x += player.getRadius();
-		//	else
-		//		x += player.getRadius() * displacement.getX() / displacement.getY();
-		//	y += displacement.getY() / displacement.getX();
-		// } else {
-		//	y += player.getRadius() * ((displacement.getY() < 0) ? -1 : 1);
-		// }
-		// Point p = World.blockCoordinate(new Point2D(x, y));
-		// BlockKey b = world.getBlock((int)p.getX(), (int)p.getY(), 1);
-		// if(b != null && ResourceManager.getBlock(b).isSolid()) {
-		//	double cx = clickPosition.getX(), cy = clickPosition.getY();
-		//	if(player.getX() < p.getX() + 0.5)
-		//		cx = p.getX();
-		//	else if(player.getX() > p.getX() + 0.5)
-		//		cx = p.getX() + 1;
-		//	if(player.getY() < p.getY() + 0.5)
-		//		cy = p.getY();
-		//	else if(player.getY() > p.getY() + 0.5)
-		//		cy = p.getY() + 1;
-		//	clickPosition = new Point2D(cx, cy);
-		// }
-		// displacement = clickPosition.subtract(player.getPosition());
-		// return displacement;
 	}
 
 	public void resetClick() {

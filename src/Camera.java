@@ -20,7 +20,7 @@ public class Camera {
 		this.scene = scene;
 		this.world = world;
 		this.position = position;
-		blockFactor = 40;
+		blockFactor = 30;
 	}
 
 	public Point2D getPosition() {

@@ -1,6 +1,3 @@
-import java.awt.Image;
-import java.io.File;
-import javax.imageio.ImageIO;
 import java.util.*;
 import javafx.util.*;
 import javafx.application.*;
@@ -8,6 +5,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
@@ -29,7 +27,7 @@ public class Player extends Entity {
 					Image[] images = new Image[3];
 					System.out.print(d + "\t");
 					for(int i = 0; i < images.length; i++) {
-						images[i] = ImageIO.read(new File("Characters/sprite" + (i + 1 + d.ordinal() * 3) + ".png"));
+						images[i] = new Image("Characters/sprite" + (i + 1 + d.ordinal() * 3) + ".png");
 						System.out.print((i + 1 + d.ordinal() * 3) + " ");
 
 					}

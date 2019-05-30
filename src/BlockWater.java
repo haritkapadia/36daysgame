@@ -1,10 +1,6 @@
-import java.awt.Image;
-import java.io.File;
-import javax.imageio.ImageIO;
-
 public class BlockWater extends Block {
 	BlockWater() {
-		super(new File("Artwork/water_small.png"));
+		super("Artwork/water_small.png");
 	}
 
 	public boolean isTransparent() {

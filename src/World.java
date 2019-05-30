@@ -61,7 +61,7 @@ public class World {
 		int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int k = (Chunk.CHUNK_SIDE_LENGTH + z % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		c.setBlock(i, j, k, block);
-		c.updateChunkImage(i, j);
+		// c.updateChunkImage(i, j);
 	}
 
 	public void destroyBlock(int x, int y, int z) {

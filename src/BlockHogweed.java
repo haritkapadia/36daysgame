@@ -1,10 +1,6 @@
-import java.awt.Image;
-import java.io.File;
-import javax.imageio.ImageIO;
-
 public class BlockHogweed extends Block implements Destroyable {
 	BlockHogweed() {
-		super(new File("Artwork/gianthogweed_small.png"));
+		super("Artwork/gianthogweed_small.png");
 	}
 
 	public void onDestroy(World world, int x, int y, int z) {

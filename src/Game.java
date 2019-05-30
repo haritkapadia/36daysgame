@@ -99,29 +99,49 @@ public class Game extends AnimationTimer {
 		GraphicsContext g = canvas.getGraphicsContext2D();
 		// g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		Rectangle2D r = camera.getViewBounds(); // works as intended
-		Point sw = Chunk.globalToChunkPoint(new Point2D(r.getMinX(), r.getMinY())); // These work
-		Point se = Chunk.globalToChunkPoint(new Point2D(r.getMaxX(), r.getMinY())); // These work
-		Point nw = Chunk.globalToChunkPoint(new Point2D(r.getMinX(), r.getMaxY())); // These work
+		// Point sw = Chunk.globalToChunkPoint(new Point2D(r.getMinX(), r.getMinY())); // These work
+		// Point se = Chunk.globalToChunkPoint(new Point2D(r.getMaxX(), r.getMinY())); // These work
+		// Point nw = Chunk.globalToChunkPoint(new Point2D(r.getMinX(), r.getMaxY())); // These work
 
 		double maxRatio = Math.max(scene.getWidth(), scene.getHeight()) / Math.max(r.getWidth(), r.getHeight());
 		double maxS = Math.max(scene.getWidth(), scene.getHeight());
 		double minS = Math.min(scene.getWidth(), scene.getHeight());
 
-		for(int i = (int)sw.getX(); i <= (int)se.getX(); i++) {
-			for(int j = (int)sw.getY(); j <= (int)nw.getY(); j++) {
-				Point chunkPoint = new Point(i, j);
-				Point2D chunkPos = Chunk.chunkToGlobalPoint(chunkPoint);
-				Chunk c = world.getChunk(chunkPoint);
-				int screenX = (int)((chunkPos.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
-				int screenY = (int)(scene.getHeight() - ((chunkPos.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
-				int screenL = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
-				if(c == null) {
-					world.generateChunk(chunkPoint);
-					c = world.getChunk(chunkPoint);
+		// for(int i = (int)sw.getX(); i <= (int)se.getX(); i++) {
+		//	for(int j = (int)sw.getY(); j <= (int)nw.getY(); j++) {
+		//		Point chunkPoint = new Point(i, j);
+		//		Point2D chunkPos = Chunk.chunkToGlobalPoint(chunkPoint);
+		//		Chunk c = world.getChunk(chunkPoint);
+		//		int screenX = (int)((chunkPos.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
+		//		int screenY = (int)(scene.getHeight() - ((chunkPos.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
+		//		int screenL = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
+		//		if(c == null) {
+		//			world.generateChunk(chunkPoint);
+		//			c = world.getChunk(chunkPoint);
+		//		}
+		//		g.drawImage(SwingFXUtils.toFXImage(c.getChunkImage(), null), screenX, screenY - screenL, screenL, screenL);
+		//		int screenB = (int)(1 / camera.getBlockFactor() * maxS);
+		//		g.strokeRect(screenX, screenY - screenB, screenB, screenB);
+		//	}
+		// }
+		Point sw = World.blockCoordinate(new Point2D(r.getMinX(), r.getMinY())); // These work
+		Point se = World.blockCoordinate(new Point2D(r.getMaxX(), r.getMinY())); // These work
+		Point nw = World.blockCoordinate(new Point2D(r.getMinX(), r.getMaxY())); // These work
+
+		for(int z = 0; z < 2; z++) {
+			for(int i = (int)sw.getX(); i <= (int)se.getX(); i++) {
+				for(int j = (int)sw.getY(); j <= (int)nw.getY(); j++) {
+					int screenX = (int)((i - camera.getX()) * maxRatio + scene.getWidth()/2);
+					int screenY = (int)(scene.getHeight() - ((j - camera.getY()) * maxRatio + scene.getHeight() / 2));
+					int screenL = (int)(1 / camera.getBlockFactor() * maxS);
+					BlockKey b = world.getBlock(i, j, z);
+					if(b != null)
+						g.drawImage(ResourceManager.getBlock(b).getImage(),
+							    screenX,
+							    screenY - screenL,
+							    screenL,
+							    screenL);
 				}
-				g.drawImage(SwingFXUtils.toFXImage(c.getChunkImage(), null), screenX, screenY - screenL, screenL, screenL);
-				int screenB = (int)(1 / camera.getBlockFactor() * maxS);
-				g.strokeRect(screenX, screenY - screenB, screenB, screenB);
 			}
 		}
 
@@ -129,7 +149,7 @@ public class Game extends AnimationTimer {
 			int screenX = (int)((e.getX() - e.getRadius() - camera.getX()) * maxRatio + scene.getWidth()/2);
 			int screenY = (int)(scene.getHeight() - ((e.getY() - e.getRadius() - camera.getY()) * maxRatio + scene.getHeight() / 2));
 			int screenL = (int)(2 * e.getRadius() / camera.getBlockFactor() * maxS);
-			g.drawImage(SwingFXUtils.toFXImage((BufferedImage)e.getImage(), null), screenX, screenY - screenL, screenL, screenL);
+			g.drawImage(e.getImage(), screenX, screenY - screenL, screenL, screenL);
 		}
 
 		Point m = World.blockCoordinate(i.getWorldMouseCoordinates());
