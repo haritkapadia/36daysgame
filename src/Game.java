@@ -8,6 +8,7 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
+import javafx.scene.effect.*;
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.animation.*;
@@ -97,33 +98,10 @@ public class Game extends AnimationTimer {
 
 	public void drawScreen() {
 		GraphicsContext g = canvas.getGraphicsContext2D();
-		// g.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		Rectangle2D r = camera.getViewBounds(); // works as intended
-		// Point sw = Chunk.globalToChunkPoint(new Point2D(r.getMinX(), r.getMinY())); // These work
-		// Point se = Chunk.globalToChunkPoint(new Point2D(r.getMaxX(), r.getMinY())); // These work
-		// Point nw = Chunk.globalToChunkPoint(new Point2D(r.getMinX(), r.getMaxY())); // These work
-
 		double maxRatio = Math.max(scene.getWidth(), scene.getHeight()) / Math.max(r.getWidth(), r.getHeight());
 		double maxS = Math.max(scene.getWidth(), scene.getHeight());
 		double minS = Math.min(scene.getWidth(), scene.getHeight());
-
-		// for(int i = (int)sw.getX(); i <= (int)se.getX(); i++) {
-		//	for(int j = (int)sw.getY(); j <= (int)nw.getY(); j++) {
-		//		Point chunkPoint = new Point(i, j);
-		//		Point2D chunkPos = Chunk.chunkToGlobalPoint(chunkPoint);
-		//		Chunk c = world.getChunk(chunkPoint);
-		//		int screenX = (int)((chunkPos.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
-		//		int screenY = (int)(scene.getHeight() - ((chunkPos.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
-		//		int screenL = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
-		//		if(c == null) {
-		//			world.generateChunk(chunkPoint);
-		//			c = world.getChunk(chunkPoint);
-		//		}
-		//		g.drawImage(SwingFXUtils.toFXImage(c.getChunkImage(), null), screenX, screenY - screenL, screenL, screenL);
-		//		int screenB = (int)(1 / camera.getBlockFactor() * maxS);
-		//		g.strokeRect(screenX, screenY - screenB, screenB, screenB);
-		//	}
-		// }
 		Point sw = World.blockCoordinate(new Point2D(r.getMinX(), r.getMinY())); // These work
 		Point se = World.blockCoordinate(new Point2D(r.getMaxX(), r.getMinY())); // These work
 		Point nw = World.blockCoordinate(new Point2D(r.getMinX(), r.getMaxY())); // These work
@@ -163,6 +141,11 @@ public class Game extends AnimationTimer {
 		double clickX = (c.getX() - camera.getX()) * maxRatio + scene.getWidth()/2;
 		double clickY = scene.getHeight() - ((c.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2);
 		g.strokeLine(playerX, playerY, clickX, clickY);
+
+
+
+		g.setFill(new Color(0, 0, 0.2, 0.7));
+		g.fillRect(0, 0, scene.getWidth(), scene.getHeight());
 	}
 
 	public void killQuests() {
