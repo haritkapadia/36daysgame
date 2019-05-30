@@ -131,9 +131,9 @@ public class Game extends AnimationTimer {
 		for(int z = 0; z < 2; z++) {
 			for(int i = (int)sw.getX(); i <= (int)se.getX(); i++) {
 				for(int j = (int)sw.getY(); j <= (int)nw.getY(); j++) {
-					int screenX = (int)((i - camera.getX()) * maxRatio + scene.getWidth()/2);
-					int screenY = (int)(scene.getHeight() - ((j - camera.getY()) * maxRatio + scene.getHeight() / 2));
-					int screenL = (int)(1 / camera.getBlockFactor() * maxS);
+					double screenX = (i - camera.getX()) * maxRatio + scene.getWidth()/2;
+					double screenY = scene.getHeight() - ((j - camera.getY()) * maxRatio + scene.getHeight() / 2);
+					double screenL = 1 / camera.getBlockFactor() * maxS;
 					BlockKey b = world.getBlock(i, j, z);
 					if(b != null)
 						g.drawImage(ResourceManager.getBlock(b).getImage(),
@@ -146,22 +146,22 @@ public class Game extends AnimationTimer {
 		}
 
 		for(Entity e : world.getEntities()) {
-			int screenX = (int)((e.getX() - e.getRadius() - camera.getX()) * maxRatio + scene.getWidth()/2);
-			int screenY = (int)(scene.getHeight() - ((e.getY() - e.getRadius() - camera.getY()) * maxRatio + scene.getHeight() / 2));
-			int screenL = (int)(2 * e.getRadius() / camera.getBlockFactor() * maxS);
+			double screenX = (e.getX() - e.getRadius() - camera.getX()) * maxRatio + scene.getWidth()/2;
+			double screenY = scene.getHeight() - ((e.getY() - e.getRadius() - camera.getY()) * maxRatio + scene.getHeight() / 2);
+			double screenL = 2 * e.getRadius() / camera.getBlockFactor() * maxS;
 			g.drawImage(e.getImage(), screenX, screenY - screenL, screenL, screenL);
 		}
 
 		Point m = World.blockCoordinate(i.getWorldMouseCoordinates());
-		int screenX = (int)((m.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
-		int screenY = (int)(scene.getHeight() - ((m.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
-		int screenL = (int)(1 / camera.getBlockFactor() * maxS);
+		double screenX = (m.getX() - camera.getX()) * maxRatio + scene.getWidth()/2;
+		double screenY = scene.getHeight() - ((m.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2);
+		double screenL = 1 / camera.getBlockFactor() * maxS;
 		g.strokeRect(screenX, screenY - screenL, screenL, screenL);
-		int playerX = (int)((player.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
-		int playerY = (int)(scene.getHeight() - ((player.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
+		double playerX = (player.getX() - camera.getX()) * maxRatio + scene.getWidth()/2;
+		double playerY = scene.getHeight() - ((player.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2);
 		Point2D c = i.getClickPosition();
-		int clickX = (int)((c.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
-		int clickY = (int)(scene.getHeight() - ((c.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
+		double clickX = (c.getX() - camera.getX()) * maxRatio + scene.getWidth()/2;
+		double clickY = scene.getHeight() - ((c.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2);
 		g.strokeLine(playerX, playerY, clickX, clickY);
 	}
 
