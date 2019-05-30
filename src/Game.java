@@ -26,6 +26,7 @@ public class Game extends AnimationTimer {
 	ProgressIndicator health;
 	InputManager i;
 	QuestManager questManager;
+	Point2D prevPosition;
 
 	long prevTime = -1;
 
@@ -47,6 +48,8 @@ public class Game extends AnimationTimer {
 		i = new InputManager(this, world, player);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> i.keyPressed(e));
 		scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> i.keyReleased(e));
+		scene.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> i.mouseClicked(e));
+		scene.addEventHandler(MouseEvent.MOUSE_MOVED, e -> i.mouseMoved(e));
 
 
 
@@ -61,26 +64,34 @@ public class Game extends AnimationTimer {
 	private void processInput(long time) {
 		if(prevTime == -1) {
 			prevTime = time;
+			prevPosition = Main.point2d(player.getPosition());
 			return;
 		}
 		long dt = time - prevTime;
-		player.move(i.getDisplacement().multiply(dt / 1e9));
-		prevTime = time;
-	}
+		Point2D displacement = i.getDesiredDisplacement();
+		if(displacement.magnitude() > player.getSpeed() * dt / 1e9)
+			displacement = displacement.normalize().multiply(player.getSpeed() * dt / 1e9);
+		player.move(displacement);
 
-	public void updateWorld() {
-		for(Entity e : entities) {
-			Point ne = World.blockCoordinate(e.getPosition().add(e.getWidth(), e.getHeight()));
-			Point nw = World.blockCoordinate(e.getPosition().add(0, e.getHeight()));
-			Point sw = World.blockCoordinate(e.getPosition().add(0, 0));
-			Point se = World.blockCoordinate(e.getPosition().add(e.getWidth(), 0));
-
+		Point p = World.blockCoordinate(player.getPosition());
+		BlockKey b = world.getBlock((int)p.getX(), (int)p.getY(), 1);
+		if(b != null && ResourceManager.getBlock(b).isSolid()) {
+			Point pp = World.blockCoordinate(prevPosition);
+			player.setPosition(new Point2D(pp.getX() + 0.5, pp.getY() + 0.5));
+			i.resetClick();
 		}
+
+		if(displacement.getX() == 0 && displacement.getY() == 0)
+			player.stop();
+		else
+			player.play();
+		camera.setPosition(player.getPosition());
+		prevTime = time;
+		prevPosition = Main.point2d(player.getPosition());
 	}
 
 	public void handle(long time) {
 		processInput(time);
-		updateWorld();
 		drawScreen();
 	}
 
@@ -103,23 +114,39 @@ public class Game extends AnimationTimer {
 				Chunk c = world.getChunk(chunkPoint);
 				int screenX = (int)((chunkPos.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
 				int screenY = (int)(scene.getHeight() - ((chunkPos.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
-				int screenW = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
-				int screenH = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
+				int screenL = (int)(Chunk.CHUNK_SIDE_LENGTH / camera.getBlockFactor() * maxS);
 				if(c == null) {
 					world.generateChunk(chunkPoint);
 					c = world.getChunk(chunkPoint);
 				}
-				g.drawImage(SwingFXUtils.toFXImage(c.getChunkImage(), null), screenX, screenY - screenH, screenW, screenH);
+				g.drawImage(SwingFXUtils.toFXImage(c.getChunkImage(), null), screenX, screenY - screenL, screenL, screenL);
+				int screenB = (int)(1 / camera.getBlockFactor() * maxS);
+				g.strokeRect(screenX, screenY - screenB, screenB, screenB);
 			}
 		}
 
 		for(Entity e : world.getEntities()) {
-			int screenX = (int)((e.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
-			int screenY = (int)(scene.getHeight() - ((e.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
-			int screenW = (int)(e.getWidth() / camera.getBlockFactor() * maxS);
-			int screenH = (int)(e.getHeight() / camera.getBlockFactor() * maxS);
-			g.drawImage(SwingFXUtils.toFXImage((BufferedImage)e.getImage(), null), screenX, screenY - screenH, screenW, screenH);
+			int screenX = (int)((e.getX() - e.getRadius() - camera.getX()) * maxRatio + scene.getWidth()/2);
+			int screenY = (int)(scene.getHeight() - ((e.getY() - e.getRadius() - camera.getY()) * maxRatio + scene.getHeight() / 2));
+			int screenL = (int)(2 * e.getRadius() / camera.getBlockFactor() * maxS);
+			g.drawImage(SwingFXUtils.toFXImage((BufferedImage)e.getImage(), null), screenX, screenY - screenL, screenL, screenL);
 		}
+
+		Point m = World.blockCoordinate(i.getWorldMouseCoordinates());
+		int screenX = (int)((m.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
+		int screenY = (int)(scene.getHeight() - ((m.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
+		int screenL = (int)(1 / camera.getBlockFactor() * maxS);
+		g.strokeRect(screenX, screenY - screenL, screenL, screenL);
+		int playerX = (int)((player.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
+		int playerY = (int)(scene.getHeight() - ((player.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
+		Point2D c = i.getClickPosition();
+		int clickX = (int)((c.getX() - camera.getX()) * maxRatio + scene.getWidth()/2);
+		int clickY = (int)(scene.getHeight() - ((c.getY() - camera.getY()) * maxRatio + scene.getHeight() / 2));
+		g.strokeLine(playerX, playerY, clickX, clickY);
+	}
+
+	public void killQuests() {
+		questManager.killQuests();
 	}
 
 	private void initialiseQuests() {
@@ -142,5 +169,9 @@ public class Game extends AnimationTimer {
 
 	public Scene getScene() {
 		return scene;
+	}
+
+	public Camera getCamera() {
+		return camera;
 	}
 }

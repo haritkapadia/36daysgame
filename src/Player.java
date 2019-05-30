@@ -56,6 +56,14 @@ public class Player extends Entity {
 	}
 
 
+	public void stop() {
+		image = sprites.get(facing)[1];
+		super.stop();
+	}
+
+	public void destroy(int x, int y, int z) {
+		world.destroyBlock(x, y, z);
+	}
 
 
 

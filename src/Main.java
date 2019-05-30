@@ -16,6 +16,7 @@ import javafx.scene.shape.*;
 import javafx.stage.*;
 import javafx.scene.media.*;
 import java.io.*;
+import javafx.geometry.Point2D;
 
 /**
  * The main class, creating the window, scenes, and starting the program.
@@ -48,6 +49,10 @@ public class Main extends Application {
 	 */
 	public static void setPane(Scene scene, Parent node) {
 		scene.setRoot(node);
+	}
+
+	public static Point2D point2d(Point2D p) {
+		return new Point2D(p.getX(), p.getY());
 	}
 
 	/**

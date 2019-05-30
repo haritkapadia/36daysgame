@@ -12,8 +12,8 @@ import javafx.animation.*;
 
 public abstract class Entity extends Transition implements Drawable {
 	protected Point2D position;
+	protected double radius;
 	protected Direction facing;
-	protected Point2D dimension;
 	protected int health;
 	protected final int MAX_HEALTH;
 	protected int stomachFullness;
@@ -29,7 +29,7 @@ public abstract class Entity extends Transition implements Drawable {
 	public Entity(World world, double speed) {
 		this.world = world;
 		position = new Point2D(0, 0);
-		dimension = new Dimension2D(1, 1);
+		radius = 0.5;
 		SPEED = speed;
 		health = 6;
 		MAX_HEALTH = 10;
@@ -46,11 +46,11 @@ public abstract class Entity extends Transition implements Drawable {
 	}
 
 	public void setPosition(Point2D position) {
-		this.position = position;
+		this.position = Main.point2d(position);
 	}
 
-	public Point2D getDimension() {
-		return dimension;
+	public double getRadius() {
+		return radius;
 	}
 
 	public int getHealth() {
@@ -61,8 +61,8 @@ public abstract class Entity extends Transition implements Drawable {
 		return MAX_HEALTH;
 	}
 
-	public void interact(Interactable interactable) {
-		interactable.onInteract(this);
+	public void interact(int x, int y, int z) {
+		world.interactBlock(this, x, y, z);
 	}
 
 	public Direction getFacing() {
@@ -79,14 +79,6 @@ public abstract class Entity extends Transition implements Drawable {
 
 	public double getY() {
 		return position.getY();
-	}
-
-	public double getWidth() {
-		return dimension.getX();
-	}
-
-	public double getHeight() {
-		return dimension.getY();
 	}
 
 	public abstract void useHand();

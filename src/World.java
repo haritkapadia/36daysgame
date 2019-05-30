@@ -45,7 +45,10 @@ public class World {
 	}
 
 	public BlockKey getBlock(int x, int y, int z) {
-		Chunk c = getChunk(Chunk.globalToChunkPoint(new Point2D(x, y)));
+		Point p = Chunk.globalToChunkPoint(new Point2D(x, y));
+		if(getChunk(p) == null)
+			generateChunk(p);
+		Chunk c = getChunk(p);
 		int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int k = (Chunk.CHUNK_SIDE_LENGTH + z % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
@@ -66,6 +69,13 @@ public class World {
 		if(b != null && ResourceManager.getBlock(b) instanceof Destroyable) {
 			((Destroyable)ResourceManager.getBlock(b)).onDestroy(this, x, y, z);
 			setBlock(x, y, z, null);
+		}
+	}
+
+	public void interactBlock(Entity e, int x, int y, int z) {
+		BlockKey b = getBlock(x, y, z);
+		if(b != null && ResourceManager.getBlock(b) instanceof Interactable) {
+			((Interactable)ResourceManager.getBlock(b)).onInteract(e, this, x, y, z);
 		}
 	}
 

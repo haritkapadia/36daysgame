@@ -31,6 +31,11 @@ public class QuestManager {
 		quests.remove(q);
 	}
 
+	public void killQuests() {
+		for(Quest q : quests)
+			q.stop();
+	}
+
 	public List<Quest> getQuests() {
 		return quests;
 	}
