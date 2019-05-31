@@ -1,10 +1,6 @@
-import java.awt.Image;
-import java.io.File;
-import javax.imageio.ImageIO;
-
-public class BlockPoison extends Block implements Destroyable {
+public class BlockPoison extends Block implements Interactable {
 	BlockPoison() {
-		super(new File("Artwork/poison_small.png"));
+		super("Artwork/poison_small.png");
 	}
 
 	public boolean isTransparent() {
@@ -15,7 +11,11 @@ public class BlockPoison extends Block implements Destroyable {
 		return false;
 	}
 
-	public void onDestroy(World world, int x, int y, int z) {
+	public double getInteractRadius() {
+		return 2;
+	}
+
+	public void onInteract(Entity e, World world, int x, int y, int z) {
 		synchronized(this) {
 			notifyAll();
 		}

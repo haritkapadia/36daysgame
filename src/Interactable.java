@@ -1,3 +1,4 @@
 public interface Interactable {
-	public void onInteract(Entity e);
+	public double getInteractRadius();
+	public void onInteract(Entity e, World w, int x, int y, int z);
 }

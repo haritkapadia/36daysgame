@@ -12,8 +12,8 @@ import javafx.animation.*;
 
 public abstract class Entity extends Transition implements Drawable {
 	protected Point2D position;
+	protected double radius;
 	protected Direction facing;
-	protected Dimension2D dimension;
 	protected int health;
 	protected final int MAX_HEALTH;
 	protected int stomachFullness;
@@ -28,12 +28,15 @@ public abstract class Entity extends Transition implements Drawable {
 	}
 	public Entity(World world, double speed) {
 		this.world = world;
+		position = new Point2D(0, 0);
+		radius = 0.5;
 		SPEED = speed;
-		health = 6;
+		health = 10;
 		MAX_HEALTH = 10;
 		stomachFullness = 10;
 		MAX_STOMACH = 10;
 		facing = Direction.DOWN;
+		hand = new ItemKnife();
 	}
 	public double getSpeed() {
 		return SPEED;
@@ -44,11 +47,11 @@ public abstract class Entity extends Transition implements Drawable {
 	}
 
 	public void setPosition(Point2D position) {
-		this.position = position;
+		this.position = Main.point2d(position);
 	}
 
-	public Dimension2D getDimension() {
-		return dimension;
+	public double getRadius() {
+		return radius;
 	}
 
 	public int getHealth() {
@@ -59,8 +62,12 @@ public abstract class Entity extends Transition implements Drawable {
 		return MAX_HEALTH;
 	}
 
-	public void interact(Interactable interactable) {
-		interactable.onInteract(this);
+	public void takeDamage(Entity e, int damage) {
+		health -= damage;
+	}
+
+	public void interact(int x, int y, int z) {
+		world.interactBlock(this, x, y, z);
 	}
 
 	public Direction getFacing() {
@@ -71,5 +78,15 @@ public abstract class Entity extends Transition implements Drawable {
 		this.facing = facing;
 	}
 
-	public abstract void useHand();
+	public double getX() {
+		return position.getX();
+	}
+
+	public double getY() {
+		return position.getY();
+	}
+
+	public void useHand() {
+		hand.use(this, world, getX(), getY(), 1);
+	}
 }

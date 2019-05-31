@@ -1,6 +1,3 @@
-import java.awt.Image;
-import java.io.File;
-import javax.imageio.ImageIO;
 import java.util.*;
 import javafx.util.*;
 import javafx.application.*;
@@ -8,6 +5,7 @@ import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
+import javafx.scene.image.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
@@ -15,14 +13,18 @@ import javafx.geometry.*;
 import javafx.animation.*;
 
 public class Player extends Entity {
-	Item[] inventory;
+	ItemKey[] inventory;
+	ItemKey[] toolbar;
 	EnumMap<Direction, Image[]> sprites;
 	Image image;
 
 	Player(World world) {
 		super(world);
 		position = new Point2D(0, 0);
-		dimension = new Dimension2D(32, 32);
+		toolbar = new ItemKey[5];
+		toolbar[0] = ItemKey.KNIFE;
+		inventory = new ItemKey[8];
+		inventory[1] = ItemKey.KNIFE;
 
 		try {
 		sprites = new EnumMap<Direction, Image[]>(Direction.class){{
@@ -30,7 +32,7 @@ public class Player extends Entity {
 					Image[] images = new Image[3];
 					System.out.print(d + "\t");
 					for(int i = 0; i < images.length; i++) {
-						images[i] = ImageIO.read(new File("Characters/sprite" + (i + 1 + d.ordinal() * 3) + ".png"));
+						images[i] = new Image("Characters/sprite" + (i + 1 + d.ordinal() * 3) + ".png");
 						System.out.print((i + 1 + d.ordinal() * 3) + " ");
 
 					}
@@ -57,6 +59,14 @@ public class Player extends Entity {
 	}
 
 
+	public void stop() {
+		image = sprites.get(facing)[1];
+		super.stop();
+	}
+
+	public void destroy(int x, int y, int z) {
+		world.destroyBlock(x, y, z);
+	}
 
 
 
@@ -67,13 +77,23 @@ public class Player extends Entity {
 		position = position.add(displacement);
 	}
 
-	public void useHand() {}
-
 	public Image getImage() {
 		return image;
 	}
 
 	public boolean isTransparent() {
 		return true;
+	}
+
+	public ItemKey[] getToolbar() {
+		return toolbar;
+	}
+
+	public void setToolbar(int i, ItemKey k) {
+		toolbar[i] = k;
+	}
+
+	public ItemKey[] getInventory() {
+		return inventory;
 	}
 }

@@ -5,24 +5,23 @@
  * Driver class
  */
 
+import java.io.*;
 import java.util.*;
+import javafx.animation.*;
 import javafx.application.*;
+import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.*;
+import javafx.scene.media.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
+import javafx.scene.text.*;
 import javafx.stage.*;
-import javafx.scene.media.*;
-import java.io.*;
-import javafx.animation.*;
 import javafx.util.*;
-import javafx.scene.control.*;
 import javax.sound.sampled.*;
-import javafx.scene.image.*;
-import javafx.geometry.*;
-import javafx.geometry.Pos;
+
 /**
  * The main class, creating the window, scenes, and starting the program.
  *
@@ -60,6 +59,10 @@ public class Main extends Application {
 	public static void setPane(Scene scene, Parent node) {
 		scene.setRoot(node);
 		System.out.println(node);
+	}
+
+	public static Point2D point2d(Point2D p) {
+		return new Point2D(p.getX(), p.getY());
 	}
 
 	/**
@@ -118,9 +121,9 @@ public class Main extends Application {
 
 		Main.settingsMenu = new SettingsMenu(main, primaryStage, true);
 
-		//  Main.setPane(main, new New(main, primaryStage));
-		Main.setPane(main, "Splash Screen");
-		((SplashPane)panes.get("Splash Screen")).ft.play();
+		Main.setPane(main, new New(main, primaryStage));
+		// Main.setPane(main, "Splash Screen");
+		// ((SplashPane)panes.get("Splash Screen")).ft.play();
 	}
 
 	/**

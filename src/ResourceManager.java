@@ -12,4 +12,12 @@ public final class ResourceManager {
 	public static Block getBlock(BlockKey b) {
 		return blocks.get(b);
 	}
+
+	private static final EnumMap<ItemKey, Item> items = new EnumMap<ItemKey, Item>(ItemKey.class){{
+			put(ItemKey.KNIFE, new ItemKnife());
+		}};
+
+	public static Item getItem(ItemKey b) {
+		return items.get(b);
+	}
 }

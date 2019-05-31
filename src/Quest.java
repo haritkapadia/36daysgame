@@ -11,23 +11,47 @@ import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.animation.*;
 
-public abstract class Quest extends Thread {
+public class Quest extends Thread {
 	private String questName;
 	private String description;
 	private int maxSteps;
 	private int stepsTaken;
 	private ProgressBar progressBar;
 	private VBox questPane;
+	private Quest[] nextQuests;
+	private Object waitOn;
+	private QuestManager questManager;
 
-	Quest(String questName, String description, int maxSteps) {
+	Quest(QuestManager questManager, String questName, String description, int maxSteps, Object waitOn, Quest[] nextQuests) {
+		this.questManager = questManager;
 		this.questName = questName;
 		this.description = description;
 		this.maxSteps = maxSteps;
+		this.waitOn = waitOn;
+		this.nextQuests = nextQuests;
 		stepsTaken = 0;
 		progressBar = new ProgressBar(0);
 		questPane = new VBox(){{
 			getChildren().addAll(new Label(questName), new Label(description), progressBar);
 		}};
+	}
+
+	public void run() {
+		for(; stepsTaken < maxSteps; addStep()) {
+			synchronized(waitOn) {
+				try {
+					waitOn.wait();
+				} catch(Exception e) {
+					System.out.println(questName);
+					e.printStackTrace();
+					System.exit(0);
+				}
+			}
+		}
+		Platform.runLater(() -> questManager.removeQuest(this));
+		if(nextQuests != null)
+			for(Quest q : nextQuests)
+				Platform.runLater(() -> questManager.startQuest(q));
 	}
 
 	public void addStep() {
