@@ -74,11 +74,31 @@ public class Game extends AnimationTimer {
 			displacement = displacement.normalize().multiply(player.getSpeed() * dt / 1e9);
 		player.move(displacement);
 
-		Point p = World.blockCoordinate(player.getPosition());
+		Point p = World.blockCoordinate(i.getClickPosition());
+		BlockKey c = world.getBlock((int)p.getX(), (int)p.getY(), 1);
+		if(i.getClickButton() == MouseButton.PRIMARY &&
+		   c != null &&
+		   ResourceManager.getBlock(c) instanceof Destroyable &&
+		   i.getClickPosition().subtract(player.getPosition()).magnitude() <= 2) {
+			player.destroy((int)p.getX(), (int)p.getY(), 1);
+			player.setPosition(prevPosition);
+			i.resetClick();
+		} else if(i.getClickButton() == MouseButton.SECONDARY
+			&& c != null &&
+			ResourceManager.getBlock(c) instanceof Interactable &&
+			  i.getClickPosition().subtract(player.getPosition()).magnitude() <= ((Interactable)ResourceManager.getBlock(c)).getInteractRadius()) {
+			player.interact((int)p.getX(), (int)p.getY(), 1);
+			player.setPosition(prevPosition);
+			i.resetClick();
+		}
+
+
+		p = World.blockCoordinate(player.getPosition());
 		BlockKey b = world.getBlock((int)p.getX(), (int)p.getY(), 1);
 		if(b != null && ResourceManager.getBlock(b).isSolid()) {
 			Point pp = World.blockCoordinate(prevPosition);
-			player.setPosition(new Point2D(pp.getX() + 0.5, pp.getY() + 0.5));
+			// player.setPosition(new Point2D(pp.getX() + 0.5, pp.getY() + 0.5));
+			player.setPosition(prevPosition);
 			i.resetClick();
 		}
 
@@ -91,8 +111,14 @@ public class Game extends AnimationTimer {
 		prevPosition = Main.point2d(player.getPosition());
 	}
 
+	public void start() {
+		world.getStopwatch().start();
+		super.start();
+	}
+
 	public void handle(long time) {
 		processInput(time);
+		health.setProgress((double)player.getHealth() / player.getMaximumHealth());
 		drawScreen();
 	}
 
@@ -144,7 +170,7 @@ public class Game extends AnimationTimer {
 
 
 
-		g.setFill(new Color(0, 0, 0.2, 0.7));
+		g.setFill(new Color(0, 0, 0.2, 1 - world.getLightLevel()));
 		g.fillRect(0, 0, scene.getWidth(), scene.getHeight());
 	}
 

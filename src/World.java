@@ -9,13 +9,14 @@ public class World {
 	Map<Point, Chunk> chunks;
 	List<Entity> entities;
 	Player player;
-	long time;
+	Stopwatch s;
 	long seed;
 
 	World() {
 		chunks = new HashMap<Point, Chunk>();
 		entities = new LinkedList<Entity>();
 		seed = 128;
+		s = new Stopwatch();
 	}
 
 	public void generateChunk(Point p) {
@@ -93,6 +94,27 @@ public class World {
 
 	public void addEntity(Entity e) {
 		entities.add(e);
+	}
+
+	public Stopwatch getStopwatch() {
+		return s;
+	}
+
+	// https://www.desmos.com/calculator/iajixvfkqt
+	public double getLightLevel() {
+		double x = (s.getElapsed() / 1e9) % 600;
+		double y = 0;
+		if(x >= 580)
+			y = Math.sin(Math.PI / 40 * x);
+		else if(x >= 320)
+			y = 1;
+		else if(x >= 280)
+			y = 0.7 * Math.sin(Math.PI / 40 * (x + 20)) + 0.3;
+		else if(x >= 20)
+			y = -0.4;
+		else if(x >= 0)
+			y = -0.4 * Math.sin(Math.PI / 40 * x);
+		return 0.5 * y + 0.5;
 	}
 
 	public static Point blockCoordinate(Point2D p) {

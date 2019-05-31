@@ -11,6 +11,10 @@ public class BlockPoison extends Block implements Interactable {
 		return false;
 	}
 
+	public double getInteractRadius() {
+		return 2;
+	}
+
 	public void onInteract(Entity e, World world, int x, int y, int z) {
 		synchronized(this) {
 			notifyAll();

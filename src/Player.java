@@ -72,8 +72,6 @@ public class Player extends Entity {
 		position = position.add(displacement);
 	}
 
-	public void useHand() {}
-
 	public Image getImage() {
 		return image;
 	}

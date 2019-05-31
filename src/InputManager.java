@@ -22,6 +22,7 @@ public class InputManager {
 	Point2D clickPosition;
 	double mouseX;
 	double mouseY;
+	MouseButton clickButton;
 
 	InputManager(Game game, World world, Player player) {
 		this.game = game;
@@ -30,6 +31,7 @@ public class InputManager {
 		clickPosition = player.getPosition();
 		mouseX = game.getScene().getWidth() / 2;
 		mouseY = game.getScene().getHeight() / 2;
+		clickButton = null;
 		pressed = new EnumMap<KeyCode, Boolean>(KeyCode.class){{
 				for(KeyCode k : KeyCode.values())
 					put(k, false);
@@ -44,8 +46,10 @@ public class InputManager {
 	public void mouseClicked(MouseEvent e) {
 		clickPosition = screenToWorldCoordinate(e.getX(), e.getY());
 		Point p = World.blockCoordinate(clickPosition);
-		clickPosition = new Point2D(p.getX() + 0.5, p.getY() + 0.5);
+		BlockKey b = world.getBlock((int)p.getX(), (int)p.getY(), 1);
 		double angle = Math.atan2(clickPosition.getY() - player.getY(), clickPosition.getX() - player.getX());
+
+		clickPosition = new Point2D(p.getX() + 0.5, p.getY() + 0.5);
 		if(-Math.PI <= angle && angle < -Math.PI * 3/4)
 			player.setFacing(Direction.LEFT);
 		else if(-Math.PI * 3/4 <= angle && angle < -Math.PI * 1/4)
@@ -56,16 +60,7 @@ public class InputManager {
 			player.setFacing(Direction.UP);
 		else if(Math.PI * 3/4 <= angle && angle < Math.PI)
 			player.setFacing(Direction.LEFT);
-
-		if(e.getButton() == MouseButton.PRIMARY) {
-			Point2D _p = screenToWorldCoordinate(e.getX(), e.getY());
-			Point bl = World.blockCoordinate(_p);
-			player.destroy((int)bl.getX(), (int)bl.getY(), 1);
-		} else if(e.getButton() == MouseButton.SECONDARY) {
-			Point2D _p = screenToWorldCoordinate(e.getX(), e.getY());
-			Point bl = World.blockCoordinate(_p);
-			player.interact((int)bl.getX(), (int)bl.getY(), 1);
-		}
+		clickButton = e.getButton();
 	}
 
 	public Point2D getDesiredDisplacement() {
@@ -75,10 +70,15 @@ public class InputManager {
 
 	public void resetClick() {
 		clickPosition = Main.point2d(player.getPosition());
+		clickButton = null;
 	}
 
 	public Point2D getWorldMouseCoordinates() {
 		return screenToWorldCoordinate(mouseX, mouseY);
+	}
+
+	public MouseButton getClickButton() {
+		return clickButton;
 	}
 
 	public Point2D getMouseCoordinates() {
@@ -104,6 +104,9 @@ public class InputManager {
 			game.killQuests();
 			game.stop();
 			Main.setPane(game.getScene(), "Main Menu");
+		}
+		if(!pressed.get(KeyCode.E) && e.getCode() == KeyCode.E) {
+			player.useHand();
 		}
 		// if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
 		//	vy += 1;

@@ -31,11 +31,12 @@ public abstract class Entity extends Transition implements Drawable {
 		position = new Point2D(0, 0);
 		radius = 0.5;
 		SPEED = speed;
-		health = 6;
+		health = 10;
 		MAX_HEALTH = 10;
 		stomachFullness = 10;
 		MAX_STOMACH = 10;
 		facing = Direction.DOWN;
+		hand = new ItemKnife();
 	}
 	public double getSpeed() {
 		return SPEED;
@@ -61,6 +62,10 @@ public abstract class Entity extends Transition implements Drawable {
 		return MAX_HEALTH;
 	}
 
+	public void takeDamage(Entity e, int damage) {
+		health -= damage;
+	}
+
 	public void interact(int x, int y, int z) {
 		world.interactBlock(this, x, y, z);
 	}
@@ -81,5 +86,7 @@ public abstract class Entity extends Transition implements Drawable {
 		return position.getY();
 	}
 
-	public abstract void useHand();
+	public void useHand() {
+		hand.use(this, world, getX(), getY(), 1);
+	}
 }
