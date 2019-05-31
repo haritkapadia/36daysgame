@@ -13,13 +13,16 @@ import javafx.geometry.*;
 import javafx.animation.*;
 
 public class Player extends Entity {
-	Item[] inventory;
+	ItemKey[] inventory;
+	ItemKey[] toolbar;
 	EnumMap<Direction, Image[]> sprites;
 	Image image;
 
 	Player(World world) {
 		super(world);
 		position = new Point2D(0, 0);
+		toolbar = new ItemKey[5];
+		toolbar[0] = ItemKey.KNIFE;
 
 		try {
 		sprites = new EnumMap<Direction, Image[]>(Direction.class){{
@@ -78,5 +81,13 @@ public class Player extends Entity {
 
 	public boolean isTransparent() {
 		return true;
+	}
+
+	public ItemKey[] getToolbar() {
+		return toolbar;
+	}
+
+	public ItemKey[] getInventory() {
+		return inventory;
 	}
 }

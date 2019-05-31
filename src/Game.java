@@ -9,12 +9,11 @@ import javafx.scene.shape.*;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.effect.*;
+import javafx.scene.image.*;
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.animation.*;
-import javafx.embed.swing.SwingFXUtils;
 import java.awt.Point;
-import java.awt.image.BufferedImage;
 
 public class Game extends AnimationTimer {
 	private Scene scene;
@@ -23,6 +22,8 @@ public class Game extends AnimationTimer {
 	StackPane gamePane;
 	Canvas canvas;
 	VBox ui = null;
+	HBox toolbar;
+	GridPane inventory;
 	Player player;
 	ProgressIndicator health;
 	InputManager i;
@@ -45,6 +46,62 @@ public class Game extends AnimationTimer {
 			getChildren().add(health);
 		}};
 		gamePane.getChildren().addAll(canvas, ui);
+
+		toolbar = new HBox(){{
+			for(ItemKey k : player.getToolbar())
+				getChildren().add(new StackPane(new ImageView(){{
+					if(k != null)
+						setImage(ResourceManager.getItem(k).getImage());
+					setFitWidth(64);
+					setFitHeight(64);
+				}}){{
+					setAlignment(Pos.CENTER);
+					setPadding(new Insets(16, 16, 16, 16));
+					setStyle("-fx-background-color: rgba(128, 128, 128, 0.5); -fx-border-color: black;");
+				}});
+		}};
+
+		gamePane.getChildren().add(new HBox() {{
+			getChildren().add(new Region(){{
+				setPrefWidth(10000000); // large number
+				HBox.setHgrow(this, Priority.ALWAYS);
+			}});
+			getChildren().add(new VBox() {{
+				VBox that = this;
+				getChildren().add(new Button("...") {{
+					setOnAction(e -> {
+							if(that.getChildren().contains(inventory))
+								that.getChildren().remove(inventory);
+							else
+								that.getChildren().add(0, inventory);
+						});
+					setPrefWidth(1000000);
+				}});
+				getChildren().add(toolbar);
+				setAlignment(Pos.BOTTOM_CENTER);
+			}});
+			getChildren().add(new Region(){{
+				setPrefWidth(10000000); // large number
+				HBox.setHgrow(this, Priority.ALWAYS);
+			}});
+		}});
+		inventory = new GridPane() {{
+			for(int r = 0; r < 2; r++) {
+				for(int c = 0; c < 7; c++) {
+					add(new Pane(new ImageView(){{
+						ItemKey[] k = player.getInventory();
+						if(k[r*7 + c] != null)
+							setImage(ResourceManager.getItem(k[r*7 + c]).getImage());
+						double d = getParent().getWidth() / 7;
+						setFitWidth(d);
+						setFitHeight(d);
+					}}){{
+						setStyle("-fx-background-color: rgb(128, 128, 128); -fx-border-color: black;");
+					}}, r, c);
+				}
+			}
+		}};
+
 
 		i = new InputManager(this, world, player);
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> i.keyPressed(e));
