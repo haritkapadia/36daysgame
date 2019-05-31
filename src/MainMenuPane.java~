@@ -33,11 +33,13 @@ public class MainMenuPane extends VBox {
          * The pane is initialised with a list of buttons allowing the user to travel to the other panes of the program.
          *
          * @param scene The window on which the pane will be displayed.
+         * @param stage The stage on which the scene is displayed
          */
         MainMenuPane(Scene scene, Stage stage) {
                 this.scene = scene;
                 this.stage = stage;
                 pt = new ParallelTransition();
+                
                 
                 getChildren().add(new Label("36 Days - Wilderness Survival Game"){{
                         FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
@@ -62,20 +64,6 @@ public class MainMenuPane extends VBox {
                         n.addAndGet(500);
                 }
                 
-                getChildren().add(new ToggleButton(){{
-                        setId("mutebutton");
-                        TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
-                        t.setFromX(getLayoutX()-1000);
-                        t.setToX(getLayoutX());
-                        t.setDelay(Duration.millis(n.get()));
-                        pt.getChildren().add(t);
-                        setCache(true);
-                        setCacheHint(CacheHint.SPEED);
-                        System.out.println(1-Main.mediaPlayer.getVolume());
-                        setOnAction(e -> Main.mediaPlayer.setVolume(1-Main.mediaPlayer.getVolume()));
-                }});
-                
-                n.addAndGet(500);
                 //exit button
                 getChildren().add(new Button("Exit"){{
                         TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
@@ -88,6 +76,7 @@ public class MainMenuPane extends VBox {
                         setCacheHint(CacheHint.SPEED);
                         setOnAction(e -> stage.close());
                 }});
+                
                 
                 setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
                 setAlignment(Pos.CENTER);

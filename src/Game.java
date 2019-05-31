@@ -45,6 +45,10 @@ public class Game extends AnimationTimer {
                 }};
                 gamePane.getChildren().addAll(canvas, ui);
                 
+                gamePane.getChildren().add(Main.settingsMenu);
+                
+                Main.settingsMenu.relocate(scene.getWidth()-SettingsMenu.getMenuWidth(3),50);
+                
                 i = new InputManager(this, world, player);
                 scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> i.keyPressed(e));
                 scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> i.keyReleased(e));
@@ -53,7 +57,6 @@ public class Game extends AnimationTimer {
                 
                 questManager = new QuestManager();
                 initialiseQuests();
-                gamePane.getChildren().add(new SettingsMenu(scene, stage));
         }
         
         public StackPane getPane() {

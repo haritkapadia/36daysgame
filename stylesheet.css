@@ -30,9 +30,15 @@
 }
 
 #pausebutton{
-    -fx-background-color: white;
-    -fx-margin: auto;
-    -fx-shape: "M150 130 L150 200 L175 200 L175 130 Z M190 130 L190 200 L215 200 L215 130 Z"; 
+    -fx-graphic: url("pause.png");
+    -fx-background-color: white, white;
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-border-color: dimgrey;
+    -fx-padding: 0;
+    -fx-font-size: 0;
 }
 
 
@@ -45,7 +51,6 @@
     -fx-margin: auto;
     -fx-text-alignment: center;
 }
-
 
 #mutebutton{
     -fx-graphic: url("unmutebutton.png");
@@ -80,4 +85,8 @@
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
     -fx-scale-z: 1.1;
+}
+
+#settingsmenu{
+    -fx-background-color: transparent; 
 }

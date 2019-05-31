@@ -23,7 +23,7 @@ import javafx.scene.image.*;
  *
  * @author Harit Kapadia, Jack Farley
  */
-public class AboutPane extends VBox {
+public class New extends VBox {
         private Scene scene;
         
         /**
@@ -33,7 +33,7 @@ public class AboutPane extends VBox {
          * @param scene The window on which the pane will be displayed.
          * @param stage The stage on which the scene is displayed
          */
-        AboutPane(Scene scene, Stage stage) {
+        New(Scene scene, Stage stage) {
                 this.scene = scene;
                 getChildren().add(new Label("About"){{setId("bigtitle");}});
                 
@@ -57,12 +57,15 @@ public class AboutPane extends VBox {
                         setOnAction(e -> Main.setPane(scene, "Main Menu"));
                 }});
                 
-                setAlignment(Pos.CENTER);
-                setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
+                getChildren().add(SettingsMenu.menuBar);
+                SettingsMenu.menuBar.relocate(200,200);
                 
                 getStylesheets().add("stylesheet.css");
                 
-                setPadding(new Insets(50, 50, 50, 50));
+                setAlignment(Pos.CENTER);
+                setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
+                
+                setPadding(new Insets(-50, 50, 50, 50));
                 setSpacing(30);
         }
 }

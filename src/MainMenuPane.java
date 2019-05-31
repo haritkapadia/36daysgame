@@ -40,7 +40,6 @@ public class MainMenuPane extends VBox {
                 this.stage = stage;
                 pt = new ParallelTransition();
                 
-                getChildren().add(new SettingsMenu(scene, stage));
                 
                 getChildren().add(new Label("36 Days - Wilderness Survival Game"){{
                         FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
@@ -77,6 +76,7 @@ public class MainMenuPane extends VBox {
                         setCacheHint(CacheHint.SPEED);
                         setOnAction(e -> stage.close());
                 }});
+                
                 
                 setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
                 setAlignment(Pos.CENTER);

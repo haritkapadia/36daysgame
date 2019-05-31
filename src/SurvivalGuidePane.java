@@ -34,7 +34,6 @@ public class SurvivalGuidePane extends StackPane {
          * The pane is initialised with placeholders for the survival guide.
          *
          * @param scene The window on which the pane will be displayed.
-         * @param stage The stage on which the scene is displayed
          */
         SurvivalGuidePane(Scene scene, Stage stage) {
                 this.scene = scene;
@@ -94,7 +93,6 @@ public class SurvivalGuidePane extends StackPane {
                                         });
                                 }});
                         }});
-                        getChildren().add(new SettingsMenu(scene, stage){{relocate(scene.getWidth()-200, 0);}});
                         StackPane.setMargin(this, new Insets(50, 50, 50, 50));
                 }});
                 getStylesheets().addAll(this.getClass().getResource("Survival Guide Stylesheet.css").toExternalForm());

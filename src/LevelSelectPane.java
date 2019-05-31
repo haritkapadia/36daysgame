@@ -32,7 +32,6 @@ public class LevelSelectPane extends VBox {
          */
         LevelSelectPane(Scene scene, Stage stage) {
                 this.scene = scene;
-                getChildren().add(new SettingsMenu(scene, stage));
                 getChildren().add(new Label("Level Select"){{
                         setId("title");
                 }});
@@ -47,6 +46,7 @@ public class LevelSelectPane extends VBox {
                 getChildren().add(new Button("Return"){{
                         setOnAction(e -> Main.setPane(scene, "Main Menu"));
                 }});
+                
                 getStylesheets().add("stylesheet.css");
                 
                 setAlignment(Pos.CENTER);

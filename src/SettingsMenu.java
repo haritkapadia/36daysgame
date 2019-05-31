@@ -32,7 +32,32 @@ import javafx.event.*;
  * @author Harit Kapadia, Jack Farley
  */
 public class SettingsMenu extends StackPane {
-        private Scene scene;
+        public static HBox menuBar;
+        public Stage menuStage;
+        public Scene menuScene;
+        
+        public static int getMenuWidth(int buttons){
+                return buttons*30+(buttons-1)*30 + 50;
+        }
+                
+        
+        public static void initButtons(Scene scene, Stage stage){
+                SettingsMenu.menuBar = new HBox(){{
+                        setStyle("-fx-background-color: transparent;");
+                        setManaged(false);
+                        getChildren().add(new ToggleButton(){{
+                                setId("mutebutton");
+                                //setSelected(Main.muteControl.getValue());
+                                setOnAction(e -> Main.muteControl.setValue(!Main.muteControl.getValue()));
+                        }});
+                        getChildren().add(new Button(){{
+                                setId("exitbutton");
+                                setOnAction(e -> Main.setPane(scene, "Main Menu"));
+                        }});
+                        setSpacing(30);
+                }};
+        }
+        
         
         /**
          * The pane constructor.
@@ -40,33 +65,24 @@ public class SettingsMenu extends StackPane {
          * @param scene The window on which the pane will be displayed.
          * @param stage The stage on which the scene is displayed
          */
+        SettingsMenu (Scene scene, Stage stage, Boolean mainMenu) {
+                setManaged(false);
+                setPrefWidth(scene.getWidth());
+                setPrefHeight(50);
+                getChildren().add(SettingsMenu.menuBar);
+                getStylesheets().add("stylesheet.css");
+        }
+        
+        
         SettingsMenu (Scene scene, Stage stage) {
-                getChildren().add(new HBox(){{
-                        setManaged(false);
-                        setPrefWidth(150);
-                        setSpacing(30);  
-//                        getChildren().add(new ToggleButton(){{
-//                                setId("mutebutton");
-//                                setOnAction(e -> Main.mediaPlayer.setVolume(1-Main.mediaPlayer.getVolume()));
-//                        }});
-                        
-                        getChildren().add(new Button(){{
-                                setId("exitbutton");
-                                setOnAction(e -> Main.setPane(scene, "Main Menu"));
-                        }});
-                        
-                        getChildren().add(new Button(){{
-                                setId("pausebutton");
-                                setOnAction(e-> SettingsMenu.this.getChildren().add(new PauseMenu(scene, stage)));
-                        }});
-                        
-                        
-                        getStylesheets().add("stylesheet.css");
-                        relocate(scene.getWidth()-150,50);
-                        
+                setManaged(false);
+                setPrefWidth(scene.getWidth());
+                setPrefHeight(50);
+                SettingsMenu.menuBar.getChildren().add(new Button(){{
+                        setId("pausebutton");
                 }});
-               
-                
+                getChildren().add(SettingsMenu.menuBar); 
+                getStylesheets().add("stylesheet.css");     
                 
         }
         

@@ -37,7 +37,6 @@ public class HighScoresPane extends VBox {
         HighScoresPane(Scene scene, Stage stage) {
                 this.scene = scene;
                 getChildren().add(new Label("High Scores"){{setId("title");}});
-                getChildren().add(new SettingsMenu(scene, stage));
                 getChildren().add(new HBox(){{
                         setAlignment(Pos.CENTER);
                         setSpacing(50);
