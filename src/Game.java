@@ -59,25 +59,7 @@ public class Game extends AnimationTimer {
                 }};
                 gamePane.getChildren().addAll(canvas, ui);
                 
-                toolbar = new HBox(){{
-                        Pointer<Integer> p = new Pointer<Integer>();
-                        p.set(0);
-                        for(ItemKey k : player.getToolbar()) {
-                                getChildren().add(new Button("", new ImageView(){{
-                                        if(k != null)
-                                        setImage(ResourceManager.getItem(k).getImage());
-                                        setFitWidth(64);
-                                        setFitHeight(64);
-                                }}){{
-                                        setAlignment(Pos.CENTER);
-                                        setPadding(new Insets(16, 16, 16, 16));
-                                        int i = p.get();
-                                        setOnAction(e -> generateInventory(i));
-                                        setStyle("-fx-background-color: rgba(128, 128, 128, 0.5); -fx-border-color: black;");
-                                }});
-                                p.set(p.get() + 1);
-                        }
-                }};
+                updateToolbar();
                 
                 Pointer<Integer> width = new Pointer<Integer>();
                 gamePane.getChildren().add(new HBox() {{
@@ -140,6 +122,28 @@ public class Game extends AnimationTimer {
         
         public StackPane getPane() {
                 return gamePane;
+        }
+        
+        public void updateToolbar(){
+                toolbar = new HBox(){{
+                        Pointer<Integer> p = new Pointer<Integer>();
+                        p.set(0);
+                        for(ItemKey k : player.getToolbar()) {
+                                getChildren().add(new Button("", new ImageView(){{
+                                        if(k != null)
+                                        setImage(ResourceManager.getItem(k).getImage());
+                                        setFitWidth(64);
+                                        setFitHeight(64);
+                                }}){{
+                                        setAlignment(Pos.CENTER);
+                                        setPadding(new Insets(16, 16, 16, 16));
+                                        int i = p.get();
+                                        setOnAction(e -> generateInventory(i));
+                                        setStyle("-fx-background-color: rgba(128, 128, 128, 0.5); -fx-border-color: black;");
+                                }});
+                                p.set(p.get() + 1);
+                        }
+                }};
         }
         
         private void processInput(long time) {

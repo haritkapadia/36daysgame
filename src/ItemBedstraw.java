@@ -1,6 +1,6 @@
-public class ItemKnife extends Item {
-        ItemKnife() {
-                super("Artwork/knife_small.png", "Butter Knife (Harmless)");
+public class ItemBedstraw extends FoodItem {
+        ItemBedstraw() {
+                super("Artwork/bedstraw_small.png", "Bedstraw");
         }
         
         public void use(Entity e, World w, double x, double y, double z) {

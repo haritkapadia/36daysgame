@@ -3,16 +3,35 @@ import javafx.geometry.Point2D;
 import java.util.*;
 
 public class World {
-        public static final int TREE_CAP = 10;
-        public static final int HOGWEED_CAP = 10;
-        public static final int PUDDLE_CAP = 5;
+        public static final HashMap <BlockKey, Integer> CAPS = new HashMap<BlockKey, Integer>(){{
+                put(BlockKey.POISON, new Integer(0));
+                put(BlockKey.WOOD, new Integer(0));
+                put(BlockKey.GROUND, new Integer(0));
+                put (BlockKey.TREE, new Integer(100));
+                put(BlockKey.HOGWEED, new Integer(10));
+                put(BlockKey.WATER, new Integer(5));
+                put(BlockKey.KINGBOLETE, new Integer(3));
+                put(BlockKey.NORTHERNBLUEFLAG, 2);
+                put(BlockKey.FLYAGARIC, 4);
+                put(BlockKey.CHANTERELLE, 2);
+                put(BlockKey.DESTROYINGANGEL, 2);
+                put(BlockKey.FLINT, 1);
+                put(BlockKey.BEDSTRAW, 5);
+                put(BlockKey.ELDERBERRY, 3);
+                put(BlockKey.FIDDLEHEADS, 2);
+                put(BlockKey.INDIANPIPE, 2);
+                put(BlockKey.MOONSEED, 2);
+                put(BlockKey.MOREL, 2);
+                put(BlockKey.MUSHROOM, 6);
+                put(BlockKey.STRAWBERRIES, 5);
+        }};
         Map<Point, Chunk> chunks;
         List<Entity> entities;
         Player player;
         Stopwatch s;
         long seed;
         
-        World() {
+        World() { 
                 chunks = new HashMap<Point, Chunk>();
                 entities = new LinkedList<Entity>();
                 seed = 128;
@@ -23,12 +42,13 @@ public class World {
                 Chunk c = new Chunk(this);
                 BlockKey[][][] blocks = c.getBlocks();
                 Random g = new Random(seed + (((long)p.getY() << 32) | (long)p.getX()));
-                for(int i = g.nextInt(TREE_CAP); i > 0; i--)
-                        blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = BlockKey.TREE;
-                for(int i = g.nextInt(HOGWEED_CAP); i > 0; i--)
-                        blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = BlockKey.HOGWEED;
-                for(int i = g.nextInt(PUDDLE_CAP); i > 0; i--)
-                        blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][0] = BlockKey.WATER;
+                
+                for(BlockKey block : BlockKey.values()){
+                        if(CAPS.get(block) >0){
+                                for(int i = g.nextInt(CAPS.get(block)); i > 0; i--)
+                                        blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = block;
+                        }
+                }
                 
                 for(int i = 0; i < blocks.length; i++)
                         for(int j = 0; j < blocks[i].length; j++)

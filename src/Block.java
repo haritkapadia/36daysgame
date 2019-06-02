@@ -12,19 +12,19 @@ import javafx.scene.image.Image;
  * @author Harit Kapadia, Jack Farley
  */
 public abstract class Block implements Drawable {
-	Image image;
-
-	Block(String file) {
-		try {
-			image = new Image(file);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
-	public abstract boolean isSolid();
+        Image image;
+        
+        Block(String file) {
+                try {
+                        image = new Image(file);
+                } catch(Exception e) {
+                        e.printStackTrace();
+                }
+        }
+        
+        public Image getImage() {
+                return image;
+        }
+        
+        public abstract boolean isSolid();
 }

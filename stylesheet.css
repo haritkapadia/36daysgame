@@ -42,7 +42,7 @@
 }
 
 #guidebutton{
-    -fx-graphic: url("download.png");
+    -fx-graphic: url("bookicon.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
