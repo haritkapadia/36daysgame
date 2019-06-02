@@ -33,6 +33,7 @@ import javafx.event.*;
  */
 public class PauseMenu extends VBox {
         private Scene scene;
+        PauseMenu pauseMenu;
         
         /**
          * The pane constructor.
@@ -40,13 +41,23 @@ public class PauseMenu extends VBox {
          * @param scene The window on which the pane will be displayed.
          * @param stage The stage on which the scene is displayed
          */
-        PauseMenu (Scene scene, Stage stage) {
-                setManaged(false);
+        PauseMenu (Scene scene, Stage stage, Game game) {
+                pauseMenu = this;
+                setAlignment(Pos.CENTER);
                 setSpacing(30);             
                 
-                getChildren().add(new Button("Return"){{
-                        setOnAction(e -> Main.setPane(scene, "Main Menu"));
+                getChildren().add(new Button("Exit"){{
+                        setOnAction(e -> {
+                                Main.setPane(scene, "Main Menu");
+                                Main.settingsMenu.removeGameButtons();
+                        });
                 }});
+                
+                getChildren().add(new Button("Resume"){{
+                        setOnAction(e ->{
+                                game.resume(pauseMenu);
+                        });
+                }});                           
                 
                 getStylesheets().add("stylesheet.css");
                 relocate(scene.getWidth()-150,50);

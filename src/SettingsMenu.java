@@ -33,13 +33,15 @@ import javafx.event.*;
  */
 public class SettingsMenu extends StackPane {
         public static HBox menuBar;
-        public Stage menuStage;
-        public Scene menuScene;
+        private Stage menuStage;
+        private Scene menuScene;
+        private Button pauseButton;
+        private Button guideButton;
         
         public static int getMenuWidth(int buttons){
                 return buttons*30+(buttons-1)*30 + 50;
         }
-                
+        
         
         public static void initButtons(Scene scene, Stage stage){
                 SettingsMenu.menuBar = new HBox(){{
@@ -58,6 +60,31 @@ public class SettingsMenu extends StackPane {
                 }};
         }
         
+        public void addGameButtons(StackPane gamePane, Game game){
+                pauseButton = new Button(){{
+                        setId("pausebutton");
+                        setOnAction (e -> {
+                                PauseMenu pauseMenu = new PauseMenu(menuScene, menuStage, game);
+                                gamePane.getChildren().add(pauseMenu);
+                                gamePane.setAlignment(pauseMenu, Pos.CENTER);
+                                game.pause();
+                        });
+                }};
+                guideButton = new Button(){{
+                        setId("guidebutton");
+                        setOnAction (e -> {
+                                game.pause();
+                                game.gameSurvivalGuide.toFront();
+                                game.gameSurvivalGuide.setVisible(true);
+                        });
+                }};          
+                SettingsMenu.menuBar.getChildren().addAll(pauseButton, guideButton);
+        }
+        
+        public void removeGameButtons(){
+                SettingsMenu.menuBar.getChildren().remove(pauseButton);
+                SettingsMenu.menuBar.getChildren().remove(guideButton);
+        }
         
         /**
          * The pane constructor.
@@ -66,24 +93,13 @@ public class SettingsMenu extends StackPane {
          * @param stage The stage on which the scene is displayed
          */
         SettingsMenu (Scene scene, Stage stage, Boolean mainMenu) {
+                menuScene = scene;
+                menuStage = stage;
                 setManaged(false);
                 setPrefWidth(scene.getWidth());
                 setPrefHeight(50);
                 getChildren().add(SettingsMenu.menuBar);
                 getStylesheets().add("stylesheet.css");
-        }
-        
-        
-        SettingsMenu (Scene scene, Stage stage) {
-                setManaged(false);
-                setPrefWidth(scene.getWidth());
-                setPrefHeight(50);
-                SettingsMenu.menuBar.getChildren().add(new Button(){{
-                        setId("pausebutton");
-                }});
-                getChildren().add(SettingsMenu.menuBar); 
-                getStylesheets().add("stylesheet.css");     
-                
         }
         
 }

@@ -50,7 +50,7 @@ public class MainMenuPane extends VBox {
                         
                 }});
                 AtomicInteger n = new AtomicInteger();
-                for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About"}) {
+                for(String s : new String[]{"Level Select", "Survival Guide", "High Scores", "About", "Instructions"}) {
                         getChildren().add(new Button(s){{
                                 TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
                                 t.setFromX(getLayoutX()-1000);
