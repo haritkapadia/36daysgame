@@ -1,3 +1,9 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/June/02
+ */
+
 public class BlockPoison extends Block implements Interactable {
         BlockPoison() {
                 super("Artwork/poison_small.png");

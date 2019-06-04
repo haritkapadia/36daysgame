@@ -1,3 +1,9 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/June/02
+ */
+
 public class BlockTree extends Block implements Destroyable {
         BlockTree() {
                 super("Artwork/tree_small.png");

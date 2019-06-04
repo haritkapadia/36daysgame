@@ -1,3 +1,9 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/June/02
+ */
+
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;

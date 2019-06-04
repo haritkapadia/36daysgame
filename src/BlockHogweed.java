@@ -1,3 +1,9 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/June/02
+ */
+
 public class BlockHogweed extends Block implements Destroyable {
         BlockHogweed() {
                 super("Artwork/gianthogweed_small.png");
