@@ -5,6 +5,7 @@
  * Driver class
  */
 
+import java.awt.Point;
 import java.io.*;
 import java.util.*;
 import javafx.animation.*;
@@ -63,8 +64,16 @@ public class Main extends Application {
 		System.out.println(node);
 	}
 
+	public static Point2D toPoint2D(Point p) {
+		return new Point2D(p.getX(), p.getY());
+	}
+
 	public static Point2D point2d(Point2D p) {
 		return new Point2D(p.getX(), p.getY());
+	}
+
+	public static Point point(Point2D p) {
+		return new Point((int)p.getX(), (int)p.getY());
 	}
 
 	/**

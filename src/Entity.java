@@ -90,6 +90,10 @@ public abstract class Entity extends Transition implements Drawable {
 		world.interactBlock(this, x, y, z);
 	}
 
+	public void placeBlock(int x, int y, int z, BlockKey b) {
+		world.setBlock(x, y, z, b);
+	}
+
 	public Direction getFacing() {
 		return facing;
 	}
@@ -106,8 +110,8 @@ public abstract class Entity extends Transition implements Drawable {
 		return position.getY();
 	}
 
-	public void useTool(int i) {
+	public void useTool(int i, Point2D target) {
 		if(inventory[i] != null)
-			ResourceManager.getItem(inventory[i]).use(this, world, getX(), getY(), 1);
+			ResourceManager.getItem(inventory[i]).use(this, world, target.getX(), target.getY(), 1);
 	}
 }
