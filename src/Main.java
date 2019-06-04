@@ -73,6 +73,7 @@ public class Main extends Application {
 	@Override
 	public void init() {
 		panes = new HashMap<String, Parent>();
+		Font.loadFont(getClass().getResourceAsStream("/ChicagoFLF.ttf"), 16);
 	}
 
 	/**

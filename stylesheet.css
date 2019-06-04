@@ -1,7 +1,3 @@
-@font-face {
-     src: url("ChicagoFLF.ttf");
-}
-
 .root{
     -fx-font-family: "ChicagoFLF";
 }
