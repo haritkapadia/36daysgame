@@ -10,6 +10,6 @@ public class ItemKnife extends Item {
         }
         
         public void use(Entity e, World w, double x, double y, double z) {
-                e.takeDamage(e, 1);
+                e.takeDamage(1);
         }
 }

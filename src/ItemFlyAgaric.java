@@ -4,12 +4,8 @@
  * 2019/June/02
  */
 
-public class ItemFlyAgaric extends Item {
+public class ItemFlyAgaric extends FoodItem {
         ItemFlyAgaric() {
-                super("Artwork/flyagaric_small.png", "Fly Agaric");
-        }
-        
-        public void use(Entity e, World w, double x, double y, double z) {
-                e.takeDamage(e, 1);
+                super("Artwork/flyagaric_small.png", "Fly Agaric", 1, 3);
         }
 }

@@ -6,6 +6,6 @@
 
 public class ItemElderberry extends FoodItem {
         ItemElderberry() {
-                super("Artwork/elderberry_small.png", "Elderberry");
+                super("Artwork/elderberry_small.png", "Elderberry", 7, 0);
         }
 }

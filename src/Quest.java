@@ -49,7 +49,7 @@ public class Quest extends Thread {
                 return timeline;
         }
         
-        Quest(QuestManager questManager, String questName, String description, int maxSteps, Object waitOn, Quest[] nextQuests) {
+        Quest(QuestManager questManager, String questName, String description, int maxSteps, Object waitOn, Quest[] nextQuests, String instr, HelpMenu helpMenu) {
                 sequence = new SequentialTransition();
                 this.questManager = questManager;
                 this.questName = questName;
@@ -60,11 +60,12 @@ public class Quest extends Thread {
                 stepsTaken = 0;
                 progressBar = new ProgressBar(0);
                 questPane = new StackPane(){{
+                        setMaxWidth(450);
+                        setMinHeight(350);
+                        setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0.5), CornerRadii.EMPTY, Insets.EMPTY)));
                         setMargin(this, new Insets(50,50,50,50));
                         getChildren().add(new Rectangle(){{
                                 setManaged(false);
-                                setWidth(450);
-                                setHeight(300);
                                 setOpacity(0.5);
                         }});
                         getChildren().add(new VBox(){{
@@ -92,6 +93,9 @@ public class Quest extends Thread {
                                 getStylesheets().add("gamestylesheet.css");
                                 setPadding(new Insets(50,50,50,50));
                                 setSpacing(10);
+                                
+                                if(instr != null)
+                                        helpMenu.setInstr(instr);
                         }});
                 }};
         }

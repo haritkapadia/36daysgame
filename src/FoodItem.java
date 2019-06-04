@@ -5,10 +5,19 @@
  */
 
 public class FoodItem extends Item {
-        FoodItem(String file, String name){
+        final int RH = 1;
+        final int RD = 1;
+        private int hungerRestoration;
+        private int healthDeduction;
+        
+        FoodItem(String file, String name, int hunger, int health){
                 super(file, "???");
+                hungerRestoration = hunger;
+                healthDeduction = health;
         }
+        
         public void use(Entity e, World w, double x, double y, double z){
-                ;
+                e.takeDamage(healthDeduction);
+                e.eatFood(hungerRestoration);
         }
 }

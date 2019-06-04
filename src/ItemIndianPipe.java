@@ -6,6 +6,6 @@
 
 public class ItemIndianPipe extends FoodItem {
         ItemIndianPipe() {
-                super("Artwork/indianpipe_small.png", "Indian Pipe");
+                super("Artwork/indianpipe_small.png", "Indian Pipe", 2, 0);
         }
 }
