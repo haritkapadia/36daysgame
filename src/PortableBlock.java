@@ -19,6 +19,8 @@ public class PortableBlock extends Block implements Interactable {
 		for (int i = 0; i < e.getInventory().length; i++){
 			if(e.getInventory(i) == null) {
 				e.setInventory(i, equivalentItem);
+				if(e instanceof Player)
+					((Player)e).updateInventoryPaneSlot(i);
 				world.setBlock(x, y, z, null);
 				synchronized(this) {
 					notifyAll();

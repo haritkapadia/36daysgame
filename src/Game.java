@@ -25,9 +25,9 @@ public class Game extends AnimationTimer {
 	Camera camera;
 	StackPane gamePane;
 	Canvas canvas;
-	VBox ui = null;
+	VBox questUI = null;
 	HBox toolbar;
-	VBox inventory;
+	InventoryPane inventoryPane = null;
 	Player player;
 	ProgressIndicator health;
 	InputManager i;
@@ -54,38 +54,17 @@ public class Game extends AnimationTimer {
 		gamePane = new StackPane();
 		canvas = new Canvas((int)scene.getWidth(), (int)scene.getHeight());
 		health = new ProgressIndicator((double)player.getHealth() / player.getMaximumHealth());
-		ui = new VBox(){{
+		questUI = new VBox(){{
 			getChildren().add(health);
 		}};
-		gamePane.getChildren().addAll(canvas, ui);
+		gamePane.getChildren().addAll(canvas, questUI);
 
-		updateToolbar();
-
-		Pointer<Integer> width = new Pointer<Integer>();
-		gamePane.getChildren().add(new HBox() {{
-			getChildren().add(new Region(){{
-				setPrefWidth(10000000); // large number
-				HBox.setHgrow(this, Priority.ALWAYS);
-			}});
-			getChildren().add(new VBox() {{
-				VBox that = this;
-				getChildren().add(new Button("...") {{
-					setOnAction(e -> {
-						if(that.getChildren().contains(inventory))
-							that.getChildren().remove(inventory);
-						else
-							that.getChildren().add(0, inventory);
-					});
-					setPrefWidth(1000000);
-				}});
-				getChildren().add(toolbar);
-				setAlignment(Pos.BOTTOM_CENTER);
-			}});
-			getChildren().add(new Region(){{
-				setPrefWidth(10000000); // large number
-				HBox.setHgrow(this, Priority.ALWAYS);
-			}});
-		}});
+		inventoryPane = new InventoryPane(scene, this, player){{
+			setMaxWidth(scene.getWidth() / 3);
+			setAlignment(Pos.BOTTOM_CENTER);
+		}};
+		gamePane.getChildren().add(inventoryPane);
+		player.setInventoryPane(inventoryPane);
 
 		gamePane.getChildren().add(helpMenu);
 		helpMenu.relocate(screenWidth-650, screenHeight-430);
@@ -116,34 +95,12 @@ public class Game extends AnimationTimer {
 
 
 
-		questManager = new QuestManager(ui);
+		questManager = new QuestManager(questUI);
 		initialiseQuests();
 	}
 
 	public StackPane getPane() {
 		return gamePane;
-	}
-
-	public void updateToolbar(){
-		toolbar = new HBox(){{
-			Pointer<Integer> p = new Pointer<Integer>();
-			p.set(0);
-			for(ItemKey k : Arrays.asList(player.getInventory()).subList(0, 5)) {
-				getChildren().add(new Button("", new ImageView(){{
-					if(k != null)
-					setImage(ResourceManager.getItem(k).getImage());
-					setFitWidth(64);
-					setFitHeight(64);
-				}}){{
-					setAlignment(Pos.CENTER);
-					setPadding(new Insets(16, 16, 16, 16));
-					int i = p.get();
-					setOnAction(e -> generateInventory(i));
-					setStyle("-fx-background-color: rgba(128, 128, 128, 0.5); -fx-border-color: black;");
-				}});
-				p.set(p.get() + 1);
-			}
-		}};
 	}
 
 	private void processInput(long time) {
@@ -308,27 +265,5 @@ public class Game extends AnimationTimer {
 
 	public Camera getCamera() {
 		return camera;
-	}
-
-	public GridPane generateInventory(int toolslot) {
-		GridPane out = new GridPane(){{
-			for(int i = 0; i < 8; i++)
-			getColumnConstraints().add(new ColumnConstraints(){{
-				setPercentWidth(100d/8);
-			}});
-		}};
-		Pointer<Integer> p = new Pointer<Integer>();
-		ItemKey[] k = player.getInventory();
-		for(int i = 0; i < 8; i++) {
-			p.set(Integer.valueOf(i));
-			out.add(new Button("", new ImageView(){{
-				if(k[p.get()] != null)
-				setImage(ResourceManager.getItem(k[p.get()]).getImage());
-			}}){{
-				ItemKey key = k[p.get()];
-				setOnAction(e -> player.setInventory(toolslot, key));
-			}}, i, 0);
-		}
-		return out;
 	}
 }

@@ -36,7 +36,7 @@ public abstract class Entity extends Transition implements Drawable {
 		MAX_HEALTH = 10;
 		stomachFullness = 10;
 		MAX_STOMACH = 10;
-		inventory = new ItemKey[8 + 5];
+		inventory = new ItemKey[15];
 		facing = Direction.DOWN;
 	}
 
@@ -101,6 +101,7 @@ public abstract class Entity extends Transition implements Drawable {
 	}
 
 	public void useTool(int i) {
-		ResourceManager.getItem(inventory[i]).use(this, world, getX(), getY(), 1);
+		if(inventory[i] != null)
+			ResourceManager.getItem(inventory[i]).use(this, world, getX(), getY(), 1);
 	}
 }

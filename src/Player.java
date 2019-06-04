@@ -15,11 +15,13 @@ import javafx.animation.*;
 public class Player extends Entity {
 	EnumMap<Direction, Image[]> sprites;
 	Image image;
+	InventoryPane inventoryPane;
 
 	Player(World world) {
 		super(world);
 		position = new Point2D(0, 0);
 		inventory[1] = ItemKey.KNIFE;
+		inventory[7] = ItemKey.WOOD;
 
 		try {
 			sprites = new EnumMap<Direction, Image[]>(Direction.class){{
@@ -76,5 +78,13 @@ public class Player extends Entity {
 
 	public boolean isTransparent() {
 		return true;
+	}
+
+	public void setInventoryPane(InventoryPane p) {
+		inventoryPane = p;
+	}
+
+	public void updateInventoryPaneSlot(int i) {
+		inventoryPane.updateSlot(i);
 	}
 }

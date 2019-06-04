@@ -100,7 +100,7 @@ public class InputManager {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		if(e.getCode() == KeyCode.Q) {
+		if(e.getCode() == KeyCode.P) {
 			game.killQuests();
 			game.stop();
 			Main.setPane(game.getScene(), "Main Menu");
