@@ -5,6 +5,10 @@
  */
 
 import java.util.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.charset.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -53,7 +57,21 @@ public class Game extends AnimationTimer {
 		helpMenu = new HelpMenu();
 		this.scene = scene;
 		world = new World();
-		player = new Player(world);
+
+
+		String s = null;
+		try {
+			s = new String(Files.readAllBytes(Paths.get("player.save")));
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
+		player = new Player(world, s);
+
+
+
+
 		world.addEntity(player);
 		camera = new Camera(scene, world, player.getPosition());
 

@@ -17,6 +17,10 @@ import javafx.scene.input.*;
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.animation.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.charset.*;
 import java.awt.Point;
 
 public class InputManager {
@@ -111,6 +115,13 @@ public class InputManager {
 			game.killQuests();
 			game.stop();
 			Main.setPane(game.getScene(), "Main Menu");
+			try {
+				Files.write(Paths.get("player.save"), Arrays.asList(new String[]{player.getAsString()}), Charset.forName("UTF-8"));
+				world.writeChunks();
+			} catch(Exception ee) {
+				ee.printStackTrace();
+				System.exit(0);
+			}
 		}
 		if(!pressed.get(KeyCode.Q) && e.getCode() == KeyCode.Q) {
 			player.useTool(0, mousePosition);

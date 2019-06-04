@@ -35,5 +35,7 @@ public abstract class Item implements Drawable {
 		return name;
 	}
 
-	public abstract void use(Entity e, World w, double x, double y, double z);
+	public boolean use(Entity e, World w, double x, double y, double z) {
+		return true;
+	}
 }

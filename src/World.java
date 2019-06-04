@@ -7,6 +7,10 @@
 import java.awt.Point;
 import javafx.geometry.Point2D;
 import java.util.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.charset.*;
 
 public class World {
 	final static int FREQ = 10;
@@ -43,10 +47,19 @@ public class World {
 		entities = new LinkedList<Entity>();
 		seed = 128;
 		s = new Stopwatch();
+		try {
+			if(!Files.isDirectory(Paths.get("world" + seed)))
+				new File("world" + seed + "/").mkdirs();
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	public void generateChunk(Point p) {
-		Chunk c = new Chunk(this);
+		Chunk c = new Chunk();
 		BlockKey[][][] blocks = c.getBlocks();
 		Random g = new Random((int)((p.getX() + p.getY()) * (p.getX() + p.getY() + 1) / 2 + p.getY()));
 
@@ -60,22 +73,34 @@ public class World {
 		for(int i = 0; i < blocks.length; i++)
 			for(int j = 0; j < blocks[i].length; j++)
 			if(blocks[i][j][0] == null)
-			blocks[i][j][0] = BlockKey.GROUND;
+				blocks[i][j][0] = BlockKey.GROUND;
+		// Chunk.writeChunk(c, (((long)p.getX()) << 32) | ((long)p.getY() & 0xffffffffL));
 		putChunk(p, c);
 	}
 
 	public Chunk getChunk(int x, int y) {
+		if(chunks.get(new Point(x, y)) == null) {
+			if(Files.exists(Paths.get("world" + seed + "/" + ((((long)x) << 32) | ((long)y & 0xffffffffL)) + ".chunk")))
+				putChunk(new Point(x, y), Chunk.readChunk(seed, (((long)x) << 32) | ((long)y & 0xffffffffL)));
+			else
+				generateChunk(new Point(x, y));
+		}
 		return chunks.get(new Point(x, y));
 	}
 
 	public Chunk getChunk(Point p) {
-		return chunks.get(p);
+		return getChunk((int)p.getX(), (int)p.getY());
+	}
+
+	public void writeChunks() {
+		for(Map.Entry<Point, Chunk> e : chunks.entrySet())
+			Chunk.writeChunk(seed, e.getValue(), (((long)e.getKey().getX()) << 32) | ((long)e.getKey().getY() & 0xffffffffL));
 	}
 
 	public BlockKey getBlock(int x, int y, int z) {
 		Point p = Chunk.globalToChunkPoint(new Point2D(x, y));
-		if(getChunk(p) == null)
-			generateChunk(p);
+		// if(getChunk(p) == null)
+		// generateChunk(p);
 		Chunk c = getChunk(p);
 		int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
@@ -83,14 +108,16 @@ public class World {
 		return c.getBlock(i, j, k);
 	}
 
-	public void setBlock(int x, int y, int z, BlockKey block) {
+	public boolean setBlock(int x, int y, int z, BlockKey block) {
 		Chunk c = getChunk(Chunk.globalToChunkPoint(new Point2D(x, y)));
 		int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
 		int k = (Chunk.CHUNK_SIDE_LENGTH + z % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
-		if(c.getBlock(i, j, k) == null)
+		if(c.getBlock(i, j, k) == null) {
 			c.setBlock(i, j, k, block);
-		// c.updateChunkImage(i, j);
+			return true;
+		}
+		return false;
 	}
 
 	public void setBlockUnsafe(int x, int y, int z, BlockKey block) {
