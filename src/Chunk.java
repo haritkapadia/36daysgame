@@ -1,3 +1,9 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/June/02
+ */
+
 import java.awt.Point;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;

@@ -17,6 +17,7 @@ import javafx.geometry.*;
 import javafx.geometry.Pos;
 import java.util.*;
 import javafx.scene.image.*;
+import java.util.concurrent.atomic.*;
 
 /**
  * A pane displaying information about the game and its creators.
@@ -34,35 +35,95 @@ public class InstructionsPane extends VBox {
          * @param stage The stage on which the scene is displayed
          */
         InstructionsPane(Scene scene, Stage stage) {
+                ArrayList<VBox> pages = new ArrayList<VBox>();
+                StackPane sp = new StackPane();
+                AtomicInteger currentPage = new AtomicInteger(0);
+                pages.add(new VBox(){{
+                        getChildren().add(instruction (scene, "To move, left click the tile that you want to move to.", "Instructions/clicktomove.gif", 1));
+                        getChildren().add(instruction(scene, "To break an object (only some objects are breakable), left click the object that you want to break.", "Instructions/breaktree.gif", 1));
+                        getChildren().add(instruction(scene, "To pick up an object, right click the object that you want to pick up.", "Instructions/pickupwood.gif", 2));
+                }});
+                pages.add(new VBox());
                 this.scene = scene;
-                getChildren().add(new Label("About"){{setId("bigtitle");}});
-                
                 getChildren().add(new HBox(){{
-                        getChildren().add(new ImageView(){{
-                                setImage(new Image("sierratech-logo.png"){{
-                                        setPreserveRatio(true);
-                                        setFitWidth((scene.getWidth()-50)/2);
-                                }});
+                        getChildren().add(new Button(){{
+                                setId("prevbutton");
+                                setOnAction(e -> {
+                                        if(currentPage.get()>0){
+                                                currentPage.addAndGet(-1);
+                                                sp.getChildren().add(pages.get(currentPage.get()));
+                                                sp.getChildren().remove(pages.get(currentPage.get()+1));
+                                        }
+                                });
                         }});
-                        
-                        getChildren().add(new Label("Game and assets created by Harit Kapadia and Jack Farley. The game has many interesting properties such as blah blah blah."){{
-                                setWrapText(true);
-                                setWidth((scene.getWidth()-50)/2);
-                                setPadding(new Insets(-50, 50, 50, 50));
+                        getChildren().add(new VBox(){{
+                                getChildren().add(new Label("Instructions"){{setId("bigtitle");}});
+                                getChildren().add(sp);
+                                sp.getChildren().add(pages.get(0));
+                                getChildren().add(new Button("Return"){{
+                                        setOnAction(e -> Main.setPane(scene, "Main Menu"));
+                                }});
+                                
+                                setAlignment(Pos.TOP_CENTER);
+                                
+                                setPadding(new Insets(50, 100, 50, 100));
+                                setSpacing(30);
+                        }});
+                        getChildren().add(new Button(){{
+                                setId("nextbutton");
+                                setOnAction(e -> {
+                                        if(currentPage.get()<pages.size()-1){
+                                                currentPage.addAndGet(1);
+                                                sp.getChildren().add(pages.get(currentPage.get()));
+                                                sp.getChildren().remove(pages.get(currentPage.get()-1));
+                                        }
+                                });
                         }});
                         setAlignment(Pos.CENTER);
                 }});
-                
-                getChildren().add(new Button("Return"){{
-                        setOnAction(e -> Main.setPane(scene, "Main Menu"));
-                }});
-                
-                setAlignment(Pos.CENTER);
                 setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
-                
+                                
                 getStylesheets().add("stylesheet.css");
-                
-                setPadding(new Insets(50, 50, 50, 50));
-                setSpacing(30);
+        }
+        
+        private HBox instruction (Scene scene, String text, String fileName, int mouse){
+                return new HBox(){{
+                        getChildren().add(new VBox(){{
+                                setPrefHeight(scene.getHeight()/5);
+                                setPrefWidth(scene.getWidth()/2);
+                                setAlignment(Pos.CENTER_LEFT);
+                                getChildren().add(new Label(text){{
+                                        setWrapText(true);
+                                }});
+                        }});
+                        getChildren().add(new StackPane(){{
+                                ImageView click = null;
+                                setHeight(scene.getHeight()/5);
+                                getChildren().add(new ImageView(){{
+                                        setImage(new Image(fileName));
+                                        setPreserveRatio(true);
+                                        setFitHeight (scene.getHeight()/5 );
+                                }});
+                                if(mouse==1){
+                                        click = new ImageView(){{
+                                                setImage(new Image("Instructions/leftclick.gif"));
+                                                setPreserveRatio(true);
+                                                setFitHeight (scene.getHeight()/12);
+                                        }};
+                                }else if (mouse == 2){
+                                        click = new ImageView(){{
+                                                setImage(new Image("Instructions/rightclick.gif"));
+                                                setPreserveRatio(true);
+                                                setFitHeight (scene.getHeight()/12);
+                                        }};
+                                }                                        
+                                if(!click.equals(null)){
+                                        getChildren().add(click);
+                                        setAlignment(click, Pos.BOTTOM_RIGHT);
+                                }
+                        }});
+                        setAlignment(Pos.CENTER);
+                        setSpacing(50);
+                }};
         }
 }

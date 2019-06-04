@@ -1,29 +1,36 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/June/02
+ */
+
 import java.awt.Point;
 import javafx.geometry.Point2D;
 import java.util.*;
 
 public class World {
+        final static int FREQ = 10;
         public static final HashMap <BlockKey, Integer> CAPS = new HashMap<BlockKey, Integer>(){{
                 put(BlockKey.POISON, new Integer(0));
                 put(BlockKey.WOOD, new Integer(0));
                 put(BlockKey.GROUND, new Integer(0));
                 put (BlockKey.TREE, new Integer(100));
-                put(BlockKey.HOGWEED, new Integer(10));
-                put(BlockKey.WATER, new Integer(5));
-                put(BlockKey.KINGBOLETE, new Integer(3));
-                put(BlockKey.NORTHERNBLUEFLAG, 2);
-                put(BlockKey.FLYAGARIC, 4);
-                put(BlockKey.CHANTERELLE, 2);
-                put(BlockKey.DESTROYINGANGEL, 2);
+                put(BlockKey.HOGWEED, World.FREQ/3);
+                put(BlockKey.WATER, 10);
+                put(BlockKey.KINGBOLETE, World.FREQ/10);
+                put(BlockKey.NORTHERNBLUEFLAG, World.FREQ/2);
+                put(BlockKey.FLYAGARIC, World.FREQ/5);
+                put(BlockKey.CHANTERELLE, World.FREQ/10);
+                put(BlockKey.DESTROYINGANGEL, World.FREQ/10);
                 put(BlockKey.FLINT, 1);
-                put(BlockKey.BEDSTRAW, 5);
-                put(BlockKey.ELDERBERRY, 3);
-                put(BlockKey.FIDDLEHEADS, 2);
-                put(BlockKey.INDIANPIPE, 2);
-                put(BlockKey.MOONSEED, 2);
-                put(BlockKey.MOREL, 2);
-                put(BlockKey.MUSHROOM, 6);
-                put(BlockKey.STRAWBERRIES, 5);
+                put(BlockKey.BEDSTRAW, World.FREQ);
+                put(BlockKey.ELDERBERRY, (int)(World.FREQ*0.8));
+                put(BlockKey.FIDDLEHEADS, World.FREQ/2);
+                put(BlockKey.INDIANPIPE, World.FREQ/2);
+                put(BlockKey.MOONSEED, World.FREQ/10);
+                put(BlockKey.MOREL, World.FREQ/3);
+                put(BlockKey.MUSHROOM, World.FREQ);
+                put(BlockKey.STRAWBERRIES, (int)(World.FREQ*0.9));
         }};
         Map<Point, Chunk> chunks;
         List<Entity> entities;
@@ -134,7 +141,7 @@ public class World {
                         y = -0.4;
                 else if(x >= 0)
                         y = -0.4 * Math.sin(Math.PI / 40 * x);
-                return 0.5 * y + 0.5;
+                return -0.5 * y + 0.8;//0.5 * y + 0.5;
         }
         
         public static Point blockCoordinate(Point2D p) {

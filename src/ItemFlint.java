@@ -1,3 +1,9 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/June/02
+ */
+
 public class ItemFlint extends Item {
         ItemFlint() {
                 super("Artwork/flint_small.png", "Flint");
