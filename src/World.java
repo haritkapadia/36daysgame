@@ -26,7 +26,7 @@ public class World {
                 put(BlockKey.FLYAGARIC, World.FREQ/5);
                 put(BlockKey.CHANTERELLE, World.FREQ/10);
                 put(BlockKey.DESTROYINGANGEL, World.FREQ/10);
-                put(BlockKey.FLINT, 1);
+                put(BlockKey.FLINT, 2);
                 put(BlockKey.BEDSTRAW, World.FREQ);
                 put(BlockKey.ELDERBERRY, (int)(World.FREQ*0.8));
                 put(BlockKey.FIDDLEHEADS, World.FREQ/2);

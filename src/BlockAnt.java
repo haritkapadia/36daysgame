@@ -7,7 +7,7 @@
 /**
  * Creates an invisible block that when clicked turns into an ant item
  */
-public class BlockAnt extends PortableBlock {
+public class BlockAnt extends InsectBlock {
         
         /**Constructor*/
         BlockAnt() { 

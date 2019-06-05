@@ -7,7 +7,7 @@
 /**
  * Creates an invisible grasshopper block that when clicked will turn into a grasshopper item
  */
-public class BlockGrasshopper extends PortableBlock {
+public class BlockGrasshopper extends InsectBlock {
         
         /**Constructor*/
         BlockGrasshopper() {

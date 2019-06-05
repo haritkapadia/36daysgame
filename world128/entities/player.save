@@ -1,11 +1,11 @@
 id	player.save
-inventory	null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
-position	406.5, 42.5
+inventory	WOOD, WOOD, WOOD, WOOD, WOOD, ANT, WOOD, GRASSHOPPER, WOOD, WOOD, WORM, WOOD, WOOD, null, null
+position	424.1097183611881, 96.66421717553553
 radius	0.5
-facing	RIGHT
-health	20
+facing	DOWN
+health	23
 MAX_HEALTH	20
-stomachFullness	20
+stomachFullness	42
 MAX_STOMACH	20
 SPEED	10.0
 

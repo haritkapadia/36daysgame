@@ -7,7 +7,7 @@
 /**
  * Creates an invisible block that when clicked turns into a worm item
  */
-public class BlockWorm extends PortableBlock {
+public class BlockWorm extends InsectBlock {
         
         /**Constructor*/
         BlockWorm() {

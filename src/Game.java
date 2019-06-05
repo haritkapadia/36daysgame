@@ -361,8 +361,7 @@ public class Game extends AnimationTimer {
                 questManager.addQuest(touchingPoison);
                 questManager.addQuest(pickUpSticks);
                 questManager.addQuest(breakingTree);
-                questManager.startQuest(findingBugs);
-//questManager.startQuest(breakingTree);
+                questManager.startQuest(breakingTree);
         }
         
         public Scene getScene() {
