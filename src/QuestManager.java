@@ -47,7 +47,10 @@ public class QuestManager {
         }
         
         public void startQuest(Quest q) {
-                ui.getChildren().add(q.getQuestPane());
+                ui.getChildren().add(q.getQuestPane());       
+                if(q.getInstr() != null){
+                        q.getHelpMenu().setInstr(q.getInstr());
+                }
                 q.start();
         }
 }

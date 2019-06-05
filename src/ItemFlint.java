@@ -5,12 +5,12 @@
  */
 
 public class ItemFlint extends Item {
-	ItemFlint() {
-		super("Artwork/flint_small.png", "Flint");
-	}
-
-	public boolean use(Entity e, World w, double x, double y, double z) {
-		e.takeDamage(1);
-		return true;
-	}
+        ItemFlint() {
+                super("Artwork/flint_small.png", "Flint");
+        }
+        
+        public boolean use(Entity e, World w, double x, double y, double z) {
+                e.takeDamage(1);
+                return true;
+        }
 }
