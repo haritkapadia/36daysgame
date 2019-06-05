@@ -1,6 +1,6 @@
 id	player.save
-inventory	null, null, null, KNIFE, null, null, null, null, null, null, null, null, null, null, null
-position	420.5, 251.5
+inventory	WOOD, WOOD, WOOD, KNIFE, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, WOOD, NORTHERNBLUEFLAG, null, null
+position	399.0040927540362, 275.516371016145
 radius	0.5
 facing	UP
 health	-10

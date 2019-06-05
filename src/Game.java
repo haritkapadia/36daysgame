@@ -124,8 +124,9 @@ public class Game extends AnimationTimer {
 
 
 
-		questManager = new QuestManager(questUI);
+		questManager = new QuestManager(world, questUI);
 		initialiseQuests();
+		questManager.resumeQuests();
 	}
 
 	public StackPane getPane() {

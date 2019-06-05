@@ -143,6 +143,13 @@ public class Quest extends Thread {
 		return stepsTaken;
 	}
 
+	public void setStepsTaken(int i) {
+		stepsTaken = i - 1;
+		synchronized(waitOn) {
+			waitOn.notifyAll();
+		}
+	}
+
 	public StackPane getQuestPane() {
 		return questPane;
 	}
