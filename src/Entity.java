@@ -12,11 +12,13 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
+import javafx.scene.image.*;
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.animation.*;
 
-public abstract class Entity extends Transition implements Drawable {
+public class Entity extends Transition implements Drawable {
+	protected String id;
 	protected ItemKey[] inventory;
 	protected Point2D position;
 	protected double radius;
@@ -28,6 +30,8 @@ public abstract class Entity extends Transition implements Drawable {
 	public static final double STOMACH_REDUCTION_TIME = 1;
 	protected World world;
 	protected double SPEED;
+
+	public void interpolate(double d) {}
 
 	public Entity(World world) {
 		this(world, 10);
@@ -72,6 +76,10 @@ public abstract class Entity extends Transition implements Drawable {
 
 	public double getRadius() {
 		return radius;
+	}
+
+	public String getID() {
+		return id;
 	}
 
 	public int getHealth() {
@@ -122,6 +130,7 @@ public abstract class Entity extends Transition implements Drawable {
 	public String getAsString() {
 		String out = "";
 		String inventoryString = Arrays.toString(inventory);
+		out += "id\t" + id + "\n";
 		out += "inventory\t" + inventoryString.substring(1, inventoryString.length() - 1) + "\n";
 		out += "position\t" + position.getX() + ", " + position.getY() + "\n";
 		out += "radius\t" + radius + "\n";
@@ -140,7 +149,9 @@ public abstract class Entity extends Transition implements Drawable {
 		String[] lines = s.split("\n");
 		for(String l : lines) {
 			final String[] L = l.split("\t");
-			if(L[0].equals("inventory")) {
+			if(L[0].equals("id")) {
+				id = L[1];
+			} else if(L[0].equals("inventory")) {
 				String[] items = L[1].split(", ");
 				for(int i = 0; i < items.length; i++) {
 					if(items[i].equals("null"))
@@ -167,5 +178,13 @@ public abstract class Entity extends Transition implements Drawable {
 				SPEED = Double.parseDouble(L[1]);
 			}
 		}
+	}
+
+	public boolean isTransparent() {
+		return true;
+	}
+
+	public Image getImage() {
+		return null;
 	}
 }

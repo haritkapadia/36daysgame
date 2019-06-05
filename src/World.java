@@ -38,15 +38,15 @@ public class World {
 	}};
 	Map<Point, Chunk> chunks;
 	List<Entity> entities;
-	Player player;
 	Stopwatch s;
 	long seed;
+	Player player;
 
 	World() {
 		chunks = new HashMap<Point, Chunk>();
 		entities = new LinkedList<Entity>();
 		seed = 128;
-		s = new Stopwatch();
+		s = new Stopwatch(0);
 		try {
 			if(!Files.isDirectory(Paths.get("world" + seed)))
 				new File("world" + seed + "/").mkdirs();
@@ -55,6 +55,51 @@ public class World {
 			System.out.println("Error " + e.getMessage());
 			e.printStackTrace();
 		}
+	}
+
+	World(long seed) {
+		this.seed = seed;
+		chunks = new HashMap<Point, Chunk>();
+		entities = new LinkedList<Entity>();
+		try {
+			s = new Stopwatch(Long.parseLong(new String(Files.readAllBytes(Paths.get("world" + seed + "/offset")))));
+			File[] _entities = new File("world" + seed + "/entities").listFiles();
+			System.out.println("Entities: " + _entities.length);
+
+			for(File f : _entities) {
+				String _e = new String(Files.readAllBytes(f.toPath()));
+				Entity __e = new Entity(this, _e);
+				System.out.println("__e.getID " + __e.getID());
+
+				if(__e.getID() != null && __e.getID().equals("player.save")) {
+					player = new Player(this, _e);
+					entities.add(player);
+					System.out.println("Added player");
+
+				} else {
+					entities.add(__e);
+				}
+			}
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+
+	public void write() {
+		try {
+			Files.write(Paths.get("world" + seed + "/offset"), ("" + s.getElapsed()).getBytes("UTF-8"));
+			if(!Files.isDirectory(Paths.get("world" + seed + "/entities")))
+				new File("world" + seed + "/entities").mkdirs();
+			for(Entity e : entities)
+				Files.write(Paths.get("world" + seed + "/entities/" + e.getID()), Arrays.asList(new String[]{e.getAsString()}), Charset.forName("UTF-8"));
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
+		writeChunks();
 
 	}
 
@@ -178,6 +223,10 @@ public class World {
 		else if(x >= 0)
 			y = -0.4 * Math.sin(Math.PI / 40 * x);
 		return -0.5 * y + 0.8;//0.5 * y + 0.5;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	public static Point blockCoordinate(Point2D p) {

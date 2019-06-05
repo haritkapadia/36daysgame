@@ -56,7 +56,7 @@ public class Game extends AnimationTimer {
 		gameSurvivalGuide = new SurvivalGuidePane(scene, this);
 		helpMenu = new HelpMenu();
 		this.scene = scene;
-		world = new World();
+		world = new World(128);
 
 
 		String s = null;
@@ -67,7 +67,7 @@ public class Game extends AnimationTimer {
 			System.out.println("Error " + e.getMessage());
 			e.printStackTrace();
 		}
-		player = new Player(world, s);
+		player = world.getPlayer();
 
 
 

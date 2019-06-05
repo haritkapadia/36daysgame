@@ -66,6 +66,9 @@ public class Player extends Entity {
 	}
 
 
+	public String getID() {
+		return "player.save";
+	}
 
 
 	public void move(Point2D displacement) {
