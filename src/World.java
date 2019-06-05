@@ -44,8 +44,10 @@ public class World {
         Stopwatch s;
         long seed;
         Player player;
+        ArrayList<Fire> fires;
         
         World() {
+                fires = new ArrayList<Fire>();
                 chunks = new HashMap<Point, Chunk>();
                 entities = new LinkedList<Entity>();
                 seed = 128;
@@ -62,6 +64,7 @@ public class World {
         
         World(long seed) {
                 this.seed = seed;
+                fires = new ArrayList<Fire>();
                 chunks = new HashMap<Point, Chunk>();
                 entities = new LinkedList<Entity>();
                 try {

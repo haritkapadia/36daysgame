@@ -148,6 +148,7 @@ public class HelpMenu extends StackPane {
                                 setFill(instructionsColor);
                                 setId("instruction");
                         }});
+                        setSpacing(10);
                 }});
                 
                 instructions.put("Finding Bugs", new VBox(){{
@@ -164,6 +165,48 @@ public class HelpMenu extends StackPane {
                         }});
                         
                         getChildren().add(new Text("To eat an item press the key that corresponds with the item that you want to eat."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }});
+                
+                instructions.put("Make FlintSteel", new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Text("Making Flint and Steel"){{
+                                setWrappingWidth(270);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To make flint and steel first place your knife on the ground."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("Then put your mouse pointer over the knife and press the key that corresponds with flint in your inventory."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }});
+                
+                instructions.put("Make a Fire", new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Text("Making a Fire"){{
+                                setWrappingWidth(270);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To stay warm at night you need to start a fire."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To start a fire hover your mouse pointer over a wood block and press the key that corresponds with the flint and steel item in your inventory"){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");

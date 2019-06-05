@@ -31,6 +31,7 @@ public final class ResourceManager {
                 put(BlockKey.ANT, new BlockAnt());
                 put(BlockKey.GRASSHOPPER, new BlockGrasshopper());
                 put(BlockKey.WORM, new BlockWorm());
+                put(BlockKey.FIRE, new BlockFire());
         }};
         
         public static Block getBlock(BlockKey b) {
@@ -62,6 +63,7 @@ public final class ResourceManager {
                 put(ItemKey.ANT, new ItemAnt());
                 put(ItemKey.GRASSHOPPER, new ItemGrasshopper());
                 put(ItemKey.WORM, new ItemWorm());
+                put(ItemKey.FLINTSTEEL, new ItemFlintSteel());
         }};
         
         public static Item getItem(ItemKey b) {

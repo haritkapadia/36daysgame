@@ -46,6 +46,8 @@ public class Entity extends Transition implements Drawable {
         protected int MAX_HEALTH;
         protected int hunger;
         protected int MAX_HUNGER;
+        protected int exposure;
+        protected int MAX_EXPOSURE;
         public static final double STOMACH_REDUCTION_TIME = 1;
         protected World world;
         protected double SPEED;
@@ -74,6 +76,8 @@ public class Entity extends Transition implements Drawable {
                 MAX_HEALTH = 10;
                 hunger = 10;
                 MAX_HUNGER = 10;
+                exposure = 20;
+                MAX_EXPOSURE =20;
                 inventory = new ItemKey[15];
                 facing = Direction.DOWN;
         }
@@ -160,6 +164,20 @@ public class Entity extends Transition implements Drawable {
         }
         
         /**
+         * @returns the entity's exposure status
+         */
+        public int getExposure(){
+                return exposure;
+        }
+        
+        /**
+         * @returns the amount of cold that the player can withstand
+         */
+        public int getMaxExposure(){
+                return MAX_EXPOSURE;
+        }
+        
+        /**
          * @returns how much food the entity needs
          */
         public int getMaxHunger(){
@@ -171,7 +189,10 @@ public class Entity extends Transition implements Drawable {
          * @param foodWorth is the nutritional value of what has been eaten
          */
         public void eatFood(int foodWorth){
-                hunger += foodWorth;
+                if(hunger + foodWorth <= MAX_HUNGER)
+                        hunger += foodWorth;
+                else
+                        hunger = MAX_HUNGER;
         }
         
         /**
@@ -179,7 +200,21 @@ public class Entity extends Transition implements Drawable {
          * @param damage is the amount that the health is to be changed by
          */
         public void takeDamage(int damage) {
-                health -= damage;
+                if (health - damage <= MAX_HEALTH)
+                        health -= damage;
+                else
+                        health = MAX_HEALTH;
+        }
+        
+        /**
+         * Changes the exposure by a given amount, if the player gets too cold they die
+         * @param n the amount that the exposure is to be changed by
+         */
+        public void lowerExposure (int n){
+                if (exposure - n <= MAX_EXPOSURE)
+                        exposure -= n;
+                else
+                        exposure = MAX_EXPOSURE;
         }
         
         /**
@@ -257,7 +292,6 @@ public class Entity extends Transition implements Drawable {
                         Point blockPos = World.blockCoordinate(position);
                         BlockKey block = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
                         if(block == null) {
-                                System.out.println(blockPos.getX() + " " + blockPos.getY());
                                 world.setBlock((int)blockPos.getX(), (int)blockPos.getY(), 1, ResourceManager.getPortableBlock(inventory[i]));
                                 inventory[i] = null;
                         }else if (nearestFreeBlock() != null){
@@ -275,8 +309,6 @@ public class Entity extends Transition implements Drawable {
         public Point nearestFreeBlock(){
                 for (int row = (int)World.blockCoordinate(position).getY() - 1; row <= (int)World.blockCoordinate(position).getY()+1; row++){
                         for(int col = (int)World.blockCoordinate(position).getX()-1; col <= (int)World.blockCoordinate(position).getX()+1; col++){
-                                System.out.println(col + " " + row);
-                                System.out.println("Player pos: " + World.blockCoordinate(position).getX()+ " " + World.blockCoordinate(position).getY());
                                 if(world.getBlock(col, row, 1)==null)
                                         return new Point(col, row);
                         }
@@ -299,6 +331,8 @@ public class Entity extends Transition implements Drawable {
                 out += "MAX_HEALTH\t" + MAX_HEALTH + "\n";
                 out += "stomachFullness\t" + hunger + "\n";
                 out += "MAX_STOMACH\t" + MAX_HUNGER + "\n";
+                out += "exposure\t"+exposure + "\n";
+                out += "MAX_EXPOSURE\t" + MAX_EXPOSURE + "\n";
                 out += "SPEED\t" + SPEED + "\n";
                 return out;
         }
@@ -344,6 +378,10 @@ public class Entity extends Transition implements Drawable {
                                 MAX_HUNGER = Integer.parseInt(L[1].trim());
                         } else if(L[0].equals("SPEED")) {
                                 SPEED = Double.parseDouble(L[1].trim());
+                        }else if (L[0].equals("exposure")){
+                                exposure = Integer.parseInt(L[1].trim());
+                        }else if (L[0].equals("MAX_EXPOSURE")){
+                                MAX_EXPOSURE = Integer.parseInt(L[1].trim());
                         }
                 }
         }

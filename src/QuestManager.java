@@ -23,8 +23,11 @@ import java.util.*;
 public class QuestManager {
         private List<Quest> quests = new LinkedList<Quest>();
         private VBox ui;
+        public static HashMap<String, QuestCompletionListener> listeners;
         
         public QuestManager(VBox ui) {
+                listeners = new HashMap<String, QuestCompletionListener> ();
+                listeners.put("fire", new QuestCompletionListener());
                 this.ui = ui;
         }
         

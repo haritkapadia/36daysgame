@@ -57,6 +57,10 @@
     -fx-background-color: green;
 }
 
+#bluebar .bar{
+    -fx-background-color: cyan;
+}
+
 #upbutton{
     -fx-graphic: url("uparrow.png");
     -fx-background-color: white, white;
