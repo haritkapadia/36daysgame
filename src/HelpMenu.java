@@ -50,7 +50,8 @@ public class HelpMenu extends StackPane {
                         setId("nextbutton");
                 }};
                 instructions.put("Welcome Message", welcomeMessage());
-                instructions.put("First Instructions", firstInstructions());                
+                instructions.put("First Instructions", firstInstructions());   
+                instructions.put ("Pick a Bouquet", pickABouquet());
                 
                 setManaged(false);
                 setPadding(new Insets(50,50,50,50));
@@ -61,7 +62,7 @@ public class HelpMenu extends StackPane {
                         setOpacity(0.6);
                         setFill(Color.BEIGE);
                 }});
-                 
+                
                 getChildren().add(welcomeMessage());
                 getStylesheets().add("gamestylesheet.css");
         }
@@ -90,14 +91,14 @@ public class HelpMenu extends StackPane {
                                 setId("instruction");
                         }});
                         getChildren().add(new Text(
-                                                    "To break an object left click the object that you'd like to break"){{
+                                                   "To break an object left click the object that you'd like to break"){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
                                 //setStyle("-fx-font-family: \"ChicagoFLF\";  -fx-font-size: 14px;  -fx-text-fill: white;");
                         }});
                         getChildren().add(new Text(
-                                                    "To interact with an object right click the object that you'd like to break"){{
+                                                   "To pick up an object right click the object that you'd like to pick up"){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
@@ -119,14 +120,13 @@ public class HelpMenu extends StackPane {
                                 setId("instruction");
                         }});
                         getChildren().add(new Text(
-                                                    "This game is designed to simulate getting lost in the woods"){{
+                                                   "This game is designed to simulate getting lost in the woods"){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
-                                //setStyle("-fx-font-family: \"ChicagoFLF\";  -fx-font-size: 14px;  -fx-text-fill: white;");
                         }});
                         getChildren().add(new Text(
-                                                    "Your tasks are displayed in the top left corner of the screen, press the arrow to continue"){{
+                                                   "Your tasks are displayed in the top left corner of the screen, press the arrow to continue"){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
@@ -141,6 +141,34 @@ public class HelpMenu extends StackPane {
                         setSpacing(10);
                 }};
         }
-                
         
+        private VBox pickABouquet(){
+                return  new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Label("Arranging Inventory and Consulting the Survival Guide"){{
+                                setWidth(300);
+                                setWrapText(true);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To swap items in your inventory click the item that you want to move and then click the slot you want to move it to."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To discard an item click the item and then click outside of the inventory box."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To consult the Survival Guide, click the book icon in the top right corner of the screen."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }};
+        }
 }

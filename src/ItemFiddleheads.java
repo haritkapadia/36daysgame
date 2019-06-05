@@ -6,6 +6,6 @@
 
 public class ItemFiddleheads extends FoodItem {
         ItemFiddleheads() {
-                super("Artwork/fiddleheads_small.png", "Fiddleheads");
+                super("Artwork/fiddleheads_small.png", "Fiddleheads", 3, 1);
         }
 }

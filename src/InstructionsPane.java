@@ -39,9 +39,15 @@ public class InstructionsPane extends VBox {
                 StackPane sp = new StackPane();
                 AtomicInteger currentPage = new AtomicInteger(0);
                 pages.add(new VBox(){{
+                        setSpacing(10);
                         getChildren().add(instruction (scene, "To move, left click the tile that you want to move to.", "Instructions/clicktomove.gif", 1));
                         getChildren().add(instruction(scene, "To break an object (only some objects are breakable), left click the object that you want to break.", "Instructions/breaktree.gif", 1));
                         getChildren().add(instruction(scene, "To pick up an object, right click the object that you want to pick up.", "Instructions/pickupwood.gif", 2));
+                }});
+                pages.add(new VBox(){{
+                        setSpacing(10);
+                        getChildren().add(instruction(scene, "To open the survival guide click on the book icon at the top right corner of the screen.", "Instructions/openguide.gif", 1));
+                        getChildren().add(instruction(scene, "To swap items in your inventory click on the item that you want to move then click on the slot that you'd like to move it to.", "Instructions/swapinventory.gif", 1));
                 }});
                 pages.add(new VBox());
                 this.scene = scene;

@@ -6,6 +6,6 @@
 
 public class ItemMorel extends FoodItem {
         ItemMorel() {
-                super("Artwork/morel_small.png", "Morel");
+                super("Artwork/morel_small.png", "Morel", 3, 0);
         }
 }

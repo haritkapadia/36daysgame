@@ -25,8 +25,8 @@ public class Entity extends Transition implements Drawable {
 	protected Direction facing;
 	protected int health;
 	protected int MAX_HEALTH;
-	protected int stomachFullness;
-	protected int MAX_STOMACH;
+	protected int hunger;
+	protected int MAX_HUNGER;
 	public static final double STOMACH_REDUCTION_TIME = 1;
 	protected World world;
 	protected double SPEED;
@@ -44,8 +44,8 @@ public class Entity extends Transition implements Drawable {
 		SPEED = speed;
 		health = 10;
 		MAX_HEALTH = 10;
-		stomachFullness = 10;
-		MAX_STOMACH = 10;
+		hunger = 10;
+		MAX_HUNGER = 10;
 		inventory = new ItemKey[15];
 		facing = Direction.DOWN;
 	}
@@ -90,7 +90,19 @@ public class Entity extends Transition implements Drawable {
 		return MAX_HEALTH;
 	}
 
-	public void takeDamage(Entity e, int damage) {
+	public int getHunger(){
+		return hunger;
+	}
+
+	public int getMaxHunger(){
+		return MAX_HUNGER;
+	}
+
+	public void eatFood(int foodWorth){
+		hunger += foodWorth;
+	}
+
+	public void takeDamage(int damage) {
 		health -= damage;
 	}
 
@@ -171,9 +183,9 @@ public class Entity extends Transition implements Drawable {
 			} else if(L[0].equals("MAX_HEALTH")) {
 				MAX_HEALTH = Integer.parseInt(L[1]);
 			} else if(L[0].equals("stomachFullness")) {
-				stomachFullness = Integer.parseInt(L[1]);
+				hunger = Integer.parseInt(L[1]);
 			} else if(L[0].equals("MAX_STOMACH")) {
-				MAX_STOMACH = Integer.parseInt(L[1]);
+				MAX_HUNGER = Integer.parseInt(L[1]);
 			} else if(L[0].equals("SPEED")) {
 				SPEED = Double.parseDouble(L[1]);
 			}

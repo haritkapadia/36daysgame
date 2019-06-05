@@ -10,7 +10,7 @@ public class ItemFlint extends Item {
 	}
 
 	public boolean use(Entity e, World w, double x, double y, double z) {
-		e.takeDamage(e, 1);
+		e.takeDamage(1);
 		return true;
 	}
 }

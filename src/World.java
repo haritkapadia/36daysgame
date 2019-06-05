@@ -7,10 +7,6 @@
 import java.awt.Point;
 import javafx.geometry.Point2D;
 import java.util.*;
-import java.io.*;
-import java.nio.*;
-import java.nio.file.*;
-import java.nio.charset.*;
 
 public class World {
 	final static int FREQ = 10;

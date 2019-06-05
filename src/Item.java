@@ -27,15 +27,9 @@ public abstract class Item implements Drawable {
 		return true;
 	}
 
-	public boolean isConsumable() {
-		return true;
-	}
-
 	public String getName() {
 		return name;
 	}
 
-	public boolean use(Entity e, World w, double x, double y, double z) {
-		return true;
-	}
+	public abstract boolean use(Entity e, World w, double x, double y, double z);
 }

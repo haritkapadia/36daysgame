@@ -10,6 +10,7 @@ public class ItemWood extends Item {
 	}
 
 	public boolean use(Entity e, World w, double x, double y, double z) {
-		return e.placeBlock((int)x, (int)y, (int)z, BlockKey.TREE);
+		e.takeDamage(1);
+		return true;
 	}
 }

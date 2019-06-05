@@ -49,6 +49,23 @@
     -fx-shape: "M200 150 L75 200 L75 100 Z"; 
 }
 
+#redbar .bar{
+    -fx-background-color: red;
+}
+
+#greenbar .bar{
+    -fx-background-color: green;
+}
+
+#upbutton{
+    -fx-graphic: url("uparrow.png");
+    -fx-background-color: white, white;
+}
+
+#upbutton: selected{
+    -fx-graphic: url("downarrow.png");
+}
+
 
 #heading{
     -fx-font-size: 18px;
