@@ -4,12 +4,18 @@
  * 2019/June/02
  */
 
+import javafx.scene.image.Image;
+
 public class PortableBlock extends Block implements Interactable {
 	private ItemKey equivalentItem;
 
 	public PortableBlock(String file, ItemKey equivalentItem){
 		super (file);
 		this.equivalentItem = equivalentItem;
+	}
+
+	public Image getImage() {
+		return ResourceManager.getItem(equivalentItem).getImage();
 	}
 
 	public boolean isTransparent() {

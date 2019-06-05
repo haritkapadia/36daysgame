@@ -91,6 +91,11 @@ public class Player extends Entity {
 		updateInventoryPaneSlot(i);
 	}
 
+	public void dropItem(int i) {
+		super.dropItem(i);
+		updateInventoryPaneSlot(i);
+	}
+
 	public void setInventoryPane(InventoryPane p) {
 		inventoryPane = p;
 	}

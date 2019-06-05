@@ -194,7 +194,7 @@ public class Game extends AnimationTimer {
 	public void resume(PauseMenu pauseMenu){
 		world.getStopwatch().unpause();
 		super.start();
-		gamePane.getChildren().remove (pauseMenu);
+		gamePane.getChildren().remove(pauseMenu);
 	}
 
 	public void resume(){
@@ -301,16 +301,16 @@ public class Game extends AnimationTimer {
 
 		Quest pickABouquet3 = new Quest (questManager,
 						 "Pick a Bouquet Part 3",
-						 "Find and pick up two Indian Pipes",
+						 "Find and pick up two Indian Pipes.",
 						 2,
-						 ResourceManager.getBlock(BlockKey.NORTHERNBLUEFLAG),
+						 ResourceManager.getBlock(BlockKey.INDIANPIPE),
 						 new Quest[]{breakingHogweed},
 						 null,
 						 null);
 
 		Quest pickABouquet2 = new Quest (questManager,
 						 "Pick a Bouquet Part 2",
-						 "Find and pick up an Elderberry",
+						 "Find and pick up an Elderberry.",
 						 1,
 						 ResourceManager.getBlock(BlockKey.ELDERBERRY),
 						 new Quest[]{pickABouquet3},
@@ -345,9 +345,9 @@ public class Game extends AnimationTimer {
 					       null);
 
 		questManager.addQuest(breakingTree);
-		questManager.addQuest(breakingHogweed);
-		questManager.addQuest(touchingPoison);
-		questManager.addQuest(pickUpSticks);
+		// questManager.addQuest(breakingHogweed);
+		// questManager.addQuest(touchingPoison);
+		// questManager.addQuest(pickUpSticks);
 		questManager.startQuest(breakingTree);
 	}
 
@@ -357,5 +357,9 @@ public class Game extends AnimationTimer {
 
 	public Camera getCamera() {
 		return camera;
+	}
+
+	public QuestManager getQuestManager() {
+		return questManager;
 	}
 }

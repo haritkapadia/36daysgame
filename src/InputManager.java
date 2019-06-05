@@ -125,15 +125,36 @@ public class InputManager {
 			world.write();
 		}
 		if(!pressed.get(KeyCode.Q) && e.getCode() == KeyCode.Q) {
-			player.useTool(0, mousePosition);
+			if(pressed.get(KeyCode.CONTROL))
+				player.dropItem(0);
+			else
+				player.useTool(0, mousePosition);
 		} else if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
-			player.useTool(1, mousePosition);
+			if(pressed.get(KeyCode.CONTROL))
+				player.dropItem(1);
+			else
+				player.useTool(1, mousePosition);
 		} else if(!pressed.get(KeyCode.E) && e.getCode() == KeyCode.E) {
-			player.useTool(2, mousePosition);
+			if(pressed.get(KeyCode.CONTROL))
+				player.dropItem(2);
+			else
+				player.useTool(2, mousePosition);
 		} else if(!pressed.get(KeyCode.R) && e.getCode() == KeyCode.R) {
-			player.useTool(3, mousePosition);
+			if(pressed.get(KeyCode.CONTROL))
+				player.dropItem(3);
+			else
+				player.useTool(3, mousePosition);
 		} else if(!pressed.get(KeyCode.T) && e.getCode() == KeyCode.T) {
-			player.useTool(4, mousePosition);
+			if(pressed.get(KeyCode.CONTROL))
+				player.dropItem(4);
+			else
+				player.useTool(4, mousePosition);
+		} else if(!pressed.get(KeyCode.M) && e.getCode() == KeyCode.M) {
+			List<Quest> active = new ArrayList<Quest>(){{
+					addAll(game.getQuestManager().getQuests());
+				}};
+			for(Quest q : active)
+				q.completeQuest();
 		}
 		pressed.put(e.getCode(), true);
 	}

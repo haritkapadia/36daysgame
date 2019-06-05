@@ -16,6 +16,7 @@ import javafx.scene.image.*;
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.animation.*;
+import java.awt.Point;
 
 public class Entity extends Transition implements Drawable {
 	protected String id;
@@ -136,6 +137,17 @@ public class Entity extends Transition implements Drawable {
 			boolean used = item.use(this, world, target.getX(), target.getY(), 1);
 			if(item.isConsumable() && used)
 				inventory[i] = null;
+		}
+	}
+
+	public void dropItem(int i) {
+		if(inventory[i] != null) {
+			Point blockPos = World.blockCoordinate(position);
+			BlockKey block = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
+			if(block == null) {
+				world.setBlock((int)blockPos.getX(), (int)blockPos.getY(), 1, ResourceManager.getPortableBlock(inventory[i]));
+				inventory[i] = null;
+			}
 		}
 	}
 
