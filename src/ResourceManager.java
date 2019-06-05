@@ -31,6 +31,11 @@ public final class ResourceManager {
 	}};
 
 	public static Block getBlock(BlockKey b) {
+		Block c = blocks.get(b);
+		if(c == null) {
+			if(ItemKey.valueOf(b.name()) != null)
+				blocks.put(b, new PortableBlock("Artwork/missing.png", ItemKey.valueOf(b.name())));
+		}
 		return blocks.get(b);
 	}
 

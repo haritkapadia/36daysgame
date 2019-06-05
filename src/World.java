@@ -122,8 +122,8 @@ public class World {
 		BlockKey[][][] blocks = c.getBlocks();
 		Random g = new Random((int)((p.getX() + p.getY()) * (p.getX() + p.getY() + 1) / 2 + p.getY()));
 
-		for(BlockKey block : BlockKey.values()){
-			if(CAPS.get(block) >0){
+		for(BlockKey block : CAPS.keySet()){
+			if(CAPS.get(block) > 0){
 				for(int i = g.nextInt(CAPS.get(block)); i > 0; i--)
 					blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = block;
 			}
