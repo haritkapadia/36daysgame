@@ -90,21 +90,16 @@ public abstract class Entity extends Transition implements Drawable {
                 return MAX_HUNGER;
         }
         
-        public void takeDamage(Entity e, int damage) {
-                health -= damage;
-        }
-        
-        
         public void eatFood(int foodWorth){
                 hunger += foodWorth;
         }
         
-        public void interact(int x, int y, int z) {
-                world.interactBlock(this, x, y, z);
+        public void takeDamage(int damage) {
+                health -= damage;
         }
         
-        public boolean placeBlock(int x, int y, int z, BlockKey b) {
-                return world.setBlock(x, y, z, b);
+        public void interact(int x, int y, int z) {
+                world.interactBlock(this, x, y, z);
         }
         
         public Direction getFacing() {
@@ -123,62 +118,8 @@ public abstract class Entity extends Transition implements Drawable {
                 return position.getY();
         }
         
-        public void useTool(int i, Point2D target) {
-                if(inventory[i] != null) {
-                        Item item = ResourceManager.getItem(inventory[i]);
-                        boolean used = item.use(this, world, target.getX(), target.getY(), 1);
-                        if(item.isConsumable() && used)
-                                inventory[i] = null;
-                }
-        }
-        
-        public String getAsString() {
-                String out = "";
-                String inventoryString = Arrays.toString(inventory);
-                out += "inventory\t" + inventoryString.substring(1, inventoryString.length() - 1) + "\n";
-                out += "position\t" + position.getX() + ", " + position.getY() + "\n";
-                out += "radius\t" + radius + "\n";
-                out += "facing\t" + facing + "\n";
-                out += "health\t" + health + "\n";
-                out += "MAX_HEALTH\t" + MAX_HEALTH + "\n";
-                out += "stomachFullness\t" + stomachFullness + "\n";
-                out += "MAX_STOMACH\t" + MAX_STOMACH + "\n";
-                out += "SPEED\t" + SPEED + "\n";
-                return out;
-        }
-        
-        Entity(World world, String s) {
-                this.world = world;
-                inventory = new ItemKey[15];
-                String[] lines = s.split("\n");
-                for(String l : lines) {
-                        final String[] L = l.split("\t");
-                        if(L[0].equals("inventory")) {
-                                String[] items = L[1].split(", ");
-                                for(int i = 0; i < items.length; i++) {
-                                        if(items[i].equals("null"))
-                                                inventory[i] = null;
-                                        else
-                                                inventory[i] = ItemKey.valueOf(items[i]);
-                                }
-                        } else if(L[0].equals("position")) {
-                                String[] coordinates = L[1].split(", ");
-                                position = new Point2D(Double.parseDouble(coordinates[0]), Double.parseDouble(coordinates[1]));
-                        } else if(L[0].equals("radius")) {
-                                radius = Double.parseDouble(L[1]);
-                        } else if(L[0].equals("facing")) {
-                                facing = Direction.valueOf(L[1]);
-                        } else if(L[0].equals("health")) {
-                                health = Integer.parseInt(L[1]);
-                        } else if(L[0].equals("MAX_HEALTH")) {
-                                MAX_HEALTH = Integer.parseInt(L[1]);
-                        } else if(L[0].equals("stomachFullness")) {
-                                stomachFullness = Integer.parseInt(L[1]);
-                        } else if(L[0].equals("MAX_STOMACH")) {
-                                MAX_STOMACH = Integer.parseInt(L[1]);
-                        } else if(L[0].equals("SPEED")) {
-                                SPEED = Double.parseDouble(L[1]);
-                        }
-                }
+        public void useTool(int i) {
+                if(inventory[i] != null)
+                        ResourceManager.getItem(inventory[i]).use(this, world, getX(), getY(), 1);
         }
 }

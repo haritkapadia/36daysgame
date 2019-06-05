@@ -23,8 +23,12 @@ public class Player extends Entity {
 	Image image;
 	InventoryPane inventoryPane;
 
-	Player(World world, String s) {
-		super(world, s);
+	Player(World world) {
+		super(world);
+		position = new Point2D(0, 0);
+		inventory[1] = ItemKey.KNIFE;
+		inventory[7] = ItemKey.WOOD;
+
 		try {
 			sprites = new EnumMap<Direction, Image[]>(Direction.class){{
 				for(Direction d : Direction.values()) {
@@ -36,6 +40,7 @@ public class Player extends Entity {
 
 					}
 					System.out.println();
+
 					put(d, images);
 				}
 			}};
@@ -44,6 +49,7 @@ public class Player extends Entity {
 		}
 
 		image = sprites.get(Direction.DOWN)[2];
+
 		setCycleCount(Animation.INDEFINITE);
 		setCycleDuration(new Duration(300));
 	}
@@ -78,11 +84,6 @@ public class Player extends Entity {
 
 	public boolean isTransparent() {
 		return true;
-	}
-
-	public void useTool(int i, Point2D target) {
-		super.useTool(i, target);
-		updateInventoryPaneSlot(i);
 	}
 
 	public void setInventoryPane(InventoryPane p) {

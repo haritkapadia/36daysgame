@@ -5,7 +5,6 @@
  * Driver class
  */
 
-import java.awt.Point;
 import java.io.*;
 import java.util.*;
 import javafx.animation.*;
@@ -37,6 +36,7 @@ public class Main extends Application {
         public static HashMap<String, Parent> panes;
         public static MediaPlayer mediaPlayer;
         public static BooleanControl muteControl;
+        public static HashMap<String, Parent> stuff;
         public static SettingsMenu settingsMenu;
         
         /**
@@ -63,16 +63,8 @@ public class Main extends Application {
                 System.out.println(node);
         }
         
-        public static Point2D toPoint2D(Point p) {
-                return new Point2D(p.getX(), p.getY());
-        }
-        
         public static Point2D point2d(Point2D p) {
                 return new Point2D(p.getX(), p.getY());
-        }
-        
-        public static Point point(Point2D p) {
-                return new Point((int)p.getX(), (int)p.getY());
         }
         
         /**
@@ -81,7 +73,6 @@ public class Main extends Application {
         @Override
         public void init() {
                 panes = new HashMap<String, Parent>();
-                Font.loadFont(getClass().getResourceAsStream("/ChicagoFLF.ttf"), 16);
         }
         
         /**
@@ -121,7 +112,6 @@ public class Main extends Application {
                 primaryStage.setTitle("36 Days - Wilderness Survival Game");
                 primaryStage.setScene(main);
                 primaryStage.setFullScreen(true);
-                primaryStage.setResizable(false);
                 primaryStage.show();
                 
                 panes.put("Level Select", new LevelSelectPane(main, primaryStage));
@@ -147,4 +137,5 @@ public class Main extends Application {
         public static void main(String[] args) {
                 launch();
         }
+        
 }

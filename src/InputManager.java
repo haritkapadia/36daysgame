@@ -17,10 +17,6 @@ import javafx.scene.input.*;
 import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.animation.*;
-import java.io.*;
-import java.nio.*;
-import java.nio.file.*;
-import java.nio.charset.*;
 import java.awt.Point;
 
 public class InputManager {
@@ -110,29 +106,21 @@ public class InputManager {
 	}
 
 	public void keyPressed(KeyEvent e) {
-		Point2D mousePosition = Main.toPoint2D(World.blockCoordinate(screenToWorldCoordinate(mouseX, mouseY)));
 		if(e.getCode() == KeyCode.P) {
 			game.killQuests();
 			game.stop();
 			Main.setPane(game.getScene(), "Main Menu");
-			try {
-				Files.write(Paths.get("player.save"), Arrays.asList(new String[]{player.getAsString()}), Charset.forName("UTF-8"));
-				world.writeChunks();
-			} catch(Exception ee) {
-				ee.printStackTrace();
-				System.exit(0);
-			}
 		}
 		if(!pressed.get(KeyCode.Q) && e.getCode() == KeyCode.Q) {
-			player.useTool(0, mousePosition);
+			player.useTool(0);
 		} else if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
-			player.useTool(1, mousePosition);
+			player.useTool(1);
 		} else if(!pressed.get(KeyCode.E) && e.getCode() == KeyCode.E) {
-			player.useTool(2, mousePosition);
+			player.useTool(2);
 		} else if(!pressed.get(KeyCode.R) && e.getCode() == KeyCode.R) {
-			player.useTool(3, mousePosition);
+			player.useTool(3);
 		} else if(!pressed.get(KeyCode.T) && e.getCode() == KeyCode.T) {
-			player.useTool(4, mousePosition);
+			player.useTool(4);
 		}
 		pressed.put(e.getCode(), true);
 	}

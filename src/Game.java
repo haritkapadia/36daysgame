@@ -5,10 +5,6 @@
  */
 
 import java.util.*;
-import java.io.*;
-import java.nio.*;
-import java.nio.file.*;
-import java.nio.charset.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -48,47 +44,50 @@ public class Game extends AnimationTimer {
         public SurvivalGuidePane gameSurvivalGuide;
         long prevTime = -1;
         
-        long prevTime = -1;
-        
         Game(Scene scene) {
                 GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
                 ToggleButton tb;
                 int screenWidth = gd.getDisplayMode().getWidth();
                 int screenHeight = gd.getDisplayMode().getHeight();
+                questUI = new VBox();
                 gameSurvivalGuide = new SurvivalGuidePane(scene, this);
                 helpMenu = new HelpMenu();
                 this.scene = scene;
                 world = new World();
-                
-                
-                String s = null;
-                try {
-                        s = new String(Files.readAllBytes(Paths.get("player.save")));
-                }
-                catch (Throwable e) {
-                        System.out.println("Error " + e.getMessage());
-                        e.printStackTrace();
-                }
-                player = new Player(world, s);
-                
-                
-                
-                
+                player = new Player(world);
                 world.addEntity(player);
                 camera = new Camera(scene, world, player.getPosition());
                 
                 gamePane = new StackPane();
                 canvas = new Canvas((int)scene.getWidth(), (int)scene.getHeight());
-                health = new ProgressIndicator((double)player.getHealth() / player.getMaximumHealth());
-                questUI = new VBox(){{
-                        getChildren().add(health);
-                }};
-                gamePane.getChildren().addAll(canvas, questUI);
+                health = new ProgressBar((double)player.getHealth() / player.getMaximumHealth());
+                hunger = new ProgressBar ((double)player.getHunger()/player.getMaxHunger());
+                gamePane.getChildren().add(canvas);
                 
                 inventoryPane = new InventoryPane(scene, this, player){{
                         setMaxWidth(scene.getWidth() / 3);
                         setAlignment(Pos.BOTTOM_CENTER);
                 }};
+                
+                
+                gamePane.getChildren().add(new VBox(){{
+                        getChildren().add(questUI);
+                        getChildren().add(new VBox(){{
+                                setPadding(new Insets(50,30,30,30));
+                                setSpacing(10);
+                                getChildren().add(new HBox(){{
+                                        getChildren().add(new Label("Health:  "));
+                                        setId("redbar");
+                                        getChildren().add(health);
+                                }});
+                                getChildren().add(new HBox(){{
+                                        getChildren().add(new Label("Hunger: "));
+                                        setId("greenbar");
+                                        getChildren().add(hunger);
+                                }});
+                        }});
+                }});
+                
                 gamePane.getChildren().add(inventoryPane);
                 player.setInventoryPane(inventoryPane);
                 
@@ -276,6 +275,7 @@ public class Game extends AnimationTimer {
         public void killQuests() {
                 questManager.killQuests();
         }
+        
         private void initialiseQuests() {
                 Quest touchingPoison = new Quest(questManager,
                                                  "Touching Poison",
@@ -297,7 +297,7 @@ public class Game extends AnimationTimer {
                 
                 Quest pickABouquet3 = new Quest (questManager,
                                                  "Pick a Bouquet Part 3,
-                                                         "Find and pick up two Indian Pipes",
+                                                 "Find and pick up two Indian Pipes",
                                                  2,
                                                  ResourceManager.getBlock(BlockKey.NORTHERNBLUEFLAG),
                                                  new Quest[]{breakingHogweed},
@@ -321,7 +321,7 @@ public class Game extends AnimationTimer {
                                                  new Quest[]{pickABouquet2},
                                                  "Pick a Bouquet",
                                                  helpMenu);
-                
+                                                        
                 Quest pickUpSticks = new Quest(questManager,
                                                "Pick Up Sticks",
                                                "Break up ten wood items",
