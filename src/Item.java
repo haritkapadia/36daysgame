@@ -27,6 +27,10 @@ public abstract class Item implements Drawable {
 		return true;
 	}
 
+	public boolean isConsumable() {
+		return true;
+	}
+
 	public String getName() {
 		return name;
 	}

@@ -5,6 +5,10 @@
  */
 
 import java.util.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.charset.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -106,6 +110,7 @@ public class InputManager {
 	}
 
 	public void keyPressed(KeyEvent e) {
+		Point2D mousePosition = Main.toPoint2D(World.blockCoordinate(screenToWorldCoordinate(mouseX, mouseY)));
 		if(e.getCode() == KeyCode.P) {
 			game.killQuests();
 			game.stop();
@@ -120,15 +125,15 @@ public class InputManager {
 			world.write();
 		}
 		if(!pressed.get(KeyCode.Q) && e.getCode() == KeyCode.Q) {
-			player.useTool(0);
+			player.useTool(0, mousePosition);
 		} else if(!pressed.get(KeyCode.W) && e.getCode() == KeyCode.W) {
-			player.useTool(1);
+			player.useTool(1, mousePosition);
 		} else if(!pressed.get(KeyCode.E) && e.getCode() == KeyCode.E) {
-			player.useTool(2);
+			player.useTool(2, mousePosition);
 		} else if(!pressed.get(KeyCode.R) && e.getCode() == KeyCode.R) {
-			player.useTool(3);
+			player.useTool(3, mousePosition);
 		} else if(!pressed.get(KeyCode.T) && e.getCode() == KeyCode.T) {
-			player.useTool(4);
+			player.useTool(4, mousePosition);
 		}
 		pressed.put(e.getCode(), true);
 	}

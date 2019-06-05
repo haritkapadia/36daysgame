@@ -4,6 +4,10 @@
  * 2019/June/02
  */
 
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.charset.*;
 import java.awt.Point;
 import javafx.geometry.Point2D;
 import java.util.*;
@@ -58,7 +62,21 @@ public class World {
 		chunks = new HashMap<Point, Chunk>();
 		entities = new LinkedList<Entity>();
 		try {
-			s = new Stopwatch(Long.parseLong(new String(Files.readAllBytes(Paths.get("world" + seed + "/offset")))));
+			if(!Files.isDirectory(Paths.get("world" + seed)))
+				new File("world" + seed + "/").mkdirs();
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
+		try {
+			try {
+				s = new Stopwatch(Long.parseLong(new String(Files.readAllBytes(Paths.get("world" + seed + "/offset")))));
+			}
+			catch (NoSuchFileException e) {
+				s = new Stopwatch(0);
+			}
+
 			File[] _entities = new File("world" + seed + "/entities").listFiles();
 			System.out.println("Entities: " + _entities.length);
 

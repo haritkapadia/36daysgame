@@ -6,14 +6,15 @@ import java.util.Random;
  */
 
 public class ItemMushroom extends FoodItem {
-        ItemMushroom() {
-                super("Artwork/mushroom_small.png", "Mushroom", 0,0);
-        }
-        
-        @Override
-        public void use(Entity e, World w, double x, double y, double z){
-                if(new Random(w.getSeed()).nextBoolean())
-                        e.takeDamage(2);
-                e.eatFood(1);
-        }
+	ItemMushroom() {
+		super("Artwork/mushroom_small.png", "Mushroom", 0,0);
+	}
+
+	@Override
+	public boolean use(Entity e, World w, double x, double y, double z){
+		if(new Random(w.getSeed()).nextBoolean())
+			e.takeDamage(2);
+		e.eatFood(1);
+		return true;
+	}
 }

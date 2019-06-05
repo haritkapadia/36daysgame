@@ -149,8 +149,8 @@ public class Entity extends Transition implements Drawable {
 		out += "facing\t" + facing + "\n";
 		out += "health\t" + health + "\n";
 		out += "MAX_HEALTH\t" + MAX_HEALTH + "\n";
-		out += "stomachFullness\t" + stomachFullness + "\n";
-		out += "MAX_STOMACH\t" + MAX_STOMACH + "\n";
+		out += "stomachFullness\t" + hunger + "\n";
+		out += "MAX_STOMACH\t" + MAX_HUNGER + "\n";
 		out += "SPEED\t" + SPEED + "\n";
 		return out;
 	}

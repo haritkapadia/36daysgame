@@ -9,6 +9,10 @@ public class ItemKnife extends Item {
 		super("Artwork/knife_small.png", "Butter Knife (Harmless)");
 	}
 
+	public boolean isConsumable() {
+		return false;
+	}
+
 	public boolean use(Entity e, World w, double x, double y, double z) {
 		e.takeDamage(1);
 		return true;
