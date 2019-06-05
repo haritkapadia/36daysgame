@@ -296,7 +296,7 @@ public class Game extends AnimationTimer {
                                                   null);
                 
                 Quest pickABouquet3 = new Quest (questManager,
-                                                 "Pick a Bouquet Part 3,
+                                                 "Pick a Bouquet Part 3",
                                                  "Find and pick up two Indian Pipes",
                                                  2,
                                                  ResourceManager.getBlock(BlockKey.NORTHERNBLUEFLAG),
