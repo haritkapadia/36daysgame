@@ -6,6 +6,7 @@
 
 /**
  * An enum that stores the 4 directions the player can be facing in the game
+ */
 public enum Direction {
         DOWN, LEFT, UP, RIGHT
 }
