@@ -1,11 +1,11 @@
 id	player.save
-inventory	null, null, null, null, null, null, null, null, null, null, null, null, null, null, null
-position	406.5, 42.5
+inventory	null, null, null, KNIFE, null, null, null, null, null, null, null, null, null, null, null
+position	420.5, 251.5
 radius	0.5
-facing	RIGHT
-health	20
-MAX_HEALTH	20
-stomachFullness	20
-MAX_STOMACH	20
+facing	UP
+health	-10
+MAX_HEALTH	10
+stomachFullness	54
+MAX_STOMACH	10
 SPEED	10.0
 
