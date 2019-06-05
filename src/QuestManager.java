@@ -62,6 +62,8 @@ public class QuestManager {
 	public void updateCurrentQuest(Quest q) {
 		try {
 			Files.write(Paths.get("world" + world.getSeed() + "/currentquest"), Arrays.asList(new String[]{q.getQuestName(), q.getStepsTaken() + ""}), Charset.forName("UTF-8"));
+			System.out.println("Current Quest written: " + q.getQuestName());
+
 		}
 		catch (Throwable e) {
 			System.out.println("Error " + e.getMessage());
@@ -71,19 +73,30 @@ public class QuestManager {
 
 	public void resumeQuests() {
 		try {
+			List<String> currQuest = Files.readAllLines(Paths.get("world" + world.getSeed() + "/currentquest"), Charset.forName("UTF-8"));
 			BufferedReader r = Files.newBufferedReader(Paths.get("world" + world.getSeed() + "/questlog"), Charset.forName("UTF-8"));
 			String line = null;
 			while((line = r.readLine()) != null) {
-				for(Quest v : quests) {
-					if(v.getQuestName().equals(line))
+				List<Quest> _quests = new ArrayList<Quest>(quests);
+				for(Quest v : _quests) {
+					if(v.getQuestName().equals(line)) {
+						System.out.println("Completed " + line);
 						v.completeQuest();
+						v.join();
+						System.out.println("joined");
+
+					}
 				}
 			}
 			r.close();
-			List<String> currQuest = Files.readAllLines(Paths.get("world" + world.getSeed() + "/currentquest"), Charset.forName("UTF-8"));
+			System.out.println("lines: " + currQuest.size());
 			if(currQuest.size() == 2) {
+				System.out.println("currQuest found");
+
 				for(Quest v : quests) {
 					if(v.getQuestName().equals(currQuest.get(0))) {
+						System.out.println("Set steps: " + v.getQuestName());
+
 						v.setStepsTaken(Integer.parseInt(currQuest.get(1)));
 						break;
 					}
@@ -106,7 +119,7 @@ public class QuestManager {
 	}
 
 	public void startQuest(Quest q) {
-		ui.getChildren().add(q.getQuestPane());
+		Platform.runLater(() -> ui.getChildren().add(q.getQuestPane()));
 		q.start();
 	}
 }

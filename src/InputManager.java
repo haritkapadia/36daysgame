@@ -153,8 +153,9 @@ public class InputManager {
 			List<Quest> active = new ArrayList<Quest>(){{
 					addAll(game.getQuestManager().getQuests());
 				}};
-			for(Quest q : active)
-				q.completeQuest();
+			// for(Quest q : active)
+			//	q.completeQuest();
+			active.get(0).setStepsTaken(3);
 		}
 		pressed.put(e.getCode(), true);
 	}

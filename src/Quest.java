@@ -101,11 +101,17 @@ public class Quest extends Thread {
 	}
 
 	public void run() {
+		questManager.updateCurrentQuest(this);
 		sequence.play();
 		for(; stepsTaken < maxSteps; addStep()) {
 			synchronized(waitOn) {
 				try {
+					System.out.println(waitOn + " steps before: " + stepsTaken);
+					progressBar.setProgress((double)stepsTaken / maxSteps);
+					questManager.updateCurrentQuest(this);
 					waitOn.wait();
+					System.out.println(waitOn + " steps after: " + stepsTaken + "\n");
+
 				} catch(Exception e) {
 					System.out.println(questName);
 					e.printStackTrace();
@@ -114,17 +120,21 @@ public class Quest extends Thread {
 			}
 		}
 		Platform.runLater(() -> questManager.removeQuest(this));
+		System.out.println(questName + " removed");
 		if(nextQuests != null) {
 			for(Quest q : nextQuests) {
+				System.out.println("Started " + q.getQuestName());
 				questManager.addQuest(q);
-				Platform.runLater(() -> questManager.startQuest(q));
+				questManager.startQuest(q);
 			}
 		}
+		System.out.println(questName + " reached end");
+
 	}
 
 	public void addStep() {
 		stepsTaken += 1;
-		progressBar.setProgress((double)stepsTaken / maxSteps);
+		// progressBar.setProgress((double)stepsTaken / maxSteps);
 	}
 
 	public String getQuestName() {
@@ -144,9 +154,11 @@ public class Quest extends Thread {
 	}
 
 	public void setStepsTaken(int i) {
-		stepsTaken = i - 1;
+		// addStep();
 		synchronized(waitOn) {
+			stepsTaken = i;
 			waitOn.notifyAll();
+			System.out.println("text");
 		}
 	}
 
