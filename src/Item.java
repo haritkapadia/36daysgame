@@ -39,6 +39,18 @@ public abstract class Item implements Drawable {
         }
         
         /**
+         * Sets the item's image file to a new image
+         * @param file is the file name of the new image
+         */
+        public void setImage(String file){
+                try{
+                        image = new Image(file);
+                }catch(Exception e){
+                        e.printStackTrace();
+                }
+        }
+        
+        /**
          * @returns true if the item has a transparent background
          */
         public boolean isTransparent() {

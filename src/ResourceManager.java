@@ -65,6 +65,7 @@ public final class ResourceManager {
                 put(ItemKey.GRASSHOPPER, new ItemGrasshopper());
                 put(ItemKey.WORM, new ItemWorm());
                 put(ItemKey.FLINTSTEEL, new ItemFlintSteel());
+                put(ItemKey.WATERBOTTLE, new ItemWaterBottle());
         }};
         
         /**

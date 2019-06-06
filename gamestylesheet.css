@@ -61,6 +61,9 @@
     -fx-background-color: cyan;
 }
 
+#thirstbar .bar{
+    -fx-background-color: mediumblue;
+
 #upbutton{
     -fx-graphic: url("uparrow.png");
     -fx-background-color: white, white;

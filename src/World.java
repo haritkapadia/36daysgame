@@ -180,11 +180,11 @@ public class World {
                 int i = (Chunk.CHUNK_SIDE_LENGTH + x % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
                 int j = (Chunk.CHUNK_SIDE_LENGTH + y % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
                 int k = (Chunk.CHUNK_SIDE_LENGTH + z % Chunk.CHUNK_SIDE_LENGTH) % Chunk.CHUNK_SIDE_LENGTH;
-                if(c.getBlock(i, j, k) == null) {
+                if(c.getBlock(i, j, k) == null || ResourceManager.getBlock(c.getBlock(i, j, k)) instanceof InsectBlock) {
                         c.setBlock(i, j, k, block);
                         return true;
                 }
-                return false;
+                return false; 
         }
         
         public void setBlockUnsafe(int x, int y, int z, BlockKey block) {

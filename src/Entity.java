@@ -32,6 +32,8 @@ import java.awt.Point;
  * MAX_HEALTH  -Stores the amount that the health is out of
  * hunger      -Stores how full the entity is
  * MAX_HUNGER  -Stores the amount that the hunger bar is out of
+ * thirst      -Stores how quenched the entity is
+ * MAX_THIRST  -Stores the amount that the thirst bar is out of
  * STOMACH_REDUCTION_TIME -Stores how quickly the entity gets hungry
  * world       -A reference to the game world object
  * SPEED       -Stores how fast the entity moves
@@ -48,10 +50,15 @@ public class Entity extends Transition implements Drawable {
         protected int MAX_HUNGER;
         protected int exposure;
         protected int MAX_EXPOSURE;
+        protected int thirst;
+        protected int MAX_THIRST;
         public static final double STOMACH_REDUCTION_TIME = 1;
         protected World world;
         protected double SPEED;
-        //???
+        
+        /*
+         * Overrides the abstract superclass method
+         */
         public void interpolate(double d) {}
         
         /**
@@ -78,6 +85,8 @@ public class Entity extends Transition implements Drawable {
                 MAX_HUNGER = 10;
                 exposure = 20;
                 MAX_EXPOSURE =20;
+                thirst = 20;
+                MAX_THIRST = 20;
                 inventory = new ItemKey[15];
                 facing = Direction.DOWN;
         }
@@ -175,6 +184,20 @@ public class Entity extends Transition implements Drawable {
          */
         public int getMaxExposure(){
                 return MAX_EXPOSURE;
+        }
+        
+        /**
+         * @returns the entity's thirst status
+         */
+        public int getThirst(){
+                return thirst;
+        }
+        
+        /**
+         * @returns how much the user needs to drink
+         */
+        public int getMaxThirst(){
+                return MAX_THIRST;
         }
         
         /**
@@ -291,7 +314,7 @@ public class Entity extends Transition implements Drawable {
                 if(inventory[i] != null) {
                         Point blockPos = World.blockCoordinate(position);
                         BlockKey block = world.getBlock((int)blockPos.getX(), (int)blockPos.getY(), 1);
-                        if(block == null) {
+                        if(block == null || ResourceManager.getBlock(block) instanceof InsectBlock) {
                                 world.setBlock((int)blockPos.getX(), (int)blockPos.getY(), 1, ResourceManager.getPortableBlock(inventory[i]));
                                 inventory[i] = null;
                         }else if (nearestFreeBlock() != null){
@@ -309,7 +332,7 @@ public class Entity extends Transition implements Drawable {
         public Point nearestFreeBlock(){
                 for (int row = (int)World.blockCoordinate(position).getY() - 1; row <= (int)World.blockCoordinate(position).getY()+1; row++){
                         for(int col = (int)World.blockCoordinate(position).getX()-1; col <= (int)World.blockCoordinate(position).getX()+1; col++){
-                                if(world.getBlock(col, row, 1)==null)
+                                if(world.getBlock(col, row, 1)==null || ResourceManager.getBlock(world.getBlock(row, col, 1)) instanceof InsectBlock)
                                         return new Point(col, row);
                         }
                 }
@@ -333,6 +356,8 @@ public class Entity extends Transition implements Drawable {
                 out += "MAX_STOMACH\t" + MAX_HUNGER + "\n";
                 out += "exposure\t"+exposure + "\n";
                 out += "MAX_EXPOSURE\t" + MAX_EXPOSURE + "\n";
+                out += "thirst\t"+thirst+"\n";
+                out += "MAX_THIRST\t"+MAX_THIRST+"\n";
                 out += "SPEED\t" + SPEED + "\n";
                 return out;
         }
@@ -382,6 +407,10 @@ public class Entity extends Transition implements Drawable {
                                 exposure = Integer.parseInt(L[1].trim());
                         }else if (L[0].equals("MAX_EXPOSURE")){
                                 MAX_EXPOSURE = Integer.parseInt(L[1].trim());
+                        }else if (L[0].equals("thirst")){
+                                thirst = Integer.parseInt(L[1].trim());
+                        }else if (L[0].equals("MAX_THIRST")){
+                                MAX_THIRST = Integer.parseInt(L[1].trim());
                         }
                 }
         }

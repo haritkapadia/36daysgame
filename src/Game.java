@@ -46,6 +46,7 @@ import java.awt.GraphicsEnvironment;
  * health    -Displays how much health the user has left
  * hunger    -Displays a representation of how much time the player has before they die of starvation
  * exposure  -Displays a representation of how much time the player has before they die of exposure
+ * thirst    -Displays a representation of how much time the player has before they die of thirst
  * i         -Manages the user input
  * questManager  -Manages the quests
  * prevPosition  -The player's previous position
@@ -66,6 +67,7 @@ public class Game extends AnimationTimer {
         ProgressBar health;
         ProgressBar hunger;
         ProgressBar exposure;
+        ProgressBar thirst;
         InputManager i;
         QuestManager questManager;
         Point2D prevPosition;
@@ -99,6 +101,7 @@ public class Game extends AnimationTimer {
                 health = new ProgressBar((double)player.getHealth() / player.getMaximumHealth());
                 hunger = new ProgressBar ((double)player.getHunger()/player.getMaxHunger());
                 exposure = new ProgressBar ((double)player.getExposure()/player.getMaxExposure());
+                thirst = new ProgressBar((double)player.getThirst()/player.getMaxThirst());
                 gamePane.getChildren().add(canvas);
                 
                 inventoryPane = new InventoryPane(scene, this, player){{
@@ -113,19 +116,24 @@ public class Game extends AnimationTimer {
                                 setPadding(new Insets(50,30,30,30));
                                 setSpacing(10);
                                 getChildren().add(new HBox(){{
-                                        getChildren().add(new Label("Health:    "));
+                                        getChildren().add(new Label("Health:\t\t"));
                                         setId("redbar");
                                         getChildren().add(health);
                                 }});
                                 getChildren().add(new HBox(){{
-                                        getChildren().add(new Label("Hunger:   "));
+                                        getChildren().add(new Label("Hunger:\t\t"));
                                         setId("greenbar");
                                         getChildren().add(hunger);
                                 }});
                                 getChildren().add(new HBox(){{
-                                        getChildren().add(new Label("Exposure: "));
+                                        getChildren().add(new Label("Exposure:\t"));
                                         setId("bluebar");
                                         getChildren().add(exposure);
+                                }});
+                                getChildren().add(new HBox(){{
+                                        getChildren().add(new Label("Thirst:\t\t"));
+                                        setId("thirstbar");
+                                        getChildren().add(thirst);
                                 }});
                         }});
                 }});
@@ -466,7 +474,7 @@ public class Game extends AnimationTimer {
                 
                 Quest pickUpSticks = new Quest(questManager,
                                                "Pick Up Sticks",
-                                               "Break up ten wood items",
+                                               "Pick up ten wood items",
                                                10,
                                                ResourceManager.getBlock(BlockKey.WOOD),
                                                new Quest[]{pickABouquet1},

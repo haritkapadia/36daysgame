@@ -1,5 +1,5 @@
 id	player.save
-inventory	null, WOOD, FIDDLEHEADS, null, null, null, ANT, ANT, null, null, null, GRASSHOPPER, GRASSHOPPER, null, null
+inventory	KNIFE, WATERBOTTLE, null, null, null, null, null, null, null, null, null, null, null, null, null
 position	906.5, -181.5
 radius	0.5
 facing	DOWN
@@ -9,5 +9,7 @@ stomachFullness	20
 MAX_STOMACH	20
 exposure	20
 MAX_EXPOSURE	20
+thirst	20
+MAX_THIRST	20
 SPEED	10.0
 
