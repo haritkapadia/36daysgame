@@ -22,12 +22,15 @@ import javafx.util.Duration;
 import javafx.event.*;
 
 /**
- * A pane that displays the logo fading in and out
+ * A pane that contains buttons to change the game settings
  * 
  * Variables:
  * 
- * scene      -A Scene object that is a reference to the main scene
- * ft         -A FadeTransition object that contains the fade transition for the logo
+ * menuBar     -The HBox that contains the buttons
+ * menuStage   -The stage on which the menu is located
+ * pauseButton -The button used to pause the game
+ * guideButton -The button used to display the Survival Guide
+ * speedButton -The button used to alter the Stopwatch speed in the game
  *
  * @author Harit Kapadia, Jack Farley
  */
@@ -37,12 +40,21 @@ public class SettingsMenu extends StackPane {
         private Scene menuScene;
         private Button pauseButton;
         private Button guideButton;
+        private ToggleButton speedButton;
         
+        /**
+         * @returns the size of the menu for a given number of buttons
+         * @param buttons is the number of buttons that the menu contains
+         */
         public static int getMenuWidth(int buttons){
                 return buttons*30+(buttons-1)*30 + 50;
         }
         
-        
+        /**
+         * Initializes the menuBar HBox for the Main Menu pane
+         * @param scene is the Scene on which everything is displayed
+         * @param stage is the Stage which contains the Scene
+         */
         public static void initButtons(Scene scene, Stage stage){
                 SettingsMenu.menuBar = new HBox(){{
                         setStyle("-fx-background-color: transparent;");
@@ -60,6 +72,11 @@ public class SettingsMenu extends StackPane {
                 }};
         }
         
+        /**
+         * Adds the buttons that are only used in the game to the menuBar
+         * @param gamePane is the pane which contains the menuBar
+         * @param game is a reference to the main Game object
+         */
         public void addGameButtons(StackPane gamePane, Game game){
                 pauseButton = new Button(){{
                         setId("pausebutton");
@@ -77,20 +94,28 @@ public class SettingsMenu extends StackPane {
                                 game.gameSurvivalGuide.toFront();
                                 game.gameSurvivalGuide.setVisible(true);
                         });
-                }};          
-                SettingsMenu.menuBar.getChildren().addAll(pauseButton, guideButton);
+                }};   
+                speedButton = new ToggleButton(){{
+                        setId("speedbutton");
+                        setOnAction (e -> {
+                                System.out.println("FASTER");
+                        });
+                }};
+                SettingsMenu.menuBar.getChildren().addAll(pauseButton, guideButton, speedButton);
         }
         
+        /**
+         * Removes the buttons that are not used in the main menu
+         */
         public void removeGameButtons(){
                 SettingsMenu.menuBar.getChildren().remove(pauseButton);
                 SettingsMenu.menuBar.getChildren().remove(guideButton);
+                SettingsMenu.menuBar.getChildren().remove(speedButton);
         }
         
         /**
          * The pane constructor.
-         * The pane is initialized with an image and an animation that causes the image to fade in and out
-         * @param scene The window on which the pane will be displayed.
-         * @param stage The stage on which the scene is displayed
+         * The pane is initialized with the buttons that are used in the main menu
          */
         SettingsMenu (Scene scene, Stage stage, Boolean mainMenu) {
                 menuScene = scene;

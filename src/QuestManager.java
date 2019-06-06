@@ -166,7 +166,7 @@ public class QuestManager {
         /**
          * Launches a quest
          * @param q is the Quest to be launched
-         */
+         */ 
         public void startQuest(Quest q) {
                 Platform.runLater(() -> {
                         ui.getChildren().add(q.getQuestPane());

@@ -153,7 +153,7 @@ public class Game extends AnimationTimer {
                 gamePane.getChildren().add(Main.settingsMenu);
                 
                 Main.settingsMenu.addGameButtons(gamePane, this);
-                Main.settingsMenu.relocate(scene.getWidth()-SettingsMenu.getMenuWidth(4),50);
+                Main.settingsMenu.relocate(scene.getWidth()-SettingsMenu.getMenuWidth(5),50);
                 
                 gamePane.getChildren().add(gameSurvivalGuide);
                 gameSurvivalGuide.setVisible(false);
