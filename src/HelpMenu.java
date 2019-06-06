@@ -34,7 +34,7 @@ import javafx.event.*;
 public class HelpMenu extends StackPane {
         private static VBox helpPane;
         private Color instructionsColor = Color.BLACK;
-        private Button nextButton;
+        public Button nextButton;
         private HashMap<String, VBox> instructions;
         
         /**
@@ -49,37 +49,28 @@ public class HelpMenu extends StackPane {
                 nextButton = new Button(){{
                         setId("nextbutton");
                 }};
-                instructions.put("Welcome Message", welcomeMessage());
-                instructions.put("First Instructions", firstInstructions());   
-                instructions.put ("Pick a Bouquet", pickABouquet());
+                initInstructions();
                 
-                setManaged(false);
+                setMaxWidth(450);
+                setMaxHeight(300);
+                setBackground(new Background(new BackgroundFill(new Color(0.961, 0.961, 0.863, 0.6), CornerRadii.EMPTY, Insets.EMPTY)));
                 setPadding(new Insets(50,50,50,50));
-                // setMargin(this, new Insets(50,50,50,50));
-                getChildren().add(new Rectangle(){{
-                        setWidth(450);
-                        setHeight(300);
-                        setOpacity(0.6);
-                        setFill(Color.BEIGE);
-                }});
                 
-                getChildren().add(welcomeMessage());
                 getStylesheets().add("gamestylesheet.css");
         }
         
         public void setInstr(String next){
                 getChildren().clear();
-                getChildren().add(new Rectangle(){{
-                        setWidth(450);
-                        setHeight(300);
-                        setOpacity(0.6);
-                        setFill(Color.BEIGE);
-                }});
                 getChildren().add(instructions.get(next));
+                if(next.equals("Welcome Message")){
+                        getChildren().add(nextButton);
+                        nextButton.setOnAction(e -> setInstr("First Instructions"));
+                        setAlignment(nextButton, Pos.BOTTOM_RIGHT);
+                }
         }
         
-        private VBox firstInstructions(){
-                return  new VBox(){{
+        private void initInstructions(){
+                instructions.put("First Instructions", new VBox(){{
                         setAlignment(Pos.TOP_CENTER);
                         getChildren().add(new Label("Instructions"){{
                                 setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
@@ -104,11 +95,9 @@ public class HelpMenu extends StackPane {
                                 setId("instruction");
                         }});
                         setSpacing(10);
-                }};
-        }
-        
-        private VBox welcomeMessage(){
-                return  new VBox(){{
+                }});
+                
+                instructions.put("Welcome Message", new VBox(){{
                         setAlignment(Pos.TOP_CENTER);
                         getChildren().add(new Label("Welcome"){{
                                 setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
@@ -131,23 +120,14 @@ public class HelpMenu extends StackPane {
                                 setFill(instructionsColor);
                                 setId("instruction");
                         }});
-                        getChildren().add(new HBox(){{
-                                getChildren().add(nextButton);
-                                setAlignment(Pos.CENTER_RIGHT);
-                        }});
                         
-                        nextButton.setOnAction(e -> setInstr("First Instructions"));
-                        nextButton.setAlignment(Pos.BOTTOM_RIGHT);
                         setSpacing(10);
-                }};
-        }
-        
-        private VBox pickABouquet(){
-                return  new VBox(){{
+                }});
+                
+                instructions.put("Pick a Bouquet", new VBox(){{
                         setAlignment(Pos.TOP_CENTER);
-                        getChildren().add(new Label("Arranging Inventory and Consulting the Survival Guide"){{
-                                setWidth(300);
-                                setWrapText(true);
+                        getChildren().add(new Text("Arranging Inventory and Consulting the Survival Guide"){{
+                                setWrappingWidth(270);
                                 setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
                         }});
                         
@@ -157,7 +137,7 @@ public class HelpMenu extends StackPane {
                                 setId("instruction");
                         }});
                         
-                        getChildren().add(new Text("To discard an item click the item and then click outside of the inventory box."){{
+                        getChildren().add(new Text("To discard an item hold the control key and then press the key that corresponds with the item you want to discard, this will only work if you're standing on a grass block."){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
@@ -169,6 +149,69 @@ public class HelpMenu extends StackPane {
                                 setId("instruction");
                         }});
                         setSpacing(10);
-                }};
+                }});
+                
+                instructions.put("Finding Bugs", new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Text("Looking for Insects"){{
+                                setWrappingWidth(270);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To find bugs right click the ground until a bug appears in your inventory."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To eat an item press the key that corresponds with the item that you want to eat."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }});
+                
+                instructions.put("Make FlintSteel", new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Text("Making Flint and Steel"){{
+                                setWrappingWidth(270);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To make flint and steel first place your knife on the ground."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("Then put your mouse pointer over the knife and press the key that corresponds with flint in your inventory."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }});
+                
+                instructions.put("Make a Fire", new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Text("Making a Fire"){{
+                                setWrappingWidth(270);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To stay warm at night you need to start a fire."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To start a fire hover your mouse pointer over a wood block and press the key that corresponds with the flint and steel item in your inventory"){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }});
         }
 }

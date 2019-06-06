@@ -41,6 +41,7 @@ public class Game extends AnimationTimer {
 	Player player;
 	ProgressBar health;
 	ProgressBar hunger;
+	ProgressBar exposure;
 	InputManager i;
 	QuestManager questManager;
 	Point2D prevPosition;
@@ -59,13 +60,13 @@ public class Game extends AnimationTimer {
 		this.scene = scene;
 		world = new World(128);
 		player = world.getPlayer();
-
 		camera = new Camera(scene, world, player.getPosition());
 
 		gamePane = new StackPane();
 		canvas = new Canvas((int)scene.getWidth(), (int)scene.getHeight());
 		health = new ProgressBar((double)player.getHealth() / player.getMaximumHealth());
 		hunger = new ProgressBar ((double)player.getHunger()/player.getMaxHunger());
+		exposure = new ProgressBar ((double)player.getExposure()/player.getMaxExposure());
 		gamePane.getChildren().add(canvas);
 
 		inventoryPane = new InventoryPane(scene, this, player){{
@@ -80,14 +81,19 @@ public class Game extends AnimationTimer {
 				setPadding(new Insets(50,30,30,30));
 				setSpacing(10);
 				getChildren().add(new HBox(){{
-					getChildren().add(new Label("Health:  "));
+					getChildren().add(new Label("Health:    "));
 					setId("redbar");
 					getChildren().add(health);
 				}});
 				getChildren().add(new HBox(){{
-					getChildren().add(new Label("Hunger: "));
+					getChildren().add(new Label("Hunger:   "));
 					setId("greenbar");
 					getChildren().add(hunger);
+				}});
+				getChildren().add(new HBox(){{
+					getChildren().add(new Label("Exposure: "));
+					setId("bluebar");
+					getChildren().add(exposure);
 				}});
 			}});
 		}});
@@ -96,7 +102,8 @@ public class Game extends AnimationTimer {
 		player.setInventoryPane(inventoryPane);
 
 		gamePane.getChildren().add(helpMenu);
-		helpMenu.relocate(screenWidth-650, screenHeight-430);
+		gamePane.setAlignment(helpMenu, Pos.BOTTOM_RIGHT);
+		gamePane.setMargin(helpMenu, new Insets(0,25,65,0));
 
 		tb = new ToggleButton("");
 		tb.setId("helpbutton");
@@ -212,15 +219,28 @@ public class Game extends AnimationTimer {
 		processInput(time);
 		health.setProgress((double)player.getHealth() / player.getMaximumHealth());
 		hunger.setProgress((double)player.getHunger()/player.getMaxHunger());
+		exposure.setProgress((double)player.getExposure()/player.getMaxExposure());
 		drawScreen();
 		if (time % 10000 == 0){
 			if(player.getHunger()<player.getMaxHunger()/2)
 				player.takeDamage(1);
 		}
-		if (time % 100000 == 0){
+		if(time % 30000 == 0){
+			if (world.getLightLevel()<0.4)
+				player.lowerExposure(1);
+		}
+		if (time % 50000 == 0){
 			player.eatFood(-1);
 			if(player.getHunger()>player.getMaxHunger()*0.8)
 				player.takeDamage(-1);
+			if(player.getExposure()<player.getMaxExposure()*0.4)
+				player.takeDamage(1);
+		}
+		if (time % 1000 ==0){
+			try{
+			for (Fire fire : world.fires)
+				fire.updateFire();
+			}catch(ConcurrentModificationException e){}
 		}
 	}
 
@@ -241,12 +261,15 @@ public class Game extends AnimationTimer {
 					double screenY = scene.getHeight() - ((j - camera.getY()) * maxRatio + scene.getHeight() / 2);
 					double screenL = 1 / camera.getBlockFactor() * maxS;
 					BlockKey b = world.getBlock(i, j, z);
-					if(b != null)
-						g.drawImage(ResourceManager.getBlock(b).getImage(),
-							    screenX,
-							    screenY - screenL,
-							    screenL,
-							    screenL);
+					try{
+						if(b != null){
+							g.drawImage(ResourceManager.getBlock(b).getImage(),
+								    screenX,
+								    screenY - screenL,
+								    screenL,
+								    screenL);
+						}
+					}catch(NullPointerException e){}
 				}
 			}
 		}
@@ -282,6 +305,51 @@ public class Game extends AnimationTimer {
 	}
 
 	private void initialiseQuests() {
+
+		Quest breakingHogweed = new Quest(questManager,
+						  "Breaking Weeds",
+						  "See the effects of breaking hogweed!",
+						  5,
+						  ResourceManager.getBlock(BlockKey.HOGWEED),
+						  null,
+						  null,
+						  null);
+		Quest makeAFire = new Quest (questManager,
+					     "Make a Fire",
+					     "Use the flint and steel to start a fire",
+					     1,
+					     ResourceManager.getItem(ItemKey.FLINTSTEEL),
+					     new Quest[]{breakingHogweed},
+					     "Make a Fire",
+					     helpMenu);
+
+		Quest makeFlintSteel = new Quest(questManager,
+						 "Make Flint and Steel",
+						 "Follow the instructions to make a flint and steel item",
+						 1,
+						 ResourceManager.getItem(ItemKey.FLINT),
+						 new Quest[]{makeAFire},
+						 "Make FlintSteel",
+						 helpMenu);
+
+		Quest findTheFlint = new Quest (questManager,
+						"Find the Flint",
+						"Locate and pick up a flint item",
+						1,
+						ResourceManager.getBlock(BlockKey.FLINT),
+						new Quest[]{makeFlintSteel},
+						null,
+						null);
+
+		Quest findingBugs = new Quest (questManager,
+					       "Finding Bugs",
+					       "Find 3 ants",
+					       3,
+					       ResourceManager.getBlock(BlockKey.ANT),
+					       new Quest[]{breakingHogweed},
+					       "Finding Bugs",
+					       helpMenu);
+
 		Quest touchingPoison = new Quest(questManager,
 						 "Touching Poison",
 						 "What happens when you touch poison? Nothing!",
@@ -291,21 +359,12 @@ public class Game extends AnimationTimer {
 						 null,
 						 null);
 
-		Quest breakingHogweed = new Quest(questManager,
-						  "Breaking Weeds",
-						  "See the effects of breaking hogweed!",
-						  5,
-						  ResourceManager.getBlock(BlockKey.HOGWEED),
-						  new Quest[]{touchingPoison},
-						  null,
-						  null);
-
 		Quest pickABouquet3 = new Quest (questManager,
 						 "Pick a Bouquet Part 3",
 						 "Find and pick up two Indian Pipes.",
 						 2,
 						 ResourceManager.getBlock(BlockKey.INDIANPIPE),
-						 new Quest[]{breakingHogweed},
+						 new Quest[]{findingBugs},
 						 null,
 						 null);
 
@@ -342,14 +401,15 @@ public class Game extends AnimationTimer {
 					       1,
 					       ResourceManager.getBlock(BlockKey.TREE),
 					       new Quest[]{pickUpSticks},
-					       null,
-					       null);
+					       "Welcome Message",
+					       helpMenu);
 
+		questManager.addQuest(breakingHogweed);
+		questManager.addQuest(touchingPoison);
+		questManager.addQuest(pickUpSticks);
 		questManager.addQuest(breakingTree);
-		// questManager.addQuest(breakingHogweed);
-		// questManager.addQuest(touchingPoison);
-		// questManager.addQuest(pickUpSticks);
-		questManager.startQuest(breakingTree);
+		//questManager.startQuest(breakingTree);
+		questManager.startQuest(findTheFlint);
 	}
 
 	public Scene getScene() {

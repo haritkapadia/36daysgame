@@ -4,16 +4,27 @@
  * 2019/June/02
  */
 
+/**
+ * Default block, used in world generation
+ */
 public class BlockGround extends Block {
-	BlockGround() {
-		super("Artwork/grass_small.png");
-	}
-
-	public boolean isTransparent() {
-		return false;
-	}
-
-	public boolean isSolid() {
-		return true;
-	}
+        
+        /**Constructor*/
+        BlockGround() {
+                super("Artwork/grass_small.png");
+        }
+        
+        /** 
+          * @returns True if the background of the image is transparent 
+          */
+        public boolean isTransparent() {
+                return false;
+        }
+        
+        /**
+         * @returns True if the block can be walked on
+         */
+        public boolean isSolid() {
+                return true;
+        }
 }

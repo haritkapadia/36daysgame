@@ -31,6 +31,8 @@ public class Quest extends Thread {
 	private Object waitOn;
 	private QuestManager questManager;
 	private SequentialTransition sequence;
+	private String instr;
+	private HelpMenu helpMenu;
 
 	private Timeline textAnimation (String str, Label text){
 		final IntegerProperty i = new SimpleIntegerProperty(0);
@@ -57,6 +59,8 @@ public class Quest extends Thread {
 		this.maxSteps = maxSteps;
 		this.waitOn = waitOn;
 		this.nextQuests = nextQuests;
+		this.instr = instr;
+		this.helpMenu = helpMenu;
 		stepsTaken = 0;
 		progressBar = new ProgressBar(0);
 		questPane = new StackPane(){{
@@ -64,10 +68,6 @@ public class Quest extends Thread {
 			setMinHeight(350);
 			setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0.5), CornerRadii.EMPTY, Insets.EMPTY)));
 			setMargin(this, new Insets(50,50,50,50));
-			getChildren().add(new Rectangle(){{
-				setManaged(false);
-				setOpacity(0.5);
-			}});
 			getChildren().add(new VBox(){{
 				//getChildren().addAll(new Label(questName), new Label(description), progressBar);
 				Label qname = new Label(){{
@@ -93,9 +93,6 @@ public class Quest extends Thread {
 				getStylesheets().add("gamestylesheet.css");
 				setPadding(new Insets(50,50,50,50));
 				setSpacing(10);
-
-				if(instr != null)
-					helpMenu.setInstr(instr);
 			}});
 		}};
 	}
@@ -145,12 +142,24 @@ public class Quest extends Thread {
 		return description;
 	}
 
+	public String getInstr(){
+		return instr;
+	}
+
 	public int getMaxSteps() {
 		return maxSteps;
 	}
 
 	public int getStepsTaken() {
 		return stepsTaken;
+	}
+
+	public StackPane getQuestPane() {
+		return questPane;
+	}
+
+	public HelpMenu getHelpMenu(){
+		return helpMenu;
 	}
 
 	public void setStepsTaken(int i) {

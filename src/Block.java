@@ -8,7 +8,12 @@ import javafx.scene.image.Image;
 
 /**
  * An abstract class representing a block, the basic unit of the world.
- *
+ * 
+ * Variables:
+ * 
+ * image     -Stores the image file for the block
+ * 
+ * 
  * @author Harit Kapadia, Jack Farley
  */
 public abstract class Block implements Drawable {
