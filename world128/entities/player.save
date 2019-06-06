@@ -1,6 +1,6 @@
 id	player.save
-inventory	KNIFE, WATERBOTTLE, null, null, null, null, null, null, null, null, null, null, null, null, null
-position	906.5, -181.5
+inventory	KNIFE, WATERBOTTLE, FLINTSTEEL, null, null, null, null, null, null, null, null, null, null, null, null
+position	904.9767597755774, -181.7939943585209
 radius	0.5
 facing	DOWN
 health	18
