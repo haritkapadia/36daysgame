@@ -8,6 +8,14 @@ import javafx.scene.image.Image;
 
 /**
  * Runs the fire thread
+ * 
+ * Variables:
+ * 
+ * x,y,z     -The x,y, and z coordinates of the fire respectively
+ * w         -The game world that the fire is part of
+ * fuel      -The amount of fuel that the fire has left
+ * fireID    -The fire's position in the fires ArrayList
+ * e         -The entity that the fire effects
  */
 public class Fire{
         int x,y,z;
@@ -17,7 +25,13 @@ public class Fire{
         private Entity e;
         
         /**
-         * Class constructor, calls the Block constructor using the fire image
+         * Class constructor, initializes all the variables
+         * @param e is the Entity that is affected by this object
+         * @param w is the game world that this object is part of
+         * @param x is the x coordinate of the fire
+         * @param y is the y coordinate of the fire
+         * @param z is the z coordinate of the fire
+         * @param n is the fire's number within the fires ArrayList
          */
         Fire(Entity e, World w, int x, int y, int z, int n){
                 fireID = n;
@@ -52,14 +66,24 @@ public class Fire{
                         e.lowerExposure(-1);
         }
         
+        /**
+         * @returns true if the player is within two blocks of the fire
+         */
         private boolean playerNearby(){
                 return (Math.abs(e.getX()-x) < 2 && Math.abs(e.getY()-y) < 2);
         }
         
+        /**
+         * Changes the fires identification number to be one lower than it currently is
+         * This method is used when a fire is removed from the fires ArrayList
+         */
         private void lowerID(){
                 fireID--;
         }
         
+        /**
+         * Causes the fire to burn out and removes the fire from the fires ArrayList
+         */
         private void endFire(){
                 w.setBlockUnsafe(x,y,z, null);
                 w.fires.remove(fireID);

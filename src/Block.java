@@ -19,6 +19,11 @@ import javafx.scene.image.Image;
 public abstract class Block implements Drawable {
         Image image;
         
+        /**
+         * Class constructor, initializes the image variable
+         * 
+         * @param file stores the image file
+         */
         Block(String file) {
                 try {
                         image = new Image(file);
@@ -27,9 +32,15 @@ public abstract class Block implements Drawable {
                 }
         }
         
+        /**
+         * @returns the block's image
+         */
         public Image getImage() {
                 return image;
         }
         
+        /**
+         * @returns true if the block can't be walked on
+         */
         public abstract boolean isSolid();
 }

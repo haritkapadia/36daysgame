@@ -29,6 +29,30 @@ import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
+/**
+ * This class sets up and runs the game
+ * 
+ * Variables:
+ * 
+ * scene     -The Scene on which the game is displayed
+ * world     -The game world that the game uses
+ * camera    -Controls the amount of the world that is visible to the user
+ * gamePane  -The StackPane on which everything is displayed
+ * canvas    -The Canvas on which the game graphics are displayed
+ * questUI   -The user interface for the quests
+ * toolbar   -The user's inventory that they have immmediate access to
+ * inventoryPane -The rest of the user's inventory
+ * player    -Stores the player's stats
+ * health    -Displays how much health the user has left
+ * hunger    -Displays a representation of how much time the player has before they die of starvation
+ * exposure  -Displays a representation of how much time the player has before they die of exposure
+ * i         -Manages the user input
+ * questManager  -Manages the quests
+ * prevPosition  -The player's previous position
+ * helpMenu  -The on screen instructions during the game
+ * gameSurvivalGuide  -The Survival Guide object that users can refer to without exiting the game
+ * prevTime   -The previous time
+ */
 public class Game extends AnimationTimer {
         private Scene scene;
         World world;
@@ -49,11 +73,18 @@ public class Game extends AnimationTimer {
         public SurvivalGuidePane gameSurvivalGuide;
         long prevTime = -1;
         
+        /**
+         * The game constructor, sets up the graphics and starts the game
+         * 
+         * @param scene is the Scene on which the game is displayed
+         * 
+         * Variables:
+         * 
+         * tb     -Displays the in game instructions when clicked
+         *
+         */  
         Game(Scene scene) {
-                GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
                 ToggleButton tb;
-                int screenWidth = gd.getDisplayMode().getWidth();
-                int screenHeight = gd.getDisplayMode().getHeight();
                 questUI = new VBox();
                 gameSurvivalGuide = new SurvivalGuidePane(scene, this);
                 helpMenu = new HelpMenu();
@@ -81,12 +112,12 @@ public class Game extends AnimationTimer {
                                 setPadding(new Insets(50,30,30,30));
                                 setSpacing(10);
                                 getChildren().add(new HBox(){{
-                                        getChildren().add(new Label("Health:    "));
+                                        getChildren().add(new Label("Health:     "));
                                         setId("redbar");
                                         getChildren().add(health);
                                 }});
                                 getChildren().add(new HBox(){{
-                                        getChildren().add(new Label("Hunger:   "));
+                                        getChildren().add(new Label("Hunger:    "));
                                         setId("greenbar");
                                         getChildren().add(hunger);
                                 }});
@@ -224,16 +255,16 @@ public class Game extends AnimationTimer {
                         if(player.getHunger()<player.getMaxHunger()/2)
                                 player.takeDamage(1);
                 }
-                if(time % 30000 == 0){
-                        if (world.getLightLevel()<0.4)
+                if(time% 20000 == 0){
+                        if (world.getLightLevel()<0.4&& player.getExposure()>3)
                                 player.lowerExposure(1);
+                        if(player.getExposure()<player.getMaxExposure()*0.5)
+                                player.takeDamage(1);
                 }
                 if (time % 50000 == 0){
                         player.eatFood(-1);
                         if(player.getHunger()>player.getMaxHunger()*0.8)
                                 player.takeDamage(-1);
-                        if(player.getExposure()<player.getMaxExposure()*0.4)
-                                player.takeDamage(1);
                 }
                 if (time % 1000 ==0){
                         try{

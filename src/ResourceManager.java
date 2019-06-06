@@ -6,6 +6,16 @@
 
 import java.util.*;
 
+/**
+ * 
+ * This class manages all of the items and blocks in the game
+ * 
+ * Variables:
+ * 
+ * blocks    -An EnumMap that stores each Block object with it's associated enum value
+ * items     -An EnumMap that stores each Item object with it's associated enum value
+ * 
+ */
 public final class ResourceManager {
         private static final EnumMap<BlockKey, Block> blocks = new EnumMap<BlockKey, Block>(BlockKey.class){{
                 put(BlockKey.GROUND, new BlockGround());
@@ -34,15 +44,6 @@ public final class ResourceManager {
                 put(BlockKey.FIRE, new BlockFire());
         }};
         
-        public static Block getBlock(BlockKey b) {
-                Block c = blocks.get(b);
-                if(c == null) {
-                        if(ItemKey.valueOf(b.name()) != null)
-                                blocks.put(b, new PortableBlock("Artwork/missing.png", ItemKey.valueOf(b.name())));
-                }
-                return blocks.get(b);
-        }
-        
         private static final EnumMap<ItemKey, Item> items = new EnumMap<ItemKey, Item>(ItemKey.class){{
                 put(ItemKey.KNIFE, new ItemKnife());
                 put (ItemKey.WOOD, new ItemWood());
@@ -66,10 +67,31 @@ public final class ResourceManager {
                 put(ItemKey.FLINTSTEEL, new ItemFlintSteel());
         }};
         
+        /**
+         * @returns the Block object associated with the enum value b
+         * @param b the enum value
+         */
+        public static Block getBlock(BlockKey b) {
+                Block c = blocks.get(b);
+                if(c == null) {
+                        if(ItemKey.valueOf(b.name()) != null)
+                                blocks.put(b, new PortableBlock("Artwork/missing.png", ItemKey.valueOf(b.name())));
+                }
+                return blocks.get(b);
+        }
+        
+        /**
+         * @returns the Item object associated with the enum value b
+         * @param b the enum value
+         */
         public static Item getItem(ItemKey b) {
                 return items.get(b);
         }
         
+        /**
+         * @returns the block enum value associated with an item enum value
+         * @param k the ItemKey enum value
+         */
         public static BlockKey getPortableBlock(ItemKey k) {
                 if(blocks.get(BlockKey.valueOf(k.name())) == null)
                         blocks.put(BlockKey.valueOf(k.name()), new PortableBlock("Artwork/missing.png", k));

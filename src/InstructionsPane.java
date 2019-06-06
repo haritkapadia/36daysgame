@@ -20,7 +20,7 @@ import javafx.scene.image.*;
 import java.util.concurrent.atomic.*;
 
 /**
- * A pane displaying information about the game and its creators.
+ * A pane displaying instructions on how to play the game
  *
  * @author Harit Kapadia, Jack Farley
  */
@@ -29,7 +29,13 @@ public class InstructionsPane extends VBox {
         
         /**
          * The pane constructor.
-         * The pane is initialised with a title, the company logo, information about the creators, and a button to return to the main menu.
+         * The pane is initialised with a title, instructions, and buttons for navigating the instructions
+         * 
+         * Variables:
+         * 
+         * pages     -Stores each page of instructions as a VBox
+         * sp        -A StackPane containing the instructions, used to easily add and remove pages from the screen
+         * currentPage -An AtomicInteger variable that stores the page number that is currently being viewed
          *
          * @param scene The window on which the pane will be displayed.
          * @param stage The stage on which the scene is displayed
@@ -48,8 +54,14 @@ public class InstructionsPane extends VBox {
                         setSpacing(10);
                         getChildren().add(instruction(scene, "To open the survival guide click on the book icon at the top right corner of the screen.", "Instructions/openguide.gif", 1));
                         getChildren().add(instruction(scene, "To swap items in your inventory click on the item that you want to move then click on the slot that you'd like to move it to.", "Instructions/swapinventory.gif", 1));
+                        getChildren().add(instruction(scene, "To discard an item from your inventory hold the ctrl key then press the key that corresponds with the item you want to discard.", "Instructions/dropitem.gif", 4));
                 }});
-                pages.add(new VBox());
+                pages.add(new VBox(){{
+                        setSpacing(10);
+                        getChildren().add(instruction(scene, "To make flint and steel, place your knife on the ground, hover over the item with your mouse pointer, and press the key that corresponds with the flint item in your toolbar.", "Instructions/makeflintsteel.gif", 3)); 
+                        getChildren().add(instruction(scene, "To start a fire, first create a flint and steel item and add it to your toolbar, then hover over a wood block with your mouse and press the key that corresponds with the flint and steel item in your toolbar.", "Instructions/makeafire.gif", 3)); 
+                        getChildren().add(instruction(scene, "To find and eat food right click the food object (insects are invisible until you pick them up) and then press the key that corresponds with the food item in your toolbar.", "Instructions/eatfood.gif", 3));
+                }});
                 this.scene = scene;
                 getChildren().add(new HBox(){{
                         getChildren().add(new Button(){{
@@ -92,6 +104,13 @@ public class InstructionsPane extends VBox {
                 getStylesheets().add("stylesheet.css");
         }
         
+        /**
+         * @returns an instruction in the form of an HBox containing text and an accompanying animation
+         * @param scene is the Scene on which the instructions are displayed, used to calculate the relative size of the nodes
+         * @param text is the text that explain how to accomplish a task
+         * @param fileName is the name of the GIF file that accompanies the text
+         * @param mouse is used to determine whether the screen recording should be accompanied by an animation of a mouse right clicking or left clicking
+         */
         private HBox instruction (Scene scene, String text, String fileName, int mouse){
                 return new HBox(){{
                         getChildren().add(new VBox(){{
@@ -122,7 +141,19 @@ public class InstructionsPane extends VBox {
                                                 setPreserveRatio(true);
                                                 setFitHeight (scene.getHeight()/12);
                                         }};
-                                }                                        
+                                }else if (mouse == 3){
+                                        click = new ImageView(){{
+                                                setImage(new Image("Instructions/key_q.png"));
+                                                setPreserveRatio(true);
+                                                setFitHeight(scene.getHeight()/18);
+                                        }};
+                                }else if (mouse == 4){
+                                        click = new ImageView(){{
+                                                setImage(new Image("Instructions/ctrl_q.png"));
+                                                setPreserveRatio(true);
+                                                setFitHeight(scene.getHeight()/18);
+                                        }};
+                                }
                                 if(!click.equals(null)){
                                         getChildren().add(click);
                                         setAlignment(click, Pos.BOTTOM_RIGHT);

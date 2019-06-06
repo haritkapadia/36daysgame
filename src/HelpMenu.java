@@ -22,12 +22,14 @@ import javafx.util.Duration;
 import javafx.event.*;
 
 /**
- * A pane that displays the logo fading in and out
+ * A pane that displays the in game instructions
  * 
  * Variables:
  * 
- * scene      -A Scene object that is a reference to the main scene
- * ft         -A FadeTransition object that contains the fade transition for the logo
+ * helpPane      -Contains the in game instructions
+ * instructionsColor  -Stores the color of the text in the in game instructions
+ * nextButton    -When clicked it will display the next page of instructions
+ * instructions  -Stores each page of in game instructions
  *
  * @author Harit Kapadia, Jack Farley
  */
@@ -38,10 +40,7 @@ public class HelpMenu extends StackPane {
         private HashMap<String, VBox> instructions;
         
         /**
-         * The pane constructor.
-         * The pane is initialized with an image and an animation that causes the image to fade in and out
-         * @param scene The window on which the pane will be displayed.
-         * @param stage The stage on which the scene is displayed
+         * The class constructor, sets up the StackPane
          */
         HelpMenu () {
                 instructions = new HashMap<String, VBox>();
@@ -59,6 +58,9 @@ public class HelpMenu extends StackPane {
                 getStylesheets().add("gamestylesheet.css");
         }
         
+        /**
+         * Removes the current page of instructions and adds a new one
+         */
         public void setInstr(String next){
                 getChildren().clear();
                 getChildren().add(instructions.get(next));
@@ -69,6 +71,9 @@ public class HelpMenu extends StackPane {
                 }
         }
         
+        /**
+         * Initializes the instructions HashMap
+         */
         private void initInstructions(){
                 instructions.put("First Instructions", new VBox(){{
                         setAlignment(Pos.TOP_CENTER);

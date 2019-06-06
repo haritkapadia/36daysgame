@@ -17,6 +17,13 @@ public class ItemFlint extends Item {
         
         /**
          * Overrides the abstract method use in the Item class
+         * 
+         * @param e is the Entity that is using the item
+         * @param w is the World where the entity is
+         * @param x is the x-coordinate of the mouse
+         * @param y is the y-coordinate of the mouse
+         * @param z is the z coordinate of the mouse
+         * 
          */
         public boolean use(Entity e, World w, double x, double y, double z) {
                 if (w.getBlock((int)x, (int)y, (int)z)!= null && w.getBlock((int)x,(int)y,(int)z).equals(BlockKey.KNIFE)){

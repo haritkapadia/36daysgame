@@ -24,6 +24,13 @@ public class ItemKnife extends Item {
         
         /**
          * Makes the entity use the knife, but since they aren't using it on anything they damage themselves
+         * @returns true if the item was used succesfully
+         * 
+         * @param e is the entity that uses the item
+         * @param w is the World in which the entity is located
+         * @param x is the x coordinate of the mouse
+         * @param y is the y coordinate of the mouse
+         * @param z is the z coordinate of the entity
          */
         public boolean use(Entity e, World w, double x, double y, double z) {
                 e.takeDamage(1);
