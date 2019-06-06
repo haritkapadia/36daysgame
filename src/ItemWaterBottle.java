@@ -15,9 +15,9 @@ public class ItemWaterBottle extends Item {
          * Class constructor, calls the Item constructor using the water bottle image file
          */
         ItemWaterBottle() {
-                super("Artwork/waterbottle.png", "Water Bottle");
+                super("Artwork/emptywaterbottle.png", "Water Bottle");
                 amountRemaining = 0;
-                MAX_AMOUNT = 100;
+                MAX_AMOUNT = 10;
         }
         
         /**
@@ -38,7 +38,9 @@ public class ItemWaterBottle extends Item {
          * Updates the water bottle image
          */
         public void updateWaterBottle(){
-                if (amountRemaining == 0)
+                if (amountRemaining > 0){
+                        setImage("Artwork/waterbottle.png");
+                }else if (amountRemaining == 0)
                         setImage("Artwork/emptywaterbottle.png");
         }
         
@@ -53,10 +55,16 @@ public class ItemWaterBottle extends Item {
          * @param z is the z coordinate of the entity
          */
         public boolean use(Entity e, World w, double x, double y, double z) {
-                if(amountRemaining>0){
+                if (w.getBlock((int)x, (int)y, (int)z)!= null && w.getBlock((int)x,(int)y,(int)z).equals(BlockKey.WATER)){
+                        amountRemaining = MAX_AMOUNT;
+                        w.setBlockUnsafe((int)x, (int)y, (int)z, null);
+                        synchronized(this) {
+                                notifyAll();
+                        }
+                }else if(amountRemaining>0){
                         amountRemaining--;
-                        return true;
                 }
-                return false;
+                updateWaterBottle();
+                return true;
         }
 }

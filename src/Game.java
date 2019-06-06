@@ -290,6 +290,11 @@ public class Game extends AnimationTimer {
          */
         public void handle(long time) {
                 processInput(time);
+                
+                if (player.getHealth() <= 0){
+                        gamePane.getChildren().add(new EndScreen(scene, this, false));
+                        pause();
+                }
                 health.setProgress((double)player.getHealth() / player.getMaximumHealth());
                 hunger.setProgress((double)player.getHunger()/player.getMaxHunger());
                 exposure.setProgress((double)player.getExposure()/player.getMaxExposure());

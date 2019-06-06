@@ -27,40 +27,36 @@ import javafx.event.*;
  * Variables:
  * 
  * scene      -A Scene object that is a reference to the main scene
- * pauseMenu      -Stores a reference to this object
  *
  * @author Harit Kapadia, Jack Farley
  */
-public class PauseMenu extends VBox {
+public class EndScreen extends VBox {
         private Scene scene;
-        PauseMenu pauseMenu;
         
         /**
          * The pane constructor.
-         * The pane is initialized with an exit button and a resume button
+         * The pane is initialized with text and an exit button
          * @param scene The window on which the pane will be displayed.
          * @param stage The stage on which the scene is displayed
          * @param game The Game object that the pause menu pauses
-         * 
-         * 
          */
-        PauseMenu (Scene scene, Stage stage, Game game) {
+        EndScreen (Scene scene, Game game, boolean win) {
                 setAlignment(Pos.CENTER);
-                setSpacing(30);
-                pauseMenu = this;
+                setSpacing(30);             
+                
+                if (win == false){
+                        setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0.7), CornerRadii.EMPTY, Insets.EMPTY)));
+                        getChildren().add(new Label("YOU DIE :("){{
+                                setStyle("-fx-font-size: 50px;");
+                        }});
+                }
                 
                 getChildren().add(new Button("Exit"){{
                         setOnAction(e -> {
                                 Main.setPane(scene, "Main Menu");
                                 Main.settingsMenu.removeGameButtons();
                         });
-                }});
-                
-                getChildren().add(new Button("Resume"){{
-                        setOnAction(e ->{
-                                game.resume(pauseMenu);
-                        });
-                }});                           
+                }});                      
                 
                 getStylesheets().add("stylesheet.css");
                 relocate(scene.getWidth()-150,50);

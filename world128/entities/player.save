@@ -1,8 +1,8 @@
 id	player.save
-inventory	KNIFE, WATERBOTTLE, null, null, null, null, null, null, null, null, null, null, null, null, null
-position	906.5, -181.5
+inventory	KNIFE, WATERBOTTLE, FLINTSTEEL, null, null, null, null, null, null, null, null, null, null, null, null
+position	903.5, -175.5
 radius	0.5
-facing	DOWN
+facing	LEFT
 health	18
 MAX_HEALTH	20
 stomachFullness	20
