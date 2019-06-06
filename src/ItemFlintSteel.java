@@ -41,6 +41,6 @@ public class ItemFlintSteel extends Item {
                         }
                         return true;
                 }
-                return true;
+                return false
         }
 }

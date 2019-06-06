@@ -73,6 +73,7 @@ public class Game extends AnimationTimer {
         public SurvivalGuidePane gameSurvivalGuide;
         long prevTime = -1;
         
+        
         /**
          * The game constructor, sets up the graphics and starts the game
          * 
@@ -84,7 +85,10 @@ public class Game extends AnimationTimer {
          *
          */  
         Game(Scene scene) {
+                GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
                 ToggleButton tb;
+                int screenWidth = gd.getDisplayMode().getWidth();
+                int screenHeight = gd.getDisplayMode().getHeight();
                 questUI = new VBox();
                 gameSurvivalGuide = new SurvivalGuidePane(scene, this);
                 helpMenu = new HelpMenu();
@@ -112,12 +116,12 @@ public class Game extends AnimationTimer {
                                 setPadding(new Insets(50,30,30,30));
                                 setSpacing(10);
                                 getChildren().add(new HBox(){{
-                                        getChildren().add(new Label("Health:     "));
+                                        getChildren().add(new Label("Health:    "));
                                         setId("redbar");
                                         getChildren().add(health);
                                 }});
                                 getChildren().add(new HBox(){{
-                                        getChildren().add(new Label("Hunger:    "));
+                                        getChildren().add(new Label("Hunger:   "));
                                         setId("greenbar");
                                         getChildren().add(hunger);
                                 }});
@@ -162,8 +166,9 @@ public class Game extends AnimationTimer {
                 
                 
                 
-                questManager = new QuestManager(questUI);
+                questManager = new QuestManager(world, questUI);
                 initialiseQuests();
+                questManager.resumeQuests();
         }
         
         public StackPane getPane() {
@@ -255,21 +260,21 @@ public class Game extends AnimationTimer {
                         if(player.getHunger()<player.getMaxHunger()/2)
                                 player.takeDamage(1);
                 }
-                if(time% 20000 == 0){
-                        if (world.getLightLevel()<0.4&& player.getExposure()>3)
+                if(time % 30000 == 0){
+                        if (world.getLightLevel()<0.4)
                                 player.lowerExposure(1);
-                        if(player.getExposure()<player.getMaxExposure()*0.5)
-                                player.takeDamage(1);
                 }
                 if (time % 50000 == 0){
                         player.eatFood(-1);
                         if(player.getHunger()>player.getMaxHunger()*0.8)
                                 player.takeDamage(-1);
+                        if(player.getExposure()<player.getMaxExposure()*0.4)
+                                player.takeDamage(1);
                 }
                 if (time % 1000 ==0){
                         try{
-                        for (Fire fire : world.fires)
-                                fire.updateFire();
+                                for (Fire fire : world.fires)
+                                        fire.updateFire();
                         }catch(ConcurrentModificationException e){}
                 }
         }
@@ -360,7 +365,7 @@ public class Game extends AnimationTimer {
                                                  ResourceManager.getItem(ItemKey.FLINT),
                                                  new Quest[]{makeAFire},
                                                  "Make FlintSteel",
-                                                 helpMenu);                                                         
+                                                 helpMenu);
                 
                 Quest findTheFlint = new Quest (questManager,
                                                 "Find the Flint",
@@ -419,7 +424,7 @@ public class Game extends AnimationTimer {
                 Quest pickUpSticks = new Quest(questManager,
                                                "Pick Up Sticks",
                                                "Break up ten wood items",
-                                               10, 
+                                               10,
                                                ResourceManager.getBlock(BlockKey.WOOD),
                                                new Quest[]{pickABouquet1},
                                                null,
@@ -434,12 +439,8 @@ public class Game extends AnimationTimer {
                                                "Welcome Message",
                                                helpMenu);
                 
-                questManager.addQuest(breakingHogweed);
-                questManager.addQuest(touchingPoison);
-                questManager.addQuest(pickUpSticks);
                 questManager.addQuest(breakingTree);
-                //questManager.startQuest(breakingTree);
-                questManager.startQuest(findTheFlint);
+                questManager.startQuest(breakingTree);
         }
         
         public Scene getScene() {
