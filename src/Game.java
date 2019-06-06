@@ -404,11 +404,12 @@ public class Game extends AnimationTimer {
 					       "Welcome Message",
 					       helpMenu);
 
-		questManager.addQuest(breakingHogweed);
-		questManager.addQuest(touchingPoison);
-		questManager.addQuest(pickUpSticks);
-		questManager.addQuest(breakingTree);
+		// questManager.addQuest(breakingHogweed);
+		// questManager.addQuest(touchingPoison);
+		// questManager.addQuest(pickUpSticks);
+		// questManager.addQuest(breakingTree);
 		//questManager.startQuest(breakingTree);
+		questManager.addQuest(findTheFlint);
 		questManager.startQuest(findTheFlint);
 	}
 

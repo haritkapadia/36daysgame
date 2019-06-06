@@ -154,10 +154,6 @@ public class Quest extends Thread {
 		return stepsTaken;
 	}
 
-	public StackPane getQuestPane() {
-		return questPane;
-	}
-
 	public HelpMenu getHelpMenu(){
 		return helpMenu;
 	}
