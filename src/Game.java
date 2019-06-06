@@ -381,7 +381,7 @@ public class Game extends AnimationTimer {
                                                "Find 3 ants",
                                                3,
                                                ResourceManager.getBlock(BlockKey.ANT),
-                                               new Quest[]{breakingHogweed},
+                                               new Quest[]{findTheFlint},
                                                "Finding Bugs",
                                                helpMenu);
                 

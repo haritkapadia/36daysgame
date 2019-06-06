@@ -119,8 +119,11 @@ public class QuestManager {
         }
         
         public void startQuest(Quest q) {
-                Platform.runLater(() -> ui.getChildren().add(q.getQuestPane()));
-                q.getHelpMenu().setInstr(q.getInstr());
+                Platform.runLater(() -> {
+                        ui.getChildren().add(q.getQuestPane());
+                        if(q.getInstr() != null)
+                                q.getHelpMenu().setInstr(q.getInstr());
+                });
                 q.start();
         }
 }
