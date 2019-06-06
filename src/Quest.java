@@ -20,6 +20,24 @@ import javafx.beans.property.*;
 import javafx.util.*;
 import java.util.*;
 
+/**
+ * This class creates a quest which is a set of instructions for the user to carry out
+ * 
+ * Variables:
+ * 
+ * questName     -Stores the name of the quest
+ * description   -Stores a description of what the user must do
+ * maxSteps      -Stores the amount of times the user must accomplish a task
+ * stepsTaken    -Stores the amount of times the user has accomplished the task
+ * progressBar   -Used to display the amount of progress for a given quest
+ * questPane     -The StackPane upon which the quests are displayed
+ * nextQuests    -An array of Quest objects that are to follow the quest
+ * waitOn        -The quest waits for this object to call the notifyAll method before marking a task as complete
+ * questManager  -The QuestManager object that manages all of the quests
+ * sequence      -The SequentialTransition object used to animate the questPane
+ * instr         -The name of the instructions that accompany the quest
+ * helpMenu      -A reference to the HelpMenu object that displays the instructions accompanying the quests
+ */
 public class Quest extends Thread {
         private String questName;
         private String description;
@@ -34,6 +52,17 @@ public class Quest extends Thread {
         private String instr;
         private HelpMenu helpMenu;
         
+        /**
+         * @returns Creates an animation of the text appearing on the screen
+         * @param str is the text that is to be animated
+         * @param text is the label upon which the text is displayed
+         * 
+         * Variables:
+         * 
+         * i             -An IntegerProperty object used to increment the frames
+         * timeLine      -A TimeLine object which stores the animation
+         * 
+         */
         private Timeline textAnimation (String str, Label text){
                 final IntegerProperty i = new SimpleIntegerProperty(0);
                 Timeline timeline = new Timeline();
@@ -51,6 +80,17 @@ public class Quest extends Thread {
                 return timeline;
         }
         
+        /**
+         * Class constructor used to initialize the quests
+         * @param questtManager is the QuestManager object that manages all of the quests
+         * @param questName is the name of the quest
+         * @param description is the set of instructions that the user must follow
+         * @param maxSteps is the amount of times that the user must accomplish a task
+         * @param waitOn is the object that will call notifyAll when the task has been accomplished
+         * @param nextQuests is an array that contains the quest which is to follow
+         * @param instr is the name of the instructions which accompany the quest
+         * @param helpMenu is the pane which displays the instructions that accompany the quest
+         */
         Quest(QuestManager questManager, String questName, String description, int maxSteps, Object waitOn, Quest[] nextQuests, String instr, HelpMenu helpMenu) {
                 sequence = new SequentialTransition();
                 this.questManager = questManager;
@@ -97,6 +137,9 @@ public class Quest extends Thread {
                 }};
         }
         
+        /**
+         * Continuously updates the quest as the user accomplishes the tasks
+         */
         public void run() {
                 questManager.updateCurrentQuest(this);
                 sequence.play();
@@ -129,35 +172,60 @@ public class Quest extends Thread {
                 
         }
         
+        /**
+         * Increments the stepsTaken variable by 1
+         */
         public void addStep() {
                 stepsTaken += 1;
                 // progressBar.setProgress((double)stepsTaken / maxSteps);
         }
         
+        /**
+         * @returns the name of the quest
+         */
         public String getQuestName() {
                 return questName;
         }
         
+        /**
+         * @returns the description of the quest
+         */
         public String getDescription() {
                 return description;
         }
         
+        /**
+         * @returns the name of the instructions which accompany the quest
+         */
         public String getInstr(){
                 return instr;
         }
         
+        /**
+         * @returns the number of times the user must accomplish a task
+         */
         public int getMaxSteps() {
                 return maxSteps;
         }
         
+        /**
+         * @returns the number of times the user has accomplished the task
+         */
         public int getStepsTaken() {
                 return stepsTaken;
         }
         
+        /**
+         * @returns the HelpMenu pane which displays the quest instructions
+         */
         public HelpMenu getHelpMenu(){
                 return helpMenu;
         }
         
+        /**
+         * Sets the number of times the user has accomplished the task
+         * @param i is the number of times that stepsTaken will be set to
+         */
         public void setStepsTaken(int i) {
                 // addStep();
                 synchronized(waitOn) {
@@ -167,6 +235,9 @@ public class Quest extends Thread {
                 }
         }
         
+        /**
+         * @returns the pane on which the quests are displayed
+         */
         public StackPane getQuestPane() {
                 return questPane;
         }

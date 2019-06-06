@@ -85,10 +85,7 @@ public class Game extends AnimationTimer {
          *
          */  
         Game(Scene scene) {
-                GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
                 ToggleButton tb;
-                int screenWidth = gd.getDisplayMode().getWidth();
-                int screenHeight = gd.getDisplayMode().getHeight();
                 questUI = new VBox();
                 gameSurvivalGuide = new SurvivalGuidePane(scene, this);
                 helpMenu = new HelpMenu();
@@ -171,10 +168,26 @@ public class Game extends AnimationTimer {
                 questManager.resumeQuests();
         }
         
+        /**
+         * @returns the StackPane that is used to display the game
+         */
         public StackPane getPane() {
                 return gamePane;
         }
         
+        /**
+         * Processes user input
+         * @param time the current in game time
+         * 
+         * Variables:
+         * 
+         * dt    -Stores the amout of time that has elapsed
+         * displacement -Expresses the desired displacement as a 2D vector
+         * p     -The coordinates of the block that the user clicked
+         * c     -The identity of the block that the user clicked
+         * b     -The identity of the block where the player is
+         * 
+         */
         private void processInput(long time) {
                 if(prevTime == -1) {
                         prevTime = time;
@@ -224,22 +237,35 @@ public class Game extends AnimationTimer {
                 prevPosition = Main.point2d(player.getPosition());
         }
         
+        /**
+         * Starts the stopwatch and the animation timer
+         */
         public void start() {
                 world.getStopwatch().start();
                 super.start();
         }
         
+        /**
+         * Pauses the stopwatch and stops the animation timer
+         */
         public void pause(){
                 world.getStopwatch().pause();
                 super.stop();
         }
         
+        /**
+         * Unpauses the stopwatch, starts the animation timer, and hides the pause menu
+         * @param pauseMenu is a reference to the Pause Menu VBox
+         */
         public void resume(PauseMenu pauseMenu){
                 world.getStopwatch().unpause();
                 super.start();
                 gamePane.getChildren().remove(pauseMenu);
         }
         
+        /**
+         * Unpauses the stopwatch and starts the animation timer
+         */
         public void resume(){
                 world.getStopwatch().unpause();
                 super.start();
@@ -250,6 +276,10 @@ public class Game extends AnimationTimer {
                 resume();
         }
         
+        /**
+         * Updates the game every cycle
+         * Redraws the screen, alters the player's stats, modifies the Fire objects
+         */
         public void handle(long time) {
                 processInput(time);
                 health.setProgress((double)player.getHealth() / player.getMaximumHealth());
@@ -279,6 +309,13 @@ public class Game extends AnimationTimer {
                 }
         }
         
+        /**
+         * Draws the screen using the Camera object
+         * 
+         * Variables:
+         * 
+         * -----------------------------------------------------------------------------------
+         */
         public void drawScreen() {
                 GraphicsContext g = canvas.getGraphicsContext2D();
                 Rectangle2D r = camera.getViewBounds(); // works as intended
@@ -335,10 +372,16 @@ public class Game extends AnimationTimer {
                 g.fillRect(0, 0, scene.getWidth(), scene.getHeight());
         }
         
+        /**
+         * Stops all quests
+         */
         public void killQuests() {
                 questManager.killQuests();
         }
         
+        /**
+         * Initializes the quest objects and starts the first quest
+         */
         private void initialiseQuests() {
                 
                 Quest breakingHogweed = new Quest(questManager,
@@ -443,14 +486,23 @@ public class Game extends AnimationTimer {
                 questManager.startQuest(breakingTree);
         }
         
+        /**
+         * @returns the Scene on which everything is drawn
+         */
         public Scene getScene() {
                 return scene;
         }
         
+        /**
+         * @returns the Camera object used to calculate what is and isn't on screen
+         */
         public Camera getCamera() {
                 return camera;
         }
         
+        /**
+         * @returns the QuestManager that is used to manage all of the quests
+         */
         public QuestManager getQuestManager() {
                 return questManager;
         }
