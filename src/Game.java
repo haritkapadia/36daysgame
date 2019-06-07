@@ -15,7 +15,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.scene.paint.*;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.effect.*;
@@ -74,6 +74,9 @@ public class Game extends AnimationTimer {
 	HelpMenu helpMenu;
 	public SurvivalGuidePane gameSurvivalGuide;
 	long prevTime = -1;
+	Runnable onWin;
+	Path worldPath;
+	int DAY_TRIGGER = 1;
 
 
 	/**
@@ -86,13 +89,15 @@ public class Game extends AnimationTimer {
 	 * tb     -Displays the in game instructions when clicked
 	 *
 	 */
-	Game(Scene scene) {
+	Game(Scene scene, Path worldPath, Runnable onWin) {
+		this.scene = scene;
+		this.onWin = onWin;
+		this.worldPath = worldPath;
 		ToggleButton tb;
 		questUI = new VBox();
 		gameSurvivalGuide = new SurvivalGuidePane(scene, this);
 		helpMenu = new HelpMenu();
-		this.scene = scene;
-		world = new World(128);
+		world = new World(128, worldPath);
 		if(world.getEntities().size() == 0) {
 			world.setPlayer(new Player(world, "player"));
 			world.getEntities().add(world.getPlayer());
@@ -175,7 +180,7 @@ public class Game extends AnimationTimer {
 
 
 
-		questManager = new QuestManager(world, questUI);
+		questManager = new QuestManager(world, questUI, worldPath);
 		initialiseQuests();
 		questManager.resumeQuests();
 	}
@@ -294,36 +299,27 @@ public class Game extends AnimationTimer {
 	 */
 	public void handle(long time) {
 		processInput(time);
-
+		List<Entity> _entities = new ArrayList<Entity>(world.getEntities());
+		for(Entity e : _entities)
+			e.exist();
+		for(ListIterator<Entity> i = world.getEntities().listIterator(); i.hasNext(); ) {
+			Entity e = i.next();
+			if(e.getHealth() <= 0)
+				i.remove();
+		}
 		if (player.getHealth() <= 0){
 			gamePane.getChildren().add(new EndScreen(scene, this, false));
 			pause();
 		}
+		// else if(!world.getWon() && world.getStopwatch().getElapsed() > DAY_TRIGGER * 1e9) {
+		//	gamePane.getChildren().add(new EndScreen(scene, this, true));
+		//	world.win();
+		//	onWin.run();
+		// }
 		health.setProgress((double)player.getHealth() / player.getMaximumHealth());
-		hunger.setProgress((double)player.getHunger()/player.getMaxHunger());
-		exposure.setProgress((double)player.getExposure()/player.getMaxExposure());
+		hunger.setProgress((double)player.getHunger() / player.getMaxHunger());
+		exposure.setProgress((double)player.getExposure() / player.getMaxExposure());
 		drawScreen();
-		if (time % 10000 == 0){
-			if(player.getHunger()<player.getMaxHunger()/2)
-				player.takeDamage(1);
-		}
-		if(time % 30000 == 0){
-			if (world.getLightLevel()<0.4)
-				player.lowerExposure(1);
-		}
-		if (time % 50000 == 0){
-			player.eatFood(-1);
-			if(player.getHunger()>player.getMaxHunger()*0.8)
-				player.takeDamage(-1);
-			if(player.getExposure()<player.getMaxExposure()*0.4)
-				player.takeDamage(1);
-		}
-		if (time % 1000 ==0){
-			try{
-				for (Fire fire : world.fires)
-					fire.updateFire();
-			}catch(ConcurrentModificationException e){}
-		}
 	}
 
 	/**
@@ -501,6 +497,10 @@ public class Game extends AnimationTimer {
 
 		questManager.addQuest(breakingTree);
 		questManager.startQuest(breakingTree);
+	}
+
+	public World getWorld() {
+		return world;
 	}
 
 	/**

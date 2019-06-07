@@ -44,32 +44,18 @@ public class World {
 	Stopwatch s;
 	long seed;
 	Player player;
-	ArrayList<Fire> fires;
+	boolean won;
+	Path worldPath;
 
-	World() {
-		fires = new ArrayList<Fire>();
-		chunks = new HashMap<Point, Chunk>();
-		entities = new LinkedList<Entity>();
-		seed = 128;
-		s = new Stopwatch(0);
-		try {
-			if(!Files.isDirectory(Paths.get("world" + seed)))
-				new File("world" + seed + "/").mkdirs();
-		}
-		catch (Throwable e) {
-			System.out.println("Error " + e.getMessage());
-			e.printStackTrace();
-		}
-	}
-
-	World(long seed) {
+	World(long seed, Path worldPath) {
 		this.seed = seed;
-		fires = new ArrayList<Fire>();
+		this.worldPath = worldPath;
 		chunks = new HashMap<Point, Chunk>();
 		entities = new LinkedList<Entity>();
 		try {
-			if(!Files.isDirectory(Paths.get("world" + seed)))
-				new File("world" + seed + "/").mkdirs();
+			if(!Files.isDirectory(worldPath))
+				worldPath.toFile().mkdirs();
+			won = Paths.get(worldPath.toString(), "won").toFile().exists();
 		}
 		catch (Throwable e) {
 			System.out.println("Error " + e.getMessage());
@@ -77,34 +63,21 @@ public class World {
 		}
 		try {
 			try {
-				s = new Stopwatch(Long.parseLong(new String(Files.readAllBytes(Paths.get("world" + seed + "/offset")))));
+				s = new Stopwatch(Long.parseLong(new String(Files.readAllBytes(Paths.get(worldPath.toString(), "offset")))));
 			}
 			catch (NoSuchFileException e) {
 				s = new Stopwatch(0);
 			}
 
-			File[] _entities = new File("world" + seed + "/entities").listFiles();
-			System.out.println("Entities: " + _entities.length);
-
-			System.out.println(_entities);
+			File[] _entities = Paths.get(worldPath.toString(), "entities").toFile().listFiles();
+			if(_entities == null)
+				_entities = new File[0];
 
 			for(File f : _entities) {
-				// String _e = new String(Files.readAllBytes(f.toPath()));
-				// Entity __e = new Entity(this, _e);
-				// System.out.println("__e.getID " + __e.getID());
-
-				// if(__e.getID() != null && __e.getID().trim().equals("player.save")) {
-				//         player = new Player(this, _e);
-				//         entities.add(player);
-				//         System.out.println("Added player");
-
-				// } else {
-				//         entities.add(__e);
-				// }
 				Entity _e = Entity.readEntity(this, f);
-				if(_e.getID().equals("player.save"))
+				if(_e.getID().equals("player"))
 					player = (Player)_e;
-				entities.add(_e);
+				entities.add(Integer.parseInt(f.getName()), _e);
 				f.delete();
 			}
 		}
@@ -116,11 +89,11 @@ public class World {
 
 	public void write() {
 		try {
-			Files.write(Paths.get("world" + seed + "/offset"), ("" + s.getElapsed()).getBytes("UTF-8"));
-			if(!Files.isDirectory(Paths.get("world" + seed + "/entities")))
-				new File("world" + seed + "/entities").mkdirs();
+			Files.write(Paths.get(worldPath.toString(), "offset"), ("" + s.getElapsed()).getBytes("UTF-8"));
+			if(!Files.isDirectory(Paths.get(worldPath.toString(), "entities")))
+				Paths.get(worldPath.toString(), "entities").toFile().mkdirs();
 			for(int i = 0; i < entities.size(); i++)
-				entities.get(i).writeEntity(new File("world" + seed + "/entities/" + i));
+				entities.get(i).writeEntity(Paths.get(worldPath.toString(), "entities", i + "").toFile());
 				// Files.write(Paths.get("world" + seed + "/entities/" + e.getID()), Arrays.asList(new String[]{e.getAsString()}), Charset.forName("UTF-8"));
 		}
 		catch (Throwable e) {
@@ -128,7 +101,10 @@ public class World {
 			e.printStackTrace();
 		}
 		writeChunks();
+	}
 
+	public void startFire(double x, double y) {
+		entities.add(new EntityFire(this, (int)x, (int)y));
 	}
 
 	 public void generateChunk(Point p) {
@@ -153,8 +129,8 @@ public class World {
 
 	public Chunk getChunk(int x, int y) {
 		if(chunks.get(new Point(x, y)) == null) {
-			if(Files.exists(Paths.get("world" + seed + "/" + ((((long)x) << 32) | ((long)y & 0xffffffffL)) + ".chunk")))
-				putChunk(new Point(x, y), Chunk.readChunk(new File("world" + seed + "/" + ((((long)x) << 32) | ((long)y & 0xffffffffL)))));
+			if(Files.exists(Paths.get(worldPath.toString(), ((((long)x) << 32) | ((long)y & 0xffffffffL)) + ".chunk")))
+				putChunk(new Point(x, y), Chunk.readChunk(Paths.get(worldPath.toString(), ((((long)x) << 32) | ((long)y & 0xffffffffL)) + ".chunk").toFile()));
 			else
 				generateChunk(new Point(x, y));
 		}
@@ -167,7 +143,7 @@ public class World {
 
 	public void writeChunks() {
 		for(Map.Entry<Point, Chunk> e : chunks.entrySet())
-			e.getValue().writeChunk(new File("world" + seed + "/" + ((((long)e.getKey().getX()) << 32) | ((long)e.getKey().getY() & 0xffffffffL))));
+			e.getValue().writeChunk(Paths.get(worldPath.toString(), ((((long)e.getKey().getX()) << 32) | ((long)e.getKey().getY() & 0xffffffffL)) + ".chunk").toFile());
 	}
 
 	public BlockKey getBlock(int x, int y, int z) {
@@ -232,6 +208,10 @@ public class World {
 		entities.add(e);
 	}
 
+	public void removeEntity(Entity e) {
+		entities.remove(e);
+	}
+
 	public Stopwatch getStopwatch() {
 		return s;
 	}
@@ -259,6 +239,22 @@ public class World {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	public boolean getWon() {
+		return won;
+	}
+
+	public void win() {
+		try {
+			Paths.get(worldPath.toString(), "won").toFile().createNewFile();
+			won = true;
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
+
 	}
 
 	public static Point blockCoordinate(Point2D p) {

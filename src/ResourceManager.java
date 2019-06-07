@@ -41,6 +41,12 @@ public final class ResourceManager {
 		return playerSprites.get(d)[frame];
 	}
 
+	private static final Image fireSprite = new Image("Artwork/fire_small.png");
+
+	public static Image getFireSprite() {
+		return fireSprite;
+	}
+
 	private static final EnumMap<BlockKey, Block> blocks = new EnumMap<BlockKey, Block>(BlockKey.class){{
 		put(BlockKey.GROUND, new BlockGround());
 		put(BlockKey.WATER, new BlockWater());

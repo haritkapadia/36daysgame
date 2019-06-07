@@ -94,6 +94,27 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 		facing = Direction.DOWN;
 	}
 
+
+	public Entity(String id, ItemKey[] inventory, double x, double y, double radius, Direction facing, int health, int MAX_HEALTH, int hunger, int MAX_HUNGER, int exposure, int MAX_EXPOSURE, int thirst, int MAX_THIRST, World world, double SPEED) {
+		this.id = id;
+		this.inventory = inventory;
+		this.x = x;
+		this.y = y;
+		this.radius = radius;
+		this.facing = facing;
+		this.health = health;
+		this.MAX_HEALTH = MAX_HEALTH;
+		this.hunger = hunger;
+		this.MAX_HUNGER = MAX_HUNGER;
+		this.exposure = exposure;
+		this.MAX_EXPOSURE = MAX_EXPOSURE;
+		this.thirst = thirst;
+		this.MAX_THIRST = MAX_THIRST;
+		this.world = world;
+		this.SPEED = SPEED;
+	}
+
+
 	public static Entity readEntity(World world, File file) {
 		Entity out = null;
 		try {
@@ -246,6 +267,8 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 		return MAX_HUNGER;
 	}
 
+	public abstract void exist();
+
 	/**
 	 * Changes the hunger by a given amount
 	 * @param foodWorth is the nutritional value of what has been eaten
@@ -255,6 +278,8 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 			hunger += foodWorth;
 		else
 			hunger = MAX_HUNGER;
+		if(hunger < 0)
+			hunger = 0;
 	}
 
 	/**
@@ -266,6 +291,8 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 			health -= damage;
 		else
 			health = MAX_HEALTH;
+		if(health < 0)
+			health = 0;
 	}
 
 	/**
@@ -277,6 +304,12 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 			exposure -= n;
 		else
 			exposure = MAX_EXPOSURE;
+		if(exposure < 0)
+			exposure = 0;
+	}
+
+	public void setExposure(int exposure) {
+		this.exposure = exposure;
 	}
 
 	/**

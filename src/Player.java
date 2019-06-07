@@ -18,36 +18,22 @@ import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.animation.*;
 
-public class Player extends Entity {
+public class Player extends Entity implements java.io.Serializable {
 	transient Image image;
 	transient InventoryPane inventoryPane;
+	long healthWait;
+	long hungerWait;
+	long exposureWait;
+	long prevElapsed;
 
 	Player(World world, String s) {
 		super(world);
 		id = s;
-
-		// try {
-		//         sprites = new EnumMap<Direction, Image[]>(Direction.class){{
-		//                 for(Direction d : Direction.values()) {
-		//                         Image[] images = new Image[3];
-		//                         System.out.print(d + "\t");
-		//                         for(int i = 0; i < images.length; i++) {
-		//                                 images[i] = new Image("Characters/sprite" + (i + 1 + d.ordinal() * 3) + ".png");
-		//                                 System.out.print((i + 1 + d.ordinal() * 3) + " ");
-
-		//                         }
-		//                         System.out.println();
-
-		//                         put(d, images);
-		//                 }
-		//         }};
-		// } catch(Exception e) {
-		//         e.printStackTrace();
-		// }
-
+		inventory[0] = ItemKey.KNIFE;
 		image = ResourceManager.getPlayerSprite(Direction.DOWN, 2);
 		setCycleCount(Animation.INDEFINITE);
 		setCycleDuration(new Duration(300));
+		prevElapsed = world.getStopwatch().getElapsed();
 	}
 
 
@@ -63,12 +49,34 @@ public class Player extends Entity {
 		super.stop();
 	}
 
-	public void destroy(int x, int y, int z) {
-		world.destroyBlock(x, y, z);
+	public void exist() {
+		long now = world.getStopwatch().getElapsed();
+		healthWait += now - prevElapsed;
+		exposureWait += now - prevElapsed;
+		hungerWait += now - prevElapsed;
+		prevElapsed = now;
+		if(healthWait >= 10e9) {
+			if(getHunger() < getMaxHunger()/2)
+				takeDamage(1);
+			healthWait -= (long)10e9;
+		}
+		if(exposureWait >= 1e9) {
+			if (world.getLightLevel() <= 0.4)
+				lowerExposure(1);
+			if(getExposure() < getMaxExposure() * 0.4)
+				takeDamage(1);
+			exposureWait -= (long)1e9;
+		}
+		if(hungerWait >= 20e9) {
+			eatFood(-1);
+			if(getHunger() > getMaxHunger() * 0.8)
+				takeDamage(-1);
+			hungerWait -= (long)20e9;
+		}
 	}
 
-	public String getID() {
-		return "player.save";
+	public void destroy(int x, int y, int z) {
+		world.destroyBlock(x, y, z);
 	}
 
 	public void move(Point2D displacement) {
