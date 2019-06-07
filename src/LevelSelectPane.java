@@ -14,6 +14,10 @@ import javafx.scene.paint.*;
 import javafx.scene.shape.*;
 import javafx.stage.*;
 import javafx.geometry.*;
+import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.charset.*;
 
 /**
  * A pane allowing the selection of the playing of three levels.
@@ -36,9 +40,9 @@ public class LevelSelectPane extends VBox {
 			setId("title");
 		}});
 		getChildren().add(new HBox(){{
-			getChildren().add(new LevelPane(scene, "Deficiency", "Knowledge is wealth.", true, stage){{setAlignment(Pos.TOP_CENTER);}});
-			getChildren().add(new LevelPane(scene, "Panic", "Stop and smell the roses.", false, stage){{setAlignment(Pos.TOP_CENTER);}});
-			getChildren().add(new LevelPane(scene, "Escape", "Stay for a while.", false, stage){{setAlignment(Pos.TOP_CENTER);}});
+			getChildren().add(new LevelPane(scene, "Deficiency", "Panic", "Knowledge is wealth.", true, stage){{setAlignment(Pos.TOP_CENTER);}});
+			getChildren().add(new LevelPane(scene, "Panic", "Escape", "Stop and smell the roses.", true, stage){{setAlignment(Pos.TOP_CENTER);}});
+			getChildren().add(new LevelPane(scene, "Escape", null, "Stay for a while.", true, stage){{setAlignment(Pos.TOP_CENTER);}});
 			setAlignment(Pos.CENTER);
 			setPadding(new Insets(0, 0, 0, -50));
 			setSpacing(50);
@@ -76,17 +80,29 @@ class LevelPane extends VBox {
 	 * @param description The description of the level.
 	 * @param playable The state of playability of the level.
 	 */
-	LevelPane(Scene scene, String name, String description, boolean playable, Stage stage) {
+	LevelPane(Scene scene, String name, String nextName, String description, boolean playable, Stage stage) {
 		this.scene = scene;
 		getChildren().add(new Label(name){{setId("heading");}});
 		getChildren().add(new Label(description));
 		setSpacing(10);
 		if(playable)
 			getChildren().add(new Button("Enter"){{
-			setOnAction(e -> {
-				Main.setPane(scene, new Game(scene){{start();}}.getPane());
-			});
-		}});
+				setOnAction(e -> {
+						Main.setPane(scene, new Game(scene, Paths.get("worlds", "128", name), () -> {
+									try {
+										if(nextName != null)
+											Runtime.getRuntime().exec("robocopy world\\128\\" + name + " world\\128\\" + nextName + "/s /e");
+									}
+									catch (Throwable qwer) {
+										System.out.println("Error " + qwer.getMessage());
+										qwer.printStackTrace();
+									}
+
+						}){{
+							start();
+						}}.getPane());
+					});
+			}});
 		else
 			getChildren().add(new Label("Locked"){{setPadding(new Insets(5,0,0,0));}});
 	}
