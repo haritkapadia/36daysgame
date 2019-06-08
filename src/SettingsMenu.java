@@ -64,10 +64,6 @@ public class SettingsMenu extends StackPane {
 				//setSelected(Main.muteControl.getValue());
 				setOnAction(e -> Main.muteControl.setValue(!Main.muteControl.getValue()));
 			}});
-			getChildren().add(new Button(){{
-				setId("exitbutton");
-				setOnAction(e -> Main.setPane(scene, "Main Menu"));
-			}});
 			setSpacing(30);
 		}};
 	}
@@ -91,8 +87,13 @@ public class SettingsMenu extends StackPane {
 			setId("guidebutton");
 			setOnAction (e -> {
 				game.pause();
-				game.gameSurvivalGuide.toFront();
-				game.gameSurvivalGuide.setVisible(true);
+				gamePane.getChildren().add(new VBox(new SurvivalGuidePane(menuScene, game)){{
+					setId("ingameguide");
+					setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0.7), CornerRadii.EMPTY, Insets.EMPTY)));
+					setPadding(new Insets(50, 50, 50, 50));
+				}});
+				// game.gameSurvivalGuide.toFront();
+				// game.gameSurvivalGuide.setVisible(true);
 			});
 		}};
 		speedButton = new ToggleButton(){{

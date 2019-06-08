@@ -71,7 +71,10 @@ public final class ResourceManager {
 		put(BlockKey.ANT, new BlockAnt());
 		put(BlockKey.GRASSHOPPER, new BlockGrasshopper());
 		put(BlockKey.WORM, new BlockWorm());
+		put(BlockKey.CATTAIL, new BlockCattail());
+		put(BlockKey.BED, new BlockBed());
 		put(BlockKey.FIRE, new BlockFire());
+		put(BlockKey.PALISADE, new BlockPalisade());
 	}};
 
 	private static final EnumMap<ItemKey, Item> items = new EnumMap<ItemKey, Item>(ItemKey.class){{
@@ -94,6 +97,7 @@ public final class ResourceManager {
 		put(ItemKey.ANT, new ItemAnt());
 		put(ItemKey.GRASSHOPPER, new ItemGrasshopper());
 		put(ItemKey.WORM, new ItemWorm());
+		put(ItemKey.CATTAIL, new ItemCattail());
 		put(ItemKey.FLINTSTEEL, new ItemFlintSteel());
 		put(ItemKey.WATERBOTTLE, new ItemWaterBottle());
 	}};

@@ -75,6 +75,9 @@ public class Main extends Application {
 		return new Point2D(p.getX(), p.getY());
 	}
 
+	public static Parent getPane(String key) {
+		return panes.get(key);
+	}
 
 
 
@@ -184,5 +187,4 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch();
 	}
-
 }

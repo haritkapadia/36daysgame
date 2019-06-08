@@ -167,12 +167,6 @@ public class InputManager {
 	 */
 	public void keyPressed(KeyEvent e) {
 		Point2D mousePosition = Main.toPoint2D(World.blockCoordinate(screenToWorldCoordinate(mouseX, mouseY)));
-		if(e.getCode() == KeyCode.P) {
-			game.killQuests();
-			game.stop();
-			Main.setPane(game.getScene(), "Main Menu");
-			world.write();
-		}
 		if(!pressed.get(KeyCode.Q) && e.getCode() == KeyCode.Q) {
 			if(pressed.get(KeyCode.CONTROL))
 				player.dropItem(0);

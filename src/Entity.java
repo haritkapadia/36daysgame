@@ -57,6 +57,7 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 	public static final double STOMACH_REDUCTION_TIME = 1;
 	protected transient World world = null;
 	protected double SPEED;
+	protected boolean invincible = false;
 	long damageWait;
 	long prevElapsed;
 
@@ -269,6 +270,10 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 		return MAX_HUNGER;
 	}
 
+	public void setInvincible(boolean invincible) {
+		this.invincible = invincible;
+	}
+
 	public abstract void exist();
 
 	/**
@@ -276,12 +281,14 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 	 * @param foodWorth is the nutritional value of what has been eaten
 	 */
 	public void eatFood(int foodWorth){
-		if(hunger + foodWorth <= MAX_HUNGER)
-			hunger += foodWorth;
-		else
-			hunger = MAX_HUNGER;
-		if(hunger < 0)
-			hunger = 0;
+		if(!invincible) {
+			if(hunger + foodWorth <= MAX_HUNGER)
+				hunger += foodWorth;
+			else
+				hunger = MAX_HUNGER;
+			if(hunger < 0)
+				hunger = 0;
+		}
 	}
 
 	/**
@@ -289,12 +296,14 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 	 * @param foodWorth is the nutritional value of what has been eaten
 	 */
 	public void drink(int drunk){
-		if(thirst + drunk <= MAX_THIRST)
-			thirst += drunk;
-		else
-			thirst = MAX_THIRST;
-		if(thirst < 0)
-			thirst = 0;
+		if(!invincible) {
+			if(thirst + drunk <= MAX_THIRST)
+				thirst += drunk;
+			else
+				thirst = MAX_THIRST;
+			if(thirst < 0)
+				thirst = 0;
+		}
 	}
 
 	/**
@@ -306,12 +315,14 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 		damageWait += now - prevElapsed;
 		prevElapsed = now;
 		if(damageWait >= 2e8) {
-			if (health - damage <= MAX_HEALTH)
-				health -= damage;
-			else
-				health = MAX_HEALTH;
-			if(health < 0)
-				health = 0;
+			if(!invincible) {
+				if (health - damage <= MAX_HEALTH)
+					health -= damage;
+				else
+					health = MAX_HEALTH;
+				if(health < 0)
+					health = 0;
+			}
 			damageWait = 0;
 		}
 	}
@@ -321,12 +332,14 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 	 * @param n the amount that the exposure is to be changed by
 	 */
 	public void lowerExposure (int n){
-		if (exposure - n <= MAX_EXPOSURE)
-			exposure -= n;
-		else
-			exposure = MAX_EXPOSURE;
-		if(exposure < 0)
-			exposure = 0;
+		if(!invincible) {
+			if (exposure - n <= MAX_EXPOSURE)
+				exposure -= n;
+			else
+				exposure = MAX_EXPOSURE;
+			if(exposure < 0)
+				exposure = 0;
+		}
 	}
 
 	public void setExposure(int exposure) {
@@ -431,94 +444,4 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 		}
 		return null;
 	}
-
-	// /**
-	//  * @returns the entity represented as a string to be saved to a file
-	//  */
-	// public String getAsString() {
-	//	String out = "";
-	//	String inventoryString = Arrays.toString(inventory);
-	//	out += "id\t" + id + "\n";
-	//	out += "inventory\t" + inventoryString.substring(1, inventoryString.length() - 1) + "\n";
-	//	out += "position\t" + position.getX() + ", " + position.getY() + "\n";
-	//	out += "radius\t" + radius + "\n";
-	//	out += "facing\t" + facing + "\n";
-	//	out += "health\t" + health + "\n";
-	//	out += "MAX_HEALTH\t" + MAX_HEALTH + "\n";
-	//	out += "stomachFullness\t" + hunger + "\n";
-	//	out += "MAX_STOMACH\t" + MAX_HUNGER + "\n";
-	//	out += "exposure\t"+exposure + "\n";
-	//	out += "MAX_EXPOSURE\t" + MAX_EXPOSURE + "\n";
-	//	out += "thirst\t"+thirst+"\n";
-	//	out += "MAX_THIRST\t"+MAX_THIRST+"\n";
-	//	out += "SPEED\t" + SPEED + "\n";
-	//	return out;
-	// }
-
-	// /**
-	//  * Constructor used to create an entity and load its stats from a file
-	//  * @param world is the game world
-	//  * @param s is the Sting object containing the entity's information
-	//  * @see getAsString()
-	//  */
-	// Entity(World world, String s) {
-	//	this.world = world;
-	//	inventory = new ItemKey[15];
-	//	String[] lines = s.split("\n");
-	//	for(String l : lines) {
-	//		final String[] L = l.split("\t");
-	//		if(L[0].equals("id")) {
-	//			id = L[1];
-	//		} else if(L[0].equals("inventory")) {
-	//			String[] items = L[1].split(", ");
-	//			for(int i = 0; i < items.length; i++) {
-	//				if(items[i].trim().equals("null")){
-	//					inventory[i] = null;
-	//				}
-	//				else{
-	//					inventory[i] = ItemKey.valueOf(items[i].trim());
-	//				}
-	//			}
-	//		} else if(L[0].equals("position")) {
-	//			String[] coordinates = L[1].split(", ");
-	//			position = new Point2D(Double.parseDouble(coordinates[0]), Double.parseDouble(coordinates[1]));
-	//		} else if(L[0].equals("radius")) {
-	//			radius = Double.parseDouble(L[1]);
-	//		} else if(L[0].equals("facing")) {
-	//			facing = Direction.valueOf(L[1].trim());
-	//		} else if(L[0].equals("health")) {
-	//			health = Integer.parseInt(L[1].trim());
-	//		} else if(L[0].equals("MAX_HEALTH")) {
-	//			MAX_HEALTH = Integer.parseInt(L[1].trim());
-	//		} else if(L[0].equals("stomachFullness")) {
-	//			hunger = Integer.parseInt(L[1].trim());
-	//		} else if(L[0].equals("MAX_STOMACH")) {
-	//			MAX_HUNGER = Integer.parseInt(L[1].trim());
-	//		} else if(L[0].equals("SPEED")) {
-	//			SPEED = Double.parseDouble(L[1].trim());
-	//		}else if (L[0].equals("exposure")){
-	//			exposure = Integer.parseInt(L[1].trim());
-	//		}else if (L[0].equals("MAX_EXPOSURE")){
-	//			MAX_EXPOSURE = Integer.parseInt(L[1].trim());
-	//		}else if (L[0].equals("thirst")){
-	//			thirst = Integer.parseInt(L[1].trim());
-	//		}else if (L[0].equals("MAX_THIRST")){
-	//			MAX_THIRST = Integer.parseInt(L[1].trim());
-	//		}
-	//	}
-	// }
-
-	// /**
-	//  * @returns true if the entity has a transparent background
-	//  */
-	// public boolean isTransparent() {
-	//	return true;
-	// }
-
-	// /**
-	//  * @returns the entity's image
-	//  */
-	// public Image getImage() {
-	//	return null;
-	// }
 }

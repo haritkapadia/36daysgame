@@ -308,7 +308,7 @@ public abstract class Game extends AnimationTimer {
 	}
 
 	public void closeGuide(){
-		gameSurvivalGuide.toBack();
+		gamePane.getChildren().remove(scene.lookup("#ingameguide"));
 		resume();
 	}
 

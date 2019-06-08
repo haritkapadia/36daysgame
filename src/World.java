@@ -32,9 +32,10 @@ public class World {
 		put(BlockKey.MOREL, World.FREQ/3);
 		put(BlockKey.MUSHROOM, World.FREQ);
 		put(BlockKey.STRAWBERRIES, (int)(World.FREQ*0.9));
-		put (BlockKey.ANT, 30*World.FREQ);
-		put (BlockKey.WORM, 20*World.FREQ);
-		put (BlockKey.GRASSHOPPER, 20*World.FREQ);
+		put(BlockKey.CATTAIL, World.FREQ);
+		put(BlockKey.ANT, 30*World.FREQ);
+		put(BlockKey.WORM, 20*World.FREQ);
+		put(BlockKey.GRASSHOPPER, 20*World.FREQ);
 	}};
 	Map<Point, Chunk> chunks;
 	List<Entity> entities;
@@ -203,8 +204,8 @@ public class World {
 	public void destroyBlock(int x, int y, int z) {
 		BlockKey b = getBlock(x, y, z);
 		if(b != null && ResourceManager.getBlock(b) instanceof Destroyable) {
-			((Destroyable)ResourceManager.getBlock(b)).onDestroy(this, x, y, z);
 			setBlockUnsafe(x, y, z, null);
+			((Destroyable)ResourceManager.getBlock(b)).onDestroy(this, x, y, z);
 		}
 	}
 
