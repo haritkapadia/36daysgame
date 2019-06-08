@@ -4,30 +4,32 @@
  * 2019/June/02
  */
 
-import java.util.*;
-import java.io.*;
-import java.nio.*;
-import java.nio.file.*;
-import java.nio.charset.*;
-import javafx.application.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
-import javafx.scene.paint.*;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.canvas.*;
-import javafx.scene.input.*;
-import javafx.scene.effect.*;
-import javafx.scene.image.*;
-import javafx.stage.*;
-import javafx.geometry.*;
-import javafx.animation.*;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.io.*;
+import java.nio.*;
+import java.nio.charset.*;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
+import java.util.*;
+import javafx.animation.*;
+import javafx.application.*;
+import javafx.geometry.*;
+import javafx.scene.*;
+import javafx.scene.canvas.*;
+import javafx.scene.control.*;
+import javafx.scene.effect.*;
+import javafx.scene.image.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.*;
+import javafx.stage.*;
+import javafx.util.*;
 
 /**
  * This class sets up and runs the game
@@ -54,30 +56,29 @@ import java.awt.GraphicsEnvironment;
  * gameSurvivalGuide  -The Survival Guide object that users can refer to without exiting the game
  * prevTime   -The previous time
  */
-public class Game extends AnimationTimer {
-	private Scene scene;
-	World world;
-	Camera camera;
-	StackPane gamePane;
-	Canvas canvas;
-	VBox questUI = null;
-	HBox toolbar;
-	InventoryPane inventoryPane = null;
-	Player player;
-	ProgressBar health;
-	ProgressBar hunger;
-	ProgressBar exposure;
-	ProgressBar thirst;
-	InputManager i;
-	QuestManager questManager;
-	Point2D prevPosition;
-	HelpMenu helpMenu;
+public abstract class Game extends AnimationTimer {
+	protected Scene scene;
+	protected World world;
+	protected Camera camera;
+	protected StackPane gamePane;
+	protected Canvas canvas;
+	protected VBox questUI = null;
+	protected HBox toolbar;
+	protected InventoryPane inventoryPane = null;
+	protected Player player;
+	protected ProgressBar health;
+	protected ProgressBar hunger;
+	protected ProgressBar exposure;
+	protected ProgressBar thirst;
+	protected InputManager i;
+	protected QuestManager questManager;
+	protected Point2D prevPosition;
+	protected HelpMenu helpMenu;
 	public SurvivalGuidePane gameSurvivalGuide;
-	long prevTime = -1;
-	Runnable onWin;
-	Path worldPath;
-	int DAY_TRIGGER = 1;
-
+	protected long prevTime = -1;
+	protected Runnable onWin;
+	protected Path worldPath;
+	protected boolean winDisplayed;
 
 	/**
 	 * The game constructor, sets up the graphics and starts the game
@@ -97,12 +98,23 @@ public class Game extends AnimationTimer {
 		questUI = new VBox();
 		gameSurvivalGuide = new SurvivalGuidePane(scene, this);
 		helpMenu = new HelpMenu();
-		world = new World(128, worldPath);
+		String seed = "0";
+		try {
+			seed = worldPath.getParent().getFileName().toString();
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
+
+		world = new World(Long.parseLong(seed), worldPath);
 		if(world.getEntities().size() == 0) {
 			world.setPlayer(new Player(world, "player"));
 			world.getEntities().add(world.getPlayer());
 		}
 		player = world.getPlayer();
+		player.setCycleCount(Animation.INDEFINITE);
+		player.setCycle(new Duration(300));
 		camera = new Camera(scene, world, player.getPosition());
 
 		gamePane = new StackPane();
@@ -183,6 +195,9 @@ public class Game extends AnimationTimer {
 		questManager = new QuestManager(world, questUI, worldPath);
 		initialiseQuests();
 		questManager.resumeQuests();
+
+
+		winDisplayed = Paths.get(worldPath.toString(), "won").toFile().exists();
 	}
 
 	/**
@@ -310,12 +325,18 @@ public class Game extends AnimationTimer {
 		if (player.getHealth() <= 0){
 			gamePane.getChildren().add(new EndScreen(scene, this, false));
 			pause();
+		} else if(!winDisplayed && questManager.getQuests().size() == 0) {
+			world.write();
+			onWin.run();
+			try {
+				Files.write(Paths.get(worldPath.toString(), "won"), "nice".getBytes("UTF-8"));
+			} catch (Throwable e) {
+				System.out.println("Error " + e.getMessage());
+				e.printStackTrace();
+			}
+			gamePane.getChildren().add(new EndScreen(scene, this, true));
+			pause();
 		}
-		// else if(!world.getWon() && world.getStopwatch().getElapsed() > DAY_TRIGGER * 1e9) {
-		//	gamePane.getChildren().add(new EndScreen(scene, this, true));
-		//	world.win();
-		//	onWin.run();
-		// }
 		health.setProgress((double)player.getHealth() / player.getMaximumHealth());
 		hunger.setProgress((double)player.getHunger() / player.getMaxHunger());
 		exposure.setProgress((double)player.getExposure() / player.getMaxExposure());
@@ -396,109 +417,7 @@ public class Game extends AnimationTimer {
 	/**
 	 * Initializes the quest objects and starts the first quest
 	 */
-	private void initialiseQuests() {
-
-		Quest breakingHogweed = new Quest(questManager,
-						  "Breaking Weeds",
-						  "See the effects of breaking hogweed!",
-						  5,
-						  ResourceManager.getBlock(BlockKey.HOGWEED),
-						  null,
-						  null,
-						  null);
-		Quest makeAFire = new Quest (questManager,
-					     "Make a Fire",
-					     "Use the flint and steel to start a fire",
-					     1,
-					     ResourceManager.getItem(ItemKey.FLINTSTEEL),
-					     new Quest[]{breakingHogweed},
-					     "Make a Fire",
-					     helpMenu);
-
-		Quest makeFlintSteel = new Quest(questManager,
-						 "Make Flint and Steel",
-						 "Follow the instructions to make a flint and steel item",
-						 1,
-						 ResourceManager.getItem(ItemKey.FLINT),
-						 new Quest[]{makeAFire},
-						 "Make FlintSteel",
-						 helpMenu);
-
-		Quest findTheFlint = new Quest (questManager,
-						"Find the Flint",
-						"Locate and pick up a flint item",
-						1,
-						ResourceManager.getBlock(BlockKey.FLINT),
-						new Quest[]{makeFlintSteel},
-						null,
-						null);
-
-		Quest findingBugs = new Quest (questManager,
-					       "Finding Bugs",
-					       "Find 3 ants",
-					       3,
-					       ResourceManager.getBlock(BlockKey.ANT),
-					       new Quest[]{findTheFlint},
-					       "Finding Bugs",
-					       helpMenu);
-
-		Quest touchingPoison = new Quest(questManager,
-						 "Touching Poison",
-						 "What happens when you touch poison? Nothing!",
-						 1,
-						 ResourceManager.getBlock(BlockKey.POISON),
-						 null,
-						 null,
-						 null);
-
-		Quest pickABouquet3 = new Quest (questManager,
-						 "Pick a Bouquet Part 3",
-						 "Find and pick up two Indian Pipes.",
-						 2,
-						 ResourceManager.getBlock(BlockKey.INDIANPIPE),
-						 new Quest[]{findingBugs},
-						 null,
-						 null);
-
-		Quest pickABouquet2 = new Quest (questManager,
-						 "Pick a Bouquet Part 2",
-						 "Find and pick up an Elderberry.",
-						 1,
-						 ResourceManager.getBlock(BlockKey.ELDERBERRY),
-						 new Quest[]{pickABouquet3},
-						 null,
-						 null);
-
-		Quest pickABouquet1 = new Quest (questManager,
-						 "Pick a Bouquet Part 1",
-						 "Find and pick up 3 Northern Blue Flags. Consult the Survival Guide for identification information. You may need to clear some space in your inventory!",
-						 3,
-						 ResourceManager.getBlock(BlockKey.NORTHERNBLUEFLAG),
-						 new Quest[]{pickABouquet2},
-						 "Pick a Bouquet",
-						 helpMenu);
-
-		Quest pickUpSticks = new Quest(questManager,
-					       "Pick Up Sticks",
-					       "Pick up ten wood items",
-					       10,
-					       ResourceManager.getBlock(BlockKey.WOOD),
-					       new Quest[]{pickABouquet1},
-					       null,
-					       null);
-
-		Quest breakingTree = new Quest(questManager,
-					       "Break a Tree",
-					       "Break one tree",
-					       1,
-					       ResourceManager.getBlock(BlockKey.TREE),
-					       new Quest[]{pickUpSticks},
-					       "Welcome Message",
-					       helpMenu);
-
-		questManager.addQuest(breakingTree);
-		questManager.startQuest(breakingTree);
-	}
+	public abstract void initialiseQuests();
 
 	public World getWorld() {
 		return world;
