@@ -32,50 +32,103 @@ public class LevelSelectPane extends VBox {
 	 * The pane is initialised with the level description and entry for each level.
 	 *
 	 * @param scene The window on which the pane will be displayed.
-	 * @param stage The stage on which the scene is displayed
 	 */
-	LevelSelectPane(Scene scene, Stage stage, Path worldPath) {
+	LevelSelectPane(Scene scene, Path worldPath) {
 		this.scene = scene;
 		getChildren().add(new Label("Level Select"){{
 			setId("title");
 		}});
 		getChildren().add(new HBox(){{
-			getChildren().add(new LevelPane(scene, worldPath, "Deficiency", "Knowledge is wealth.", stage, () -> {
-						try {
-							writeScore(worldPath, "Deficiency");
-							Main.copyPath(Paths.get(worldPath.toString(), "Deficiency"), Paths.get(worldPath.toString(), "Panic"));
-						}
-						catch (Throwable qwer) {
-							System.out.println("Error " + qwer.getMessage());
-							qwer.printStackTrace();
-						}
+			getChildren().add(new VBox(){{
+				getChildren().add(new Label("Deficiency"){{
+					setId("heading");
+				}});
+				getChildren().add(new Label("Knowledge is wealth."));
+				setSpacing(10);
+				if(Paths.get(worldPath.toString(), "Deficiency").toFile().exists()) {
+					getChildren().add(new Button("Enter"){{
+						setOnAction(e -> {
+								Main.setPane(scene, new GameDeficiency(scene, Paths.get(worldPath.toString(), "Deficiency"), () -> {
+											try {
+												writeScore(worldPath, "Deficiency");
+												Main.copyPath(Paths.get(worldPath.toString(), "Deficiency"), Paths.get(worldPath.toString(), "Panic"));
+											}
+											catch (Throwable qwer) {
+												System.out.println("Error " + qwer.getMessage());
+												qwer.printStackTrace();
+											}
 
-			}){{
+								}){{
+									start();
+								}}.getPane());
+							});
+					}});
+				} else {
+					getChildren().add(new Label("Locked"){{
+						setPadding(new Insets(5,0,0,0));
+					}});
+				}
 				setAlignment(Pos.TOP_CENTER);
 			}});
-			getChildren().add(new LevelPane(scene, worldPath, "Panic", "Stop and smell the roses.", stage, () -> {
-						try {
-							writeScore(worldPath, "Panic");
-							Main.copyPath(Paths.get(worldPath.toString(), "Panic"), Paths.get(worldPath.toString(), "Escape"));
-						}
-						catch (Throwable qwer) {
-							System.out.println("Error " + qwer.getMessage());
-							qwer.printStackTrace();
-						}
+			getChildren().add(new VBox(){{
+				getChildren().add(new Label("Panic"){{
+					setId("heading");
+				}});
+				getChildren().add(new Label("Stop and smell the roses."));
+				setSpacing(10);
+				if(Paths.get(worldPath.toString(), "Panic").toFile().exists()) {
+					getChildren().add(new Button("Enter"){{
+						setOnAction(e -> {
+								Main.setPane(scene, new GamePanic(scene, Paths.get(worldPath.toString(), "Panic"), () -> {
+											try {
+												writeScore(worldPath, "Panic");
+												Main.copyPath(Paths.get(worldPath.toString(), "Panic"), Paths.get(worldPath.toString(), "Escape"));
+											}
+											catch (Throwable qwer) {
+												System.out.println("Error " + qwer.getMessage());
+												qwer.printStackTrace();
+											}
 
-			}){{
+								}){{
+									start();
+								}}.getPane());
+							});
+					}});
+				} else {
+					getChildren().add(new Label("Locked"){{
+						setPadding(new Insets(5,0,0,0));
+					}});
+				}
 				setAlignment(Pos.TOP_CENTER);
 			}});
-			getChildren().add(new LevelPane(scene, worldPath, "Escape", "Stay for a while.", stage, () -> {
-						try {
-							writeScore(worldPath, "Escape");
-						}
-						catch (Throwable e) {
-							System.out.println("Error " + e.getMessage());
-							e.printStackTrace();
-						}
+			getChildren().add(new VBox(){{
+				getChildren().add(new Label("Escape"){{
+					setId("heading");
+				}});
+				getChildren().add(new Label("Stop and smell the roses."));
+				setSpacing(10);
+				if(Paths.get(worldPath.toString(), "Escape").toFile().exists()) {
+					getChildren().add(new Button("Enter"){{
+						setOnAction(e -> {
+								Main.setPane(scene, new GameEscape(scene, Paths.get(worldPath.toString(), "Escape"), () -> {
+											try {
+												writeScore(worldPath, "Escape");
+											}
+											catch (Throwable qwer) {
+												System.out.println("Error " + qwer.getMessage());
+												qwer.printStackTrace();
+											}
 
-			}){{
+								}){{
+									start();
+								}}.getPane());
+							});
+					}});
+				} else {
+					getChildren().add(new Label("Locked"){{
+						setPadding(new Insets(5,0,0,0));
+					}});
+				}
 				setAlignment(Pos.TOP_CENTER);
 			}});
 			setAlignment(Pos.CENTER);
@@ -122,45 +175,5 @@ public class LevelSelectPane extends VBox {
 		for(int i = 0; i < highScores.size(); i++)
 			highScores.add(names.get(i) + "\t" + scores.get(i));
 		Files.write(Paths.get(worldPath.getParent().toString(), "scores", level), highScores, Charset.forName("UTF-8"));
-	}
-}
-
-/**
- * A class representing a level selection pane.
- *
- * @author Harit Kapadia, Jack Farley
- * @see LevelSelectPane
- */
-class LevelPane extends VBox {
-	private Scene scene;
-
-	/**
-	 * The class constructor.
-	 * The pane is initialised with a level name, description, and a button to play the level.
-	 *
-	 * @param scene The window on which the pane will be displayed.
-	 * @param name The name of the level.
-	 * @param description The description of the level.
-	 * @param playable The state of playability of the level.
-	 */
-	LevelPane(Scene scene, Path worldPath, String name, String description, Stage stage, Runnable onWin) {
-		getChildren().add(new Label(name){{
-			setId("heading");
-		}});
-		getChildren().add(new Label(description));
-		setSpacing(10);
-		if(Paths.get(worldPath.toString(), name).toFile().exists()) {
-			getChildren().add(new Button("Enter"){{
-				setOnAction(e -> {
-						Main.setPane(scene, new Game(scene, Paths.get(worldPath.toString(), name), onWin){{
-							start();
-						}}.getPane());
-					});
-			}});
-		} else {
-			getChildren().add(new Label("Locked"){{
-				setPadding(new Insets(5,0,0,0));
-			}});
-		}
 	}
 }

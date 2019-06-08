@@ -123,7 +123,6 @@ public class Main extends Application {
 		primaryStage.setFullScreen(true);
 		primaryStage.show();
 
-		panes.put("Level Select", new LevelSelectPane(main, primaryStage, Paths.get("worlds", "128")));
 		panes.put("High Scores", new HighScoresPane(main, primaryStage));
 		panes.put("Survival Guide", new SurvivalGuidePane(main, null));
 		panes.put("Splash Screen", new SplashPane(main));
@@ -151,6 +150,25 @@ public class Main extends Application {
 				@Override
 				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
 					Files.copy(file, dest.resolve(start.relativize(file)));
+					return FileVisitResult.CONTINUE;
+				}
+			});
+	}
+
+	public static void deletePath(Path start) throws IOException {
+		Files.walkFileTree(start, new SimpleFileVisitor<Path>(){
+				@Override
+				public FileVisitResult postVisitDirectory(Path dir, IOException e) throws IOException {
+					if(e == null)
+						Files.delete(dir);
+					else
+						throw e;
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					Files.delete(file);
 					return FileVisitResult.CONTINUE;
 				}
 			});
