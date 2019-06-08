@@ -20,7 +20,7 @@ import java.util.*;
  * FREQ     -A constant that stores the frequency of the bedstraw blocks, all other block frequencies are based off of this
  * CAPS     -Stores the maximum number of each block that can generate in a chunk
  * chunk    -A Map that stores each chunk with the coordinates of the chunk
- * entities -A List of all the entities (fires, player, water bottle) in the world
+ * entities -A List of all the entities (fires, player) in the world
  * s        -A Stopwatch object used to calculate in game time
  * seed     -A number used to generate the world
  * player   -Stores the Player object that the user controls

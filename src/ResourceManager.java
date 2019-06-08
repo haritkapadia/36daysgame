@@ -90,6 +90,7 @@ public final class ResourceManager {
                 put(ItemKey.FLINTSTEEL, new ItemFlintSteel());
                 put(ItemKey.WATERBOTTLE, new ItemWaterBottle());
                 put(ItemKey.HOGWEED, new ItemHogweed());
+                put(ItemKey.WATERPURIFICATIONTABLETS, new ItemWaterPurificationTablets());
         }};
         
         /**

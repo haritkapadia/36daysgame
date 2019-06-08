@@ -50,8 +50,8 @@ public class EndScreen extends VBox {
                         getChildren().add(new Label("GAME OVER"){{
                                 setStyle("-fx-font-size: 50px;");
                         }});
-                        getChildren().add(new Label("YOU DIED"){{
-                                setId("bigtitle");
+                        getChildren().add(new Label("YOU DIED :("){{
+                                setStyle("-fx-font-size: 30px;");
                         }});
                         getChildren().add(new Button("Save High Score"));
                         getChildren().add(new Button("Exit"){{

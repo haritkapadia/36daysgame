@@ -218,5 +218,38 @@ public class HelpMenu extends StackPane {
                         }});
                         setSpacing(10);
                 }});
+                
+                instructions.put("Fetch Water", new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Text("Fetching and Purifying Water"){{
+                                setWrappingWidth(270);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To get water hover your mouse pointer over a water block and press the key that corresponds with the water bottle in your inventory."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To purify water place your water bottle on the ground, hover over it with your mouse pointer, and press the key that corresponds with the water purification tablets in your inventory."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("You only have 15 water purification tablets, use them wisely."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To drink water press the key that corresponds with the water bottle in your inventory."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }});
         }
 }

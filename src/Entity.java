@@ -329,6 +329,10 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
                         exposure = 0;
         }
         
+        /**
+         * Changes the exposure of the player
+         * @param exposure The new exposure
+         */
         public void setExposure(int exposure) {
                 this.exposure = exposure;
         }

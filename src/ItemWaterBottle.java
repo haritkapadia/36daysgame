@@ -6,11 +6,19 @@
 
 /**
  * Water bottle item, used to store water
- *
+ * 
+ * Variables:
+ * 
+ * amountRemaining    -Stores how much water is left
+ * MAX_AMOUNT         -Maximum capacity of the water
+ * purified           -True if the water is safe to drink, false if otherwise
+ * 
  */
 public class ItemWaterBottle extends Item {
         private int amountRemaining;
         private final int MAX_AMOUNT;
+        private boolean purified;
+        
         /**
          * Class constructor, calls the Item constructor using the water bottle image file
          */
@@ -18,6 +26,7 @@ public class ItemWaterBottle extends Item {
                 super("Artwork/emptywaterbottle.png", "Water Bottle");
                 amountRemaining = 0;
                 MAX_AMOUNT = 10;
+                purified = false;
         }
         
         /**
@@ -25,6 +34,13 @@ public class ItemWaterBottle extends Item {
          */
         public boolean isConsumable() {
                 return false;
+        }
+        
+        /**
+         * Changes the purified variable to true
+         */
+        public void purifyWater(){
+                purified = true;
         }
         
         /**
@@ -40,8 +56,9 @@ public class ItemWaterBottle extends Item {
         public void updateWaterBottle(){
                 if (amountRemaining > 0)
                         setImage("Artwork/waterbottle.png");
-                else if (amountRemaining == 0)
+                else if (amountRemaining == 0){
                         setImage("Artwork/emptywaterbottle.png");
+                }
         }
         
         /**
@@ -63,7 +80,11 @@ public class ItemWaterBottle extends Item {
                         }
                 }else if(amountRemaining>0){
                         e.drink(1);
+                        if(!purified)
+                                e.takeDamage((int)(Math.random()*3));
                         amountRemaining--;
+                        if(amountRemaining ==0)
+                                purified = false;
                 }
                 updateWaterBottle();
                 return true;

@@ -49,6 +49,10 @@ public class GameDeficiency extends Game {
         public void handle(long time) {
                 super.handle(time);
                 player.setExposure(player.getMaxExposure());
+                while(player.getHunger() < player.getMaxHunger())
+                        player.eatFood(1);
+                while(player.getThirst() < player.getMaxThirst())
+                        player.drink(1);
         }
         
         /**

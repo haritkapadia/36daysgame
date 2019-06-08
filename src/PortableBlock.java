@@ -33,6 +33,13 @@ public class PortableBlock extends Block implements Interactable {
         }
         
         /**
+         * @returns The equivalent item
+         */
+        public ItemKey getEquivalentItem(){
+                return equivalentItem;
+        }
+        
+        /**
          * @returns true if the block has a transparent background
          */
         public boolean isTransparent() {

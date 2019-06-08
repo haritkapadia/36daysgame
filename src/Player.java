@@ -50,6 +50,7 @@ public class Player extends Entity implements java.io.Serializable {
                 id = s;
                 inventory[0] = ItemKey.KNIFE;
                 inventory[1] = ItemKey.WATERBOTTLE;
+                inventory[2] = ItemKey.WATERPURIFICATIONTABLETS;
                 image = ResourceManager.getPlayerSprite(Direction.DOWN, 2);
                 prevElapsed = world.getStopwatch().getElapsed();
         }

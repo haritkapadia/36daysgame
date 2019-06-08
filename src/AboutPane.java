@@ -45,7 +45,13 @@ public class AboutPane extends VBox {
                                 }});
                         }});
                         
-                        getChildren().add(new Label("Game and assets created by Harit Kapadia and Jack Farley. The game has many interesting properties such as blah blah blah."){{
+                        getChildren().add(new Label("36 Days is an educational role-playing game designed to educate youth on surviving in the wilderness."+ 
+                                                    " The advice in the game is based off of legitimate research and in theory should hold true in a survival situation."+
+                                                    " But, circumstances differ and this year's peer-reviewed research may be next year's old wives tale."+
+                                                    " Therefore, we advise that you do not try any of the survival techniques taught in this game unless "+
+                                                    "absolutely necessary, and we are not responsible for any injuries, illness or death that may ensue."+
+                                                    "Our game was built using the javafx, and java libraries." +
+                                                    " Game and assets created by Harit Kapadia and Jack Farley."){{
                                 setWrapText(true);
                                 setWidth((scene.getWidth()-50)/2);
                                 setPadding(new Insets(-50, 50, 50, 50));
