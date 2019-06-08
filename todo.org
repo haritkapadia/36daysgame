@@ -2,9 +2,10 @@
 * DONE Split game into three parts
 ** DONE Recursive copier
 * DONE Make an onWin method
-* TODO Make high scores
+* DONE Make high scores
 ** DONE Usernames (world names)
 * TODO Better world generation
-* TODO Make fire damage player
+* DONE Make fire damage player
 ** TODO Give fire an animation
-* TODO Fix player walk animation
+* DONE Fix player walk animation
+* DONE Fix the next level not unlocking

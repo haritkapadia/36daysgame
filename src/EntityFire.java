@@ -54,8 +54,12 @@ public class EntityFire extends Entity implements java.io.Serializable {
 			burnWait -= (long)1e9;
 		}
 		for(Entity e : world.getEntities()) {
-			if(!(e instanceof EntityFire) && e.getPosition().distance(getPosition()) <= 3)
-				e.setExposure(e.getMaxExposure());
+			if(!(e instanceof EntityFire)) {
+				if(e.getPosition().distance(getPosition()) <= 3)
+					e.setExposure(e.getMaxExposure());
+				if(e.getPosition().distance(getPosition()) <= 0.5)
+					e.takeDamage(1);
+			}
 		}
 	}
 

@@ -15,9 +15,9 @@ import java.nio.file.attribute.*;
 
 public class WorldSelectPane extends VBox {
 	WorldSelectPane(Scene scene, Path basePath) {
-		getChildren().add(new Label("Select World"));
+		getChildren().add(new Label("World Select"));
 		File[] worlds = new File[0];
-		if(basePath.resolve("worlds").toFile().exists()) {
+		if(basePath.resolve("worlds").resolve("scores").toFile().exists()) {
 			 worlds = Paths.get(basePath.toString(), "worlds").toFile().listFiles();
 			 System.out.println("worlds exists");
 

@@ -4,31 +4,32 @@
  * 2019/June/02
  */
 
-import java.util.*;
-import java.io.*;
-import java.nio.*;
-import java.nio.file.*;
-import java.nio.charset.*;
-import java.nio.file.attribute.*;
-import javafx.application.*;
-import javafx.scene.*;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.scene.text.*;
-import javafx.scene.paint.*;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.canvas.*;
-import javafx.scene.input.*;
-import javafx.scene.effect.*;
-import javafx.scene.image.*;
-import javafx.stage.*;
-import javafx.geometry.*;
-import javafx.animation.*;
-import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.io.*;
+import java.nio.*;
+import java.nio.charset.*;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
+import java.util.*;
+import javafx.animation.*;
+import javafx.application.*;
+import javafx.geometry.*;
+import javafx.scene.*;
+import javafx.scene.canvas.*;
+import javafx.scene.control.*;
+import javafx.scene.effect.*;
+import javafx.scene.image.*;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.scene.paint.*;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.*;
+import javafx.stage.*;
+import javafx.util.*;
 
 /**
  * This class sets up and runs the game
@@ -112,6 +113,8 @@ public abstract class Game extends AnimationTimer {
 			world.getEntities().add(world.getPlayer());
 		}
 		player = world.getPlayer();
+		player.setCycleCount(Animation.INDEFINITE);
+		player.setCycle(new Duration(300));
 		camera = new Camera(scene, world, player.getPosition());
 
 		gamePane = new StackPane();

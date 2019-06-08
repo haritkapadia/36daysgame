@@ -75,6 +75,9 @@ public class Main extends Application {
 		return new Point2D(p.getX(), p.getY());
 	}
 
+
+
+
 	/**
 	 * Initialises the scene map in preparation of the full program.
 	 */
@@ -123,7 +126,6 @@ public class Main extends Application {
 		primaryStage.setFullScreen(true);
 		primaryStage.show();
 
-		panes.put("High Scores", new HighScoresPane(main, primaryStage));
 		panes.put("Survival Guide", new SurvivalGuidePane(main, null));
 		panes.put("Splash Screen", new SplashPane(main));
 		panes.put("Main Menu", new MainMenuPane(main, primaryStage));

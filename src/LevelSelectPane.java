@@ -152,6 +152,8 @@ public class LevelSelectPane extends VBox {
 	private void writeScore(Path worldPath, String level) throws Throwable {
 		String[] gameScore = new String(Files.readAllBytes(Paths.get(worldPath.toString(), level, "score")), Charset.forName("UTF-8")).split("\t");
 		List<String> highScores = Files.readAllLines(Paths.get(worldPath.getParent().toString(), "scores", level));
+		System.out.println("high scores lol: " + Paths.get(worldPath.getParent().toString(), "scores", level));
+
 		List<String> names = new LinkedList<String>();
 		List<Integer> scores = new LinkedList<Integer>();
 		for(String s : highScores) {
@@ -172,8 +174,11 @@ public class LevelSelectPane extends VBox {
 		}
 
 		highScores = new ArrayList<String>(highScores.size());
-		for(int i = 0; i < highScores.size(); i++)
+		for(int i = 0; i < scores.size() - 1; i++) {
+			System.out.println(names.get(i) + "\t" + scores.get(i));
+
 			highScores.add(names.get(i) + "\t" + scores.get(i));
+		}
 		Files.write(Paths.get(worldPath.getParent().toString(), "scores", level), highScores, Charset.forName("UTF-8"));
 	}
 }

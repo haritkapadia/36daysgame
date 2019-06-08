@@ -26,7 +26,6 @@ public class Player extends Entity implements java.io.Serializable {
 	long exposureWait;
 	long thirstWait;
 	long prevElapsed;
-	final long CYCLE_DURATION = 300;
 
 	Player(World world, String s) {
 		super(world);
@@ -34,8 +33,6 @@ public class Player extends Entity implements java.io.Serializable {
 		inventory[0] = ItemKey.KNIFE;
 		inventory[1] = ItemKey.WATERBOTTLE;
 		image = ResourceManager.getPlayerSprite(Direction.DOWN, 2);
-		setCycleCount(Animation.INDEFINITE);
-		setCycleDuration(new Duration(CYCLE_DURATION));
 		prevElapsed = world.getStopwatch().getElapsed();
 	}
 
@@ -114,5 +111,9 @@ public class Player extends Entity implements java.io.Serializable {
 
 	public void updateInventoryPaneSlot(int i) {
 		inventoryPane.updateSlot(i);
+	}
+
+	public void setCycle(Duration d) {
+		setCycleDuration(d);
 	}
 }

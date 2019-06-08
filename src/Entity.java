@@ -57,6 +57,8 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 	public static final double STOMACH_REDUCTION_TIME = 1;
 	protected transient World world = null;
 	protected double SPEED;
+	long damageWait;
+	long prevElapsed;
 
 	// /*
 	//  * Overrides the abstract superclass method
@@ -300,12 +302,18 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 	 * @param damage is the amount that the health is to be changed by
 	 */
 	public void takeDamage(int damage) {
-		if (health - damage <= MAX_HEALTH)
-			health -= damage;
-		else
-			health = MAX_HEALTH;
-		if(health < 0)
-			health = 0;
+		long now = world.getStopwatch().getElapsed();
+		damageWait += now - prevElapsed;
+		prevElapsed = now;
+		if(damageWait >= 2e8) {
+			if (health - damage <= MAX_HEALTH)
+				health -= damage;
+			else
+				health = MAX_HEALTH;
+			if(health < 0)
+				health = 0;
+			damageWait = 0;
+		}
 	}
 
 	/**

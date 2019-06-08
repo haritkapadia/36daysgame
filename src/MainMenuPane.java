@@ -69,7 +69,20 @@ public class MainMenuPane extends VBox {
 		}});
 		n.addAndGet(500);
 
-		for(String s : new String[]{"Survival Guide", "High Scores", "About", "Instructions"}) {
+		//world select button
+		getChildren().add(new Button("High Scores"){{
+			TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
+			t.setFromX(getLayoutX()-1000);
+			t.setToX(getLayoutX());
+			t.setDelay(Duration.millis(n.get()));
+			pt.getChildren().add(t);
+			setCache(true);
+			setCacheHint(CacheHint.SPEED);
+			setOnAction(e -> Main.setPane(scene, new HighScoresPane(scene, Paths.get(System.getProperty("user.home")).resolve("worlds"))));
+		}});
+		n.addAndGet(500);
+
+		for(String s : new String[]{"Survival Guide", "About", "Instructions"}) {
 			getChildren().add(new Button(s){{
 				TranslateTransition t = new TranslateTransition(Duration.millis(1000), this);
 				t.setFromX(getLayoutX()-1000);

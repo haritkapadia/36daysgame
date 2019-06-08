@@ -94,7 +94,8 @@ public class World {
 				Paths.get(worldPath.toString(), "entities").toFile().mkdirs();
 			for(int i = 0; i < entities.size(); i++)
 				entities.get(i).writeEntity(Paths.get(worldPath.toString(), "entities", i + "").toFile());
-			Files.write(Paths.get(worldPath.toString(), "score"), ("player\t" + (s.getElapsed() / 1000000)).getBytes("UTF-8"));
+			String name = new String(Files.readAllBytes(worldPath.getParent().resolve("name")), Charset.forName("UTF-8"));
+			Files.write(Paths.get(worldPath.toString(), "score"), (name + "\t" + (s.getElapsed() / 1000000)).getBytes("UTF-8"));
 		}
 		catch (Throwable e) {
 			System.out.println("Error " + e.getMessage());
@@ -110,12 +111,34 @@ public class World {
 	 public void generateChunk(Point p) {
 		 Chunk c = new Chunk();
 		 BlockKey[][][] blocks = c.getBlocks();
-		 Random g = new Random((int)((p.getX() + p.getY()) * (p.getX() + p.getY() + 1) / 2 + p.getY()));
+		 Random g = new Random((int)((p.getX() + p.getY()) * (int)(p.getX() + p.getY() + 1) / 2 + (int)p.getY()));
+
+		 // Point2D[][] rNodes = new Point2D[3][3];
+		 // boolean[][] tNodes = new boolean[3][3];
+		 // // Point2D riverNode = new Point2D(p.getX() + 32 * g.nextDouble(), p.getY() + 32 * g.nextDouble());
+		 // // boolean terminatingNode = g.nextBoolean();
+		 // for(int i = 0; i < 3; i++) {
+		 //	 for(int j = 0; j < 3; j++) {
+		 //		 int x = (int)p.getX() + i - 1;
+		 //		 int y = (int)p.getY() + i - 1;
+		 //		 Random r = new Random((x + y) * (x + y + 1) / 2 + y);
+		 //		 rNodes[i][j] = new Point2D(x + 32 * r.nextDouble(), y + 32 * r.nextDouble());
+		 //		 tNodes[i][j] = r.nextDouble() > 0.4; // 60% chance to be a terminating chunk
+		 //	 }
+		 // }
+		 // if(!tNodes[1][1]) {
+		 //	 if(!tNodes[0][1]) {
+		 //		 for(double y = rNodes[1][1].getX(); y > rNodes[0][1].getX(); y--) {
+
+		 //		 }
+		 //	 }
+		 // }
 
 		 for(BlockKey block : CAPS.keySet()){
 			 if(CAPS.get(block) > 0){
-				 for(int i = g.nextInt(CAPS.get(block)); i > 0; i--)
+				 for(int i = g.nextInt(CAPS.get(block)); i > 0; i--) {
 					 blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = block;
+				 }
 			 }
 		 }
 

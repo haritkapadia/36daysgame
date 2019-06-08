@@ -5,18 +5,20 @@
  */
 
 import java.io.*;
+import java.nio.*;
+import java.nio.charset.*;
+import java.nio.file.*;
+import java.nio.file.attribute.*;
 import java.util.*;
 import javafx.application.*;
+import javafx.geometry.*;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.*;
 import javafx.scene.paint.*;
-import javafx.scene.shape.*;
+import javafx.scene.text.*;
 import javafx.stage.*;
-import javafx.geometry.*;
-import javafx.geometry.Pos;
-import java.util.*;
 
 /**
  * A pane displaying high scores for each mode.
@@ -32,18 +34,43 @@ public class HighScoresPane extends VBox {
 	 * The pane is initialised with a title, the high scores for each level, and a button to return to the main menu.
 	 *
 	 * @param scene The window on which the pane will be displayed.
-	 * @param stage The stage on which the scene is displayed
 	 */
-	HighScoresPane(Scene scene, Stage stage) {
+	HighScoresPane(Scene scene, Path basePath) {
 		this.scene = scene;
+		try {
+			String out = "Tier 1\t1000\n" +
+				"Tier 2\t900\n" +
+				"Tier 3\t800\n" +
+				"Tier 4\t700\n" +
+				"Tier 5\t600\n" +
+				"Tier 6\t500\n" +
+				"Tier 7\t400\n" +
+				"Tier 8\t300\n" +
+				"Tier 9\t200\n" +
+				"Tier 10\t100";
+			if(!basePath.resolve("scores").toFile().exists())
+				basePath.resolve("scores").toFile().mkdirs();
+			if(!basePath.resolve("scores").resolve("Deficiency").toFile().exists())
+				Files.write(basePath.resolve("scores").resolve("Deficiency"), out.getBytes("UTF-8"));
+			if(!basePath.resolve("scores").resolve("Panic").toFile().exists())
+				Files.write(basePath.resolve("scores").resolve("Panic"), out.getBytes("UTF-8"));
+			if(!basePath.resolve("scores").resolve("Escape").toFile().exists())
+				Files.write(basePath.resolve("scores").resolve("Escape"), out.getBytes("UTF-8"));
+
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
+
 		getChildren().add(new Label("High Scores"){{setId("title");}});
 		getChildren().add(new HBox(){{
 			setAlignment(Pos.CENTER);
 			setSpacing(50);
 			try {
-				getChildren().add(new HighScores(scene, "Deficiency", new File("worlds/scores/Deficiency")));
-				getChildren().add(new HighScores(scene, "Panic", new File("worlds/scores/Panic")));
-				getChildren().add(new HighScores(scene, "Escape", new File("worlds/scores/Escape")));
+				getChildren().add(new HighScores(scene, "Deficiency", basePath.resolve("scores").resolve("Deficiency").toFile()));
+				getChildren().add(new HighScores(scene, "Panic", basePath.resolve("scores").resolve("Panic").toFile()));
+				getChildren().add(new HighScores(scene, "Escape", basePath.resolve("scores").resolve("Escape").toFile()));
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
@@ -82,7 +109,7 @@ class HighScores extends VBox {
 		new BufferedReader(new FileReader(file)){{
 			String line;
 			while((line = readLine()) != null)
-			scores.add(line.split("\t",2));
+				scores.add(line.split("\t",2));
 		}}.close();
 
 
