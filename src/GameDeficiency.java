@@ -31,14 +31,14 @@ import java.awt.Point;
  * the handle method
  */
 public class GameDeficiency extends Game {
-        
-        /**
-         * Class constructor, calls the super class constructor
-         * @param scene The scene on which the game is displayed
-         * @param worldPath The file path to the world save files
-         * @param onWin The code that will be executed once the stage has been completed
-         */
-        GameDeficiency(Scene scene, Path worldPath, Runnable onWin) {
+                
+                /**
+                 * Class constructor, calls the super class constructor
+                 * @param scene The scene on which the game is displayed
+                 * @param worldPath The file path to the world save files
+                 * @param onWin The code that will be executed once the stage has been completed
+                 */
+                GameDeficiency(Scene scene, Path worldPath, Runnable onWin) {
                 super(scene, worldPath, onWin);
         } 
         

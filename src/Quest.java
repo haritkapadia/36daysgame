@@ -22,9 +22,9 @@ import java.util.*;
 
 /**
  * This class creates a quest which is a set of instructions for the user to carry out
- * 
+ *
  * Variables:
- * 
+ *
  * questName     -Stores the name of the quest
  * description   -Stores a description of what the user must do
  * maxSteps      -Stores the amount of times the user must accomplish a task

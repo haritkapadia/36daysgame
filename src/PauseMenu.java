@@ -54,6 +54,7 @@ public class PauseMenu extends VBox {
 					game.killQuests();
 					game.stop();
 					game.getWorld().write();
+					scene.setCursor(null);
 					Main.setPane(scene, "Main Menu");
 					Main.settingsMenu.removeGameButtons();
 				});
