@@ -35,9 +35,11 @@ import java.awt.Point;
  * MAX_HUNGER  -Stores the amount that the hunger bar is out of
  * thirst      -Stores how quenched the entity is
  * MAX_THIRST  -Stores the amount that the thirst bar is out of
- * STOMACH_REDUCTION_TIME -Stores how quickly the entity gets hungry
  * world       -A reference to the game world object
  * SPEED       -Stores how fast the entity moves
+ * invincible  -Stores whether or not the entity should take damage
+ * damageWait  -Stores how long the entity has been waiting to take damage.
+ * prevElapsed -Stores the last time the entity checked if damage had to be taken.
  */
 public abstract class Entity extends Transition implements Drawable, Serializable {
         protected String id;
@@ -54,16 +56,11 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
         protected int MAX_EXPOSURE;
         protected int thirst;
         protected int MAX_THIRST;
-        public static final double STOMACH_REDUCTION_TIME = 1;
         protected transient World world = null;
         protected double SPEED;
-        private long damageWait;
-        private long prevElapsed;
-        
-        // /*
-        //  * Overrides the abstract superclass method
-        //  */
-        // public void interpolate(double d) {}
+        protected boolean invincible = false;
+        long damageWait;
+        long prevElapsed;
         
         /**
          * Overloaded constructor
@@ -97,6 +94,26 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
         }
         
         
+        /**
+         * Overloaded constructor
+         * @param id The id of the Entity
+         * @param inventory The inventory of the Entity
+         * @param x The x of the Entity
+         * @param y The y of the Entity
+         * @param radius The radius of the Entity
+         * @param facing The facing of the Entity
+         * @param health The health of the Entity
+         * @param MAX_HEALTH The MAX_HEALTH of the Entity
+         * @param hunger The hunger of the Entity
+         * @param MAX_HUNGER The MAX_HUNGER of the Entity
+         * @param exposure The exposure of the Entity
+         * @param MAX_EXPOSURE The MAX_EXPOSURE of the Entity
+         * @param thirst The thirst of the Entity
+         * @param MAX_THIRST The MAX_THIRST of the Entity
+         * @param id The id of the Entity
+         * @param world A reference to the game world
+         * @param SPEED The SPEED of the Entity
+         */
         public Entity(String id, ItemKey[] inventory, double x, double y, double radius, Direction facing, int health, int MAX_HEALTH, int hunger, int MAX_HUNGER, int exposure, int MAX_EXPOSURE, int thirst, int MAX_THIRST, World world, double SPEED) {
                 this.id = id;
                 this.inventory = inventory;
@@ -116,7 +133,13 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
                 this.SPEED = SPEED;
         }
         
-        
+        /**
+         * Reads an serialized Entity from a file.
+         *
+         * @param world the world that the entity is in.
+         * @param file the file to read the entity from.
+         * @return The Entity read from the file that has been associated with the specified world
+         */
         public static Entity readEntity(World world, File file) {
                 Entity out = null;
                 try {
@@ -134,6 +157,11 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
                 return out;
         }
         
+        /**
+         * Writes an serialized Entity from a file.
+         *
+         * @param file the file to read the entity from.
+         */
         public void writeEntity(File file) {
                 try {
                         FileOutputStream fos = new FileOutputStream(file);
@@ -269,6 +297,13 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
                 return MAX_HUNGER;
         }
         
+        public void setInvincible(boolean invincible) {
+                this.invincible = invincible;
+        }
+        
+        /**
+         * Describes the actions that an entity would take involuntarily, such as becoming thirsty
+         */
         public abstract void exist();
         
         /**
@@ -276,12 +311,14 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
          * @param foodWorth is the nutritional value of what has been eaten
          */
         public void eatFood(int foodWorth){
-                if(hunger + foodWorth <= MAX_HUNGER)
-                        hunger += foodWorth;
-                else
-                        hunger = MAX_HUNGER;
-                if(hunger < 0)
-                        hunger = 0;
+                if(!invincible) {
+                        if(hunger + foodWorth <= MAX_HUNGER)
+                                hunger += foodWorth;
+                        else
+                                hunger = MAX_HUNGER;
+                        if(hunger < 0)
+                                hunger = 0;
+                }
         }
         
         /**
@@ -289,12 +326,14 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
          * @param foodWorth is the nutritional value of what has been eaten
          */
         public void drink(int drunk){
-                if(thirst + drunk <= MAX_THIRST)
-                        thirst += drunk;
-                else
-                        thirst = MAX_THIRST;
-                if(thirst < 0)
-                        thirst = 0;
+                if(!invincible) {
+                        if(thirst + drunk <= MAX_THIRST)
+                                thirst += drunk;
+                        else
+                                thirst = MAX_THIRST;
+                        if(thirst < 0)
+                                thirst = 0;
+                }
         }
         
         /**
@@ -306,12 +345,14 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
                 damageWait += now - prevElapsed;
                 prevElapsed = now;
                 if(damageWait >= 2e8) {
-                        if (health - damage <= MAX_HEALTH)
-                                health -= damage;
-                        else
-                                health = MAX_HEALTH;
-                        if(health < 0)
-                                health = 0;
+                        if(!invincible) {
+                                if (health - damage <= MAX_HEALTH)
+                                        health -= damage;
+                                else
+                                        health = MAX_HEALTH;
+                                if(health < 0)
+                                        health = 0;
+                        }
                         damageWait = 0;
                 }
         }
@@ -321,17 +362,19 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
          * @param n the amount that the exposure is to be changed by
          */
         public void lowerExposure (int n){
-                if (exposure - n <= MAX_EXPOSURE)
-                        exposure -= n;
-                else
-                        exposure = MAX_EXPOSURE;
-                if(exposure < 0)
-                        exposure = 0;
+                if(!invincible) {
+                        if (exposure - n <= MAX_EXPOSURE)
+                                exposure -= n;
+                        else
+                                exposure = MAX_EXPOSURE;
+                        if(exposure < 0)
+                                exposure = 0;
+                }
         }
         
         /**
-         * Changes the exposure of the player
-         * @param exposure The new exposure
+         * Sets the exposure of the entity
+         * @param exposure The number that exposure is to be set to
          */
         public void setExposure(int exposure) {
                 this.exposure = exposure;
@@ -414,14 +457,10 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
                         if(block == null || ResourceManager.getBlock(block) instanceof InsectBlock) {
                                 world.setBlock((int)blockPos.getX(), (int)blockPos.getY(), 1, ResourceManager.getPortableBlock(inventory[i]));
                                 inventory[i] = null;
-                        }else {
-                                try{
-                                        if (nearestFreeBlock() != null){
-                                                blockPos = nearestFreeBlock();
-                                                world.setBlock((int)blockPos.getX(), (int)blockPos.getY(), 1, ResourceManager.getPortableBlock(inventory[i]));
-                                                inventory[i] = null;
-                                        }
-                                }catch(NullPointerException e){}
+                        }else if (nearestFreeBlock() != null){
+                                blockPos = nearestFreeBlock();
+                                world.setBlock((int)blockPos.getX(), (int)blockPos.getY(), 1, ResourceManager.getPortableBlock(inventory[i]));
+                                inventory[i] = null;
                         }
                 }
         }
@@ -433,102 +472,10 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
         public Point nearestFreeBlock(){
                 for (int row = (int)World.blockCoordinate(getPosition()).getY() - 1; row <= (int)World.blockCoordinate(getPosition()).getY()+1; row++){
                         for(int col = (int)World.blockCoordinate(getPosition()).getX()-1; col <= (int)World.blockCoordinate(getPosition()).getX()+1; col++){
-                                System.out.print(world.getBlock(col, row, 1));
                                 if(world.getBlock(col, row, 1)==null || ResourceManager.getBlock(world.getBlock(row, col, 1)) instanceof InsectBlock)
                                         return new Point(col, row);
                         }
-                        System.out.println("");
                 }
                 return null;
         }
-        
-        // /**
-        //  * @returns the entity represented as a string to be saved to a file
-        //  */
-        // public String getAsString() {
-        // String out = "";
-        // String inventoryString = Arrays.toString(inventory);
-        // out += "id\t" + id + "\n";
-        // out += "inventory\t" + inventoryString.substring(1, inventoryString.length() - 1) + "\n";
-        // out += "position\t" + position.getX() + ", " + position.getY() + "\n";
-        // out += "radius\t" + radius + "\n";
-        // out += "facing\t" + facing + "\n";
-        // out += "health\t" + health + "\n";
-        // out += "MAX_HEALTH\t" + MAX_HEALTH + "\n";
-        // out += "stomachFullness\t" + hunger + "\n";
-        // out += "MAX_STOMACH\t" + MAX_HUNGER + "\n";
-        // out += "exposure\t"+exposure + "\n";
-        // out += "MAX_EXPOSURE\t" + MAX_EXPOSURE + "\n";
-        // out += "thirst\t"+thirst+"\n";
-        // out += "MAX_THIRST\t"+MAX_THIRST+"\n";
-        // out += "SPEED\t" + SPEED + "\n";
-        // return out;
-        // }
-        
-        // /**
-        //  * Constructor used to create an entity and load its stats from a file
-        //  * @param world is the game world
-        //  * @param s is the Sting object containing the entity's information
-        //  * @see getAsString()
-        //  */
-        // Entity(World world, String s) {
-        // this.world = world;
-        // inventory = new ItemKey[15];
-        // String[] lines = s.split("\n");
-        // for(String l : lines) {
-        //  final String[] L = l.split("\t");
-        //  if(L[0].equals("id")) {
-        //   id = L[1];
-        //  } else if(L[0].equals("inventory")) {
-        //   String[] items = L[1].split(", ");
-        //   for(int i = 0; i < items.length; i++) {
-        //    if(items[i].trim().equals("null")){
-        //     inventory[i] = null;
-        //    }
-        //    else{
-        //     inventory[i] = ItemKey.valueOf(items[i].trim());
-        //    }
-        //   }
-        //  } else if(L[0].equals("position")) {
-        //   String[] coordinates = L[1].split(", ");
-        //   position = new Point2D(Double.parseDouble(coordinates[0]), Double.parseDouble(coordinates[1]));
-        //  } else if(L[0].equals("radius")) {
-        //   radius = Double.parseDouble(L[1]);
-        //  } else if(L[0].equals("facing")) {
-        //   facing = Direction.valueOf(L[1].trim());
-        //  } else if(L[0].equals("health")) {
-        //   health = Integer.parseInt(L[1].trim());
-        //  } else if(L[0].equals("MAX_HEALTH")) {
-        //   MAX_HEALTH = Integer.parseInt(L[1].trim());
-        //  } else if(L[0].equals("stomachFullness")) {
-        //   hunger = Integer.parseInt(L[1].trim());
-        //  } else if(L[0].equals("MAX_STOMACH")) {
-        //   MAX_HUNGER = Integer.parseInt(L[1].trim());
-        //  } else if(L[0].equals("SPEED")) {
-        //   SPEED = Double.parseDouble(L[1].trim());
-        //  }else if (L[0].equals("exposure")){
-        //   exposure = Integer.parseInt(L[1].trim());
-        //  }else if (L[0].equals("MAX_EXPOSURE")){
-        //   MAX_EXPOSURE = Integer.parseInt(L[1].trim());
-        //  }else if (L[0].equals("thirst")){
-        //   thirst = Integer.parseInt(L[1].trim());
-        //  }else if (L[0].equals("MAX_THIRST")){
-        //   MAX_THIRST = Integer.parseInt(L[1].trim());
-        //  }
-        // }
-        // }
-        
-        // /**
-        //  * @returns true if the entity has a transparent background
-        //  */
-        // public boolean isTransparent() {
-        // return true;
-        // }
-        
-        // /**
-        //  * @returns the entity's image
-        //  */
-        // public Image getImage() {
-        // return null;
-        // }
 }

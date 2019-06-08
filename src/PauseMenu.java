@@ -67,9 +67,8 @@ public class PauseMenu extends VBox {
 		}});
 
 		getStylesheets().add("stylesheet.css");
+		setBackground(new Background(new BackgroundFill(new Color(0, 0, 0, 0.7), CornerRadii.EMPTY, Insets.EMPTY)));
 		relocate(scene.getWidth()-150,50);
-
-
 	}
 
 }
