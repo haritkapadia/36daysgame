@@ -1,0 +1,6 @@
+* TODO Win game on quest completion
+* TODO Split game into three parts
+** TODO Recursive copier
+* TODO Make an onWin method
+* TODO Make high scores
+* TODO Better world generation

@@ -49,23 +49,28 @@ public class EndScreen extends VBox {
 			getChildren().add(new Label("YOU DIED :("){{
 				setStyle("-fx-font-size: 50px;");
 			}});
+			getChildren().add(new Button("Exit"){{
+				setOnAction(e -> {
+						Main.setPane(scene, "Main Menu");
+						Main.settingsMenu.removeGameButtons();
+					});
+			}});
 		} else {
 			getChildren().add(new Label("YOU PASSED THE LEVEL!"){{
 				setStyle("-fx-font-size: 50px;");
 			}});
+			getChildren().add(new Button("Exit"){{
+				setOnAction(e -> {
+						game.killQuests();
+						game.stop();
+						game.getWorld().write();
+						Main.setPane(game.getScene(), "Main Menu");
+						Main.settingsMenu.removeGameButtons();
+					});
+			}});
 		}
-
-		getChildren().add(new Button("Exit"){{
-			setOnAction(e -> {
-				Main.setPane(scene, "Main Menu");
-				Main.settingsMenu.removeGameButtons();
-			});
-		}});
 
 		getStylesheets().add("stylesheet.css");
 		relocate(scene.getWidth()-150,50);
-
-
 	}
-
 }

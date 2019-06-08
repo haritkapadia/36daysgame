@@ -6,6 +6,10 @@
  */
 
 import java.io.*;
+import java.nio.*;
+import java.nio.file.*;
+import java.nio.charset.*;
+import java.nio.file.attribute.*;
 import java.util.*;
 import javafx.animation.*;
 import javafx.application.*;
@@ -16,7 +20,6 @@ import javafx.scene.image.*;
 import javafx.scene.layout.*;
 import javafx.scene.media.*;
 import javafx.scene.paint.*;
-import javafx.scene.shape.*;
 import javafx.scene.text.*;
 import javafx.stage.*;
 import javafx.util.*;
@@ -78,6 +81,7 @@ public class Main extends Application {
 	@Override
 	public void init() {
 		panes = new HashMap<String, Parent>();
+		Font.loadFont(getClass().getResourceAsStream("/ChicagoFLF.ttf"), 16);
 	}
 
 	/**
@@ -119,7 +123,7 @@ public class Main extends Application {
 		primaryStage.setFullScreen(true);
 		primaryStage.show();
 
-		panes.put("Level Select", new LevelSelectPane(main, primaryStage));
+		panes.put("Level Select", new LevelSelectPane(main, primaryStage, Paths.get("worlds", "128")));
 		panes.put("High Scores", new HighScoresPane(main, primaryStage));
 		panes.put("Survival Guide", new SurvivalGuidePane(main, null));
 		panes.put("Splash Screen", new SplashPane(main));
@@ -132,6 +136,24 @@ public class Main extends Application {
 
 		Main.setPane(main, "Splash Screen");
 		((SplashPane)panes.get("Splash Screen")).ft.play();
+	}
+
+	// https://docs.oracle.com/javase/8/docs/api/java/nio/file/FileVisitor.html
+	public static void copyPath(Path start, Path dest) throws IOException {
+		Files.walkFileTree(start, new SimpleFileVisitor<Path>(){
+				@Override
+				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+					Path target = dest.resolve(start.relativize(dir));
+					Files.copy(dir, target);
+					return FileVisitResult.CONTINUE;
+				}
+
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					Files.copy(file, dest.resolve(start.relativize(file)));
+					return FileVisitResult.CONTINUE;
+				}
+			});
 	}
 
 	/**

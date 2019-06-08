@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.*;
 import java.nio.file.*;
 import java.nio.charset.*;
+import java.nio.file.attribute.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -76,8 +77,7 @@ public class Game extends AnimationTimer {
 	long prevTime = -1;
 	Runnable onWin;
 	Path worldPath;
-	int DAY_TRIGGER = 1;
-
+	boolean winDisplayed;
 
 	/**
 	 * The game constructor, sets up the graphics and starts the game
@@ -183,6 +183,9 @@ public class Game extends AnimationTimer {
 		questManager = new QuestManager(world, questUI, worldPath);
 		initialiseQuests();
 		questManager.resumeQuests();
+
+
+		winDisplayed = Paths.get(worldPath.toString(), "won").toFile().exists();
 	}
 
 	/**
@@ -310,12 +313,18 @@ public class Game extends AnimationTimer {
 		if (player.getHealth() <= 0){
 			gamePane.getChildren().add(new EndScreen(scene, this, false));
 			pause();
+		} else if(!winDisplayed && questManager.getQuests().size() == 0) {
+			world.write();
+			onWin.run();
+			try {
+				Files.write(Paths.get(worldPath.toString(), "won"), "nice".getBytes("UTF-8"));
+			} catch (Throwable e) {
+				System.out.println("Error " + e.getMessage());
+				e.printStackTrace();
+			}
+			gamePane.getChildren().add(new EndScreen(scene, this, true));
+			pause();
 		}
-		// else if(!world.getWon() && world.getStopwatch().getElapsed() > DAY_TRIGGER * 1e9) {
-		//	gamePane.getChildren().add(new EndScreen(scene, this, true));
-		//	world.win();
-		//	onWin.run();
-		// }
 		health.setProgress((double)player.getHealth() / player.getMaximumHealth());
 		hunger.setProgress((double)player.getHunger() / player.getMaxHunger());
 		exposure.setProgress((double)player.getExposure() / player.getMaxExposure());
@@ -397,7 +406,6 @@ public class Game extends AnimationTimer {
 	 * Initializes the quest objects and starts the first quest
 	 */
 	private void initialiseQuests() {
-
 		Quest breakingHogweed = new Quest(questManager,
 						  "Breaking Weeds",
 						  "See the effects of breaking hogweed!",

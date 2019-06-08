@@ -1,6 +1,6 @@
-@font-face {
-     src: url("ChicagoFLF.ttf");
-}
+/* @font-face { */
+/*      src: url("ChicagoFLF.ttf"); */
+/* } */
 
 .root{
     -fx-font-family: "ChicagoFLF";
@@ -39,14 +39,14 @@
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
     -fx-scale-z: 1.1;
-}    
+}
 
 #nextbutton{
     -fx-padding: 10 30 10 30;
     -fx-background-color: green;
     -fx-margin: auto;
     -fx-text-alignment: center;
-    -fx-shape: "M200 150 L75 200 L75 100 Z"; 
+    -fx-shape: "M200 150 L75 200 L75 100 Z";
 }
 
 #redbar .bar{
@@ -63,6 +63,7 @@
 
 #thirstbar .bar{
     -fx-background-color: mediumblue;
+}
 
 #upbutton{
     -fx-graphic: url("uparrow.png");

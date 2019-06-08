@@ -94,7 +94,7 @@ public class World {
 				Paths.get(worldPath.toString(), "entities").toFile().mkdirs();
 			for(int i = 0; i < entities.size(); i++)
 				entities.get(i).writeEntity(Paths.get(worldPath.toString(), "entities", i + "").toFile());
-				// Files.write(Paths.get("world" + seed + "/entities/" + e.getID()), Arrays.asList(new String[]{e.getAsString()}), Charset.forName("UTF-8"));
+			Files.write(Paths.get(worldPath.toString(), "score"), ("player\t" + (s.getElapsed() / 1000000)).getBytes("UTF-8"));
 		}
 		catch (Throwable e) {
 			System.out.println("Error " + e.getMessage());
@@ -121,8 +121,8 @@ public class World {
 
 		 for(int i = 0; i < blocks.length; i++)
 			 for(int j = 0; j < blocks[i].length; j++)
-			 if(blocks[i][j][0] == null)
-			 blocks[i][j][0] = BlockKey.GROUND;
+				 if(blocks[i][j][0] == null)
+					 blocks[i][j][0] = BlockKey.GROUND;
 		 // Chunk.writeChunk(c, (((long)p.getX()) << 32) | ((long)p.getY() & 0xffffffffL));
 		 putChunk(p, c);
 	 }
@@ -230,7 +230,8 @@ public class World {
 			y = -0.4;
 		else if(x >= 0)
 			y = -0.4 * Math.sin(Math.PI / 40 * x);
-		return -0.5 * y + 0.8;//0.5 * y + 0.5;
+		// return -0.5 * y + 0.8;
+		return 0.5 * y + 0.5;
 	}
 
 	public Player getPlayer() {
