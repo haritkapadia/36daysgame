@@ -9,3 +9,22 @@
 ** TODO Give fire an animation
 * DONE Fix player walk animation
 * DONE Fix the next level not unlocking
+
+
+Seeded with: -32
+Returns: 1153176082
+Seeded with: -31
+Returns: 1152791333
+Seeded with: -1
+Returns: 1155099827
+Seeded with: 0
+Returns: -1155484576
+
+Seeded with: -32
+Returns: 1153176082
+Seeded with: -31
+Returns: 1152791333
+Seeded with: -1
+Returns: 1155099827
+Seeded with: 0
+Returns: -1155484576

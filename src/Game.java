@@ -101,6 +101,7 @@ public abstract class Game extends AnimationTimer {
 		String seed = "0";
 		try {
 			seed = worldPath.getParent().getFileName().toString();
+			System.out.println("seed: " + worldPath.getParent().getFileName());
 		}
 		catch (Throwable e) {
 			System.out.println("Error " + e.getMessage());
@@ -281,6 +282,7 @@ public abstract class Game extends AnimationTimer {
 	 * Pauses the stopwatch and stops the animation timer
 	 */
 	public void pause(){
+		world.getStopwatch().getElapsed();
 		world.getStopwatch().pause();
 		super.stop();
 	}
@@ -290,6 +292,7 @@ public abstract class Game extends AnimationTimer {
 	 * @param pauseMenu is a reference to the Pause Menu VBox
 	 */
 	public void resume(PauseMenu pauseMenu){
+		world.getStopwatch().getElapsed();
 		world.getStopwatch().unpause();
 		super.start();
 		gamePane.getChildren().remove(pauseMenu);
@@ -299,6 +302,7 @@ public abstract class Game extends AnimationTimer {
 	 * Unpauses the stopwatch and starts the animation timer
 	 */
 	public void resume(){
+		world.getStopwatch().getElapsed();
 		world.getStopwatch().unpause();
 		super.start();
 	}
@@ -442,5 +446,9 @@ public abstract class Game extends AnimationTimer {
 	 */
 	public QuestManager getQuestManager() {
 		return questManager;
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 }

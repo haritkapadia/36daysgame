@@ -51,6 +51,7 @@ public class EndScreen extends VBox {
 			}});
 			getChildren().add(new Button("Exit"){{
 				setOnAction(e -> {
+						scene.setCursor(null);
 						Main.setPane(scene, "Main Menu");
 						Main.settingsMenu.removeGameButtons();
 					});
@@ -64,6 +65,7 @@ public class EndScreen extends VBox {
 						game.killQuests();
 						game.stop();
 						game.getWorld().write();
+						scene.setCursor(null);
 						Main.setPane(game.getScene(), "Main Menu");
 						Main.settingsMenu.removeGameButtons();
 					});

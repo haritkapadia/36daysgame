@@ -37,6 +37,7 @@ public class Stopwatch implements java.io.Serializable {
 
 	public void start() {
 		prevTime = System.nanoTime();
+		getElapsed();
 		running = true;
 	}
 
@@ -47,6 +48,7 @@ public class Stopwatch implements java.io.Serializable {
 
 	public void pause() {
 		setSpeed(0);
+		getElapsed();
 	}
 
 	public void unpause() {

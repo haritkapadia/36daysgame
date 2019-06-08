@@ -15,9 +15,6 @@ import java.util.*;
 public class World {
 	final static int FREQ = 10;
 	public static final HashMap <BlockKey, Integer> CAPS = new HashMap<BlockKey, Integer>(){{
-		put(BlockKey.POISON, new Integer(0));
-		put(BlockKey.WOOD, new Integer(0));
-		put(BlockKey.GROUND, new Integer(0));
 		put(BlockKey.TREE, new Integer(100));
 		put(BlockKey.HOGWEED, World.FREQ/3);
 		put(BlockKey.WATER, 10);
@@ -63,7 +60,8 @@ public class World {
 		}
 		try {
 			try {
-				s = new Stopwatch(Long.parseLong(new String(Files.readAllBytes(Paths.get(worldPath.toString(), "offset")))));
+				s = new Stopwatch(Long.parseLong(new String(Files.readAllBytes(worldPath.resolve("offset")))));
+				System.out.println("offset: " + worldPath.resolve("offset").toString());
 			}
 			catch (NoSuchFileException e) {
 				s = new Stopwatch(0);
@@ -111,7 +109,9 @@ public class World {
 	 public void generateChunk(Point p) {
 		 Chunk c = new Chunk();
 		 BlockKey[][][] blocks = c.getBlocks();
-		 Random g = new Random((int)((p.getX() + p.getY()) * (int)(p.getX() + p.getY() + 1) / 2 + (int)p.getY()));
+		 Random g = new Random(seed + (int)p.getX() * 1037l + (int)p.getY());
+		 System.out.println("Seeded with: " + ((int)p.getX() * 31 + (int)p.getY()));
+		 System.out.println("Returns: " + g.nextInt());
 
 		 // Point2D[][] rNodes = new Point2D[3][3];
 		 // boolean[][] tNodes = new boolean[3][3];
@@ -253,8 +253,8 @@ public class World {
 			y = -0.4;
 		else if(x >= 0)
 			y = -0.4 * Math.sin(Math.PI / 40 * x);
-		// return -0.5 * y + 0.8;
-		return 0.5 * y + 0.5;
+		return -0.5 * y + 0.8;
+		// return 0.5 * y + 0.5;
 	}
 
 	public Player getPlayer() {

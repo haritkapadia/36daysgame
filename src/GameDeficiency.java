@@ -25,6 +25,12 @@ public class GameDeficiency extends Game {
 		super(scene, worldPath, onWin);
 	}
 
+	@Override
+	public void handle(long time) {
+		super.handle(time);
+		getPlayer().setExposure(getPlayer().getMaxExposure());
+	}
+
 	public void initialiseQuests() {
 		Quest findingBugs = new Quest (questManager,
 					       "Finding Bugs",
