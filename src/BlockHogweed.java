@@ -4,26 +4,13 @@
  * 2019/June/02
  */
 
-public class BlockHogweed extends Block implements Destroyable {
-	BlockHogweed() {
-		super("Artwork/gianthogweed_small.png");
-	}
-
-	public void onDestroy(World world, int x, int y, int z) {
-		world.setBlock(x - 1, y, z, BlockKey.POISON);
-		world.setBlock(x + 1, y, z, BlockKey.POISON);
-		world.setBlock(x, y - 1, z, BlockKey.POISON);
-		world.setBlock(x, y + 1, z, BlockKey.POISON);
-		synchronized(this) {
-			notifyAll();
-		}
-	}
-
-	public boolean isTransparent() {
-		return true;
-	}
-
-	public boolean isSolid() {
-		return false;
-	}
+/**
+ * Creates a Hogweed block which is a poisonous plant
+ */
+public class BlockHogweed extends PortableBlock {
+        
+        /**Constructor. calls the superclass constructor*/
+        BlockHogweed() {
+                super("Artwork/gianthogweed_small.png", ItemKey.HOGWEED);
+        }
 }

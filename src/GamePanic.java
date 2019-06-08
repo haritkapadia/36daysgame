@@ -1,3 +1,9 @@
+/**
+ * Harit Kapadia, Jack Farley
+ * Ms. Krasteva
+ * 2019/May/21
+ */
+
 import java.util.*;
 import java.io.*;
 import java.nio.*;
@@ -20,39 +26,58 @@ import javafx.geometry.*;
 import javafx.animation.*;
 import java.awt.Point;
 
+/**
+ * This class sets up the Panic stage
+ */
 public class GamePanic extends Game {
-	GamePanic(Scene scene, Path worldPath, Runnable onWin) {
-		super(scene, worldPath, onWin);
-	}
-
-	public void initialiseQuests() {
-		Quest makeAFire = new Quest (questManager,
-					     "Make a Fire",
-					     "Use the flint and steel to start a fire",
-					     1,
-					     ResourceManager.getItem(ItemKey.FLINTSTEEL),
-					     null,
-					     "Make a Fire",
-					     helpMenu);
-
-		Quest makeFlintSteel = new Quest(questManager,
-						 "Make Flint and Steel",
-						 "Follow the instructions to make a flint and steel item",
-						 1,
-						 ResourceManager.getItem(ItemKey.FLINT),
-						 new Quest[]{makeAFire},
-						 "Make FlintSteel",
-						 helpMenu);
-
-		Quest findTheFlint = new Quest (questManager,
-						"Find the Flint",
-						"Locate and pick up a flint item",
-						1,
-						ResourceManager.getBlock(BlockKey.FLINT),
-						new Quest[]{makeFlintSteel},
-						null,
-						null);
-		questManager.addQuest(findTheFlint);
-		questManager.startQuest(findTheFlint);
-	}
+        
+        /**
+         * Class constructor, calls the super class constructor
+         * @param scene The scene on which the game is displayed
+         * @param worldPath The file path to the world save files
+         * @param onWin The code that will be executed once the stage has been completed
+         */
+        GamePanic(Scene scene, Path worldPath, Runnable onWin) {
+                super(scene, worldPath, onWin);
+        }
+        
+        /**
+         * Initializes the quests for the Panic stage
+         * 
+         * Variables:
+         * 
+         * makeAFire      -Quest object, quest is completed once the player has made a fire
+         * makeFlintSteel -Quest object, quest is completed once the player has made a flint and steel item
+         * findTheFlint   -Quest object, quest is completed once the player has found a flint item
+         */
+        public void initialiseQuests() {
+                Quest makeAFire = new Quest (questManager,
+                                             "Make a Fire",
+                                             "Use the flint and steel to start a fire",
+                                             1,
+                                             ResourceManager.getItem(ItemKey.FLINTSTEEL),
+                                             null,
+                                             "Make a Fire",
+                                             helpMenu);
+                
+                Quest makeFlintSteel = new Quest(questManager,
+                                                 "Make Flint and Steel",
+                                                 "Follow the instructions to make a flint and steel item",
+                                                 1,
+                                                 ResourceManager.getItem(ItemKey.FLINT),
+                                                 new Quest[]{makeAFire},
+                                                 "Make FlintSteel",
+                                                 helpMenu);
+                
+                Quest findTheFlint = new Quest (questManager,
+                                                "Find the Flint",
+                                                "Locate and pick up a flint item",
+                                                1,
+                                                ResourceManager.getBlock(BlockKey.FLINT),
+                                                new Quest[]{makeFlintSteel},
+                                                null,
+                                                null);
+                questManager.addQuest(findTheFlint);
+                questManager.startQuest(findTheFlint);
+        }
 }

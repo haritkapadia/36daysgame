@@ -4,7 +4,12 @@
  * 2019/June/02
  */
 
+/**
+ * Creates a wood block which can be picked up and used to make a shelter
+ */
 public class BlockWood extends PortableBlock {
+        
+        /**Constructor. calls the superclass constructor*/
         BlockWood() {
                 super("Artwork/wood_small.png", ItemKey.WOOD);
         }      

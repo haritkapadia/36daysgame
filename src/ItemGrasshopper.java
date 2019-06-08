@@ -4,7 +4,14 @@
  * 2019/June/02
  */
 
+/**
+ * Creates a grasshopper item which can be eaten
+ */
 public class ItemGrasshopper extends InsectItem {
+        
+        /**
+         * The class constructor, calls the super constructor
+         */
         ItemGrasshopper() {
                 super("Artwork/grasshopper_small.png", "Grasshopper", 5, 0);
         }

@@ -35,12 +35,14 @@ public class SurvivalGuidePane extends StackPane {
          *
          * @param scene The window on which the pane will be displayed.
          */
-        SurvivalGuidePane(Scene scene, Stage stage) {
+        SurvivalGuidePane(Scene scene, Game game) {
                 this.scene = scene;
                 WebView leftPage = new WebView();
                 WebView rightPage = new WebView();
                 WebView[] pages = new WebView[]{leftPage, rightPage};
                 AtomicInteger pageCount = new AtomicInteger();
+                
+                setId("guide");
                 for(int i : new int[]{0, 1}) {
                         pages[i].setContextMenuEnabled(false);
                         pages[i].getEngine().load(this.getClass().getResource("/guide.html").toString());
@@ -73,11 +75,21 @@ public class SurvivalGuidePane extends StackPane {
                                                 }
                                         });
                                 }});
-                                getChildren().add(new Button(""){{
-                                        setId("returnbutton");
-                                        setOnAction(e -> Main.setPane(scene, "Main Menu"));
-                                        HBox.setMargin(this, new Insets(0, 30, 0, 30));
-                                }});
+                                
+                                if(game == null){
+                                        getChildren().add(new Button(""){{
+                                                setId("returnbutton");
+                                                setOnAction(e -> Main.setPane(scene, "Main Menu"));
+                                                HBox.setMargin(this, new Insets(0, 30, 0, 30));
+                                        }});
+                                }else{
+                                        getChildren().add(new Button(""){{
+                                                setId("returnbutton");
+                                                setOnAction(e -> game.closeGuide());
+                                                HBox.setMargin(this, new Insets(0, 30, 0, 30));
+                                        }});
+                                }
+                                
                                 getChildren().add(new Region(){{
                                         setPrefWidth(10000000); // large number
                                         HBox.setHgrow(this, Priority.ALWAYS);

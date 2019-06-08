@@ -33,7 +33,7 @@ import javafx.event.*;
  */
 public class SplashPane extends VBox {
         private Scene scene;
-        FadeTransition ft;
+        private FadeTransition ft;
         
         /**
          * The pane constructor.
@@ -69,6 +69,13 @@ public class SplashPane extends VBox {
                 setBackground(new Background(new BackgroundFill(Color.BEIGE, null, null)));
                 
                 
+        }
+        
+        /**
+         * @returns The FadeTransition object that contains the fade transition for the logo
+         */
+        public FadeTransition getft(){
+                return ft;
         }
         
 }

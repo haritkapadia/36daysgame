@@ -18,10 +18,24 @@ import java.util.*;
 import javafx.animation.*;
 import java.util.concurrent.atomic.*;
 import javafx.util.Duration;
+
 /**
- * A pane displaying the main menu.
+ * A pane displaying the player's inventory
  *
  * @author Harit Kapadia, Jack Farley
+ * 
+ * Variables:
+ * 
+ * scene      -The scene which everything is displayed on
+ * game       -A reference to the Game object
+ * player     -A reference to the Player object that controls this inventory
+ * slot       -An array of buttons used to display the images of the items in the inventory
+ * toolbar    -A GridPane used to display the toolbar
+ * moreInventoryButton    -A ToggleButton used to expand the inventory
+ * hiddenInventory        -A GridPane used to display the hidden inventory
+ * inventoryHidden        -True if the hidden inventory is hidden, false if shown
+ * toMove                 -The item that is being moved
+ * moveSource             -The number of the inventory slot that the item is being moved from
  */
 public class InventoryPane extends VBox {
         private Scene scene;
@@ -35,6 +49,13 @@ public class InventoryPane extends VBox {
         private ItemKey toMove;
         private int moveSource;
         
+        /**
+         * Class constructor, intializes the pane and variables
+         * 
+         * Variables:
+         * 
+         * slotPane    -Used to display the inventory
+         */
         InventoryPane(Scene scene, Game game, Player player) {
                 StackPane[] slotPane = new StackPane[player.getInventory().length];
                 final String[] KEYS = {"Q", "W", "E", "R", "T"};
@@ -134,6 +155,10 @@ public class InventoryPane extends VBox {
                 getChildren().addAll(hiddenInventory, moreInventoryButton, toolbar);
         }
         
+        /**
+         * Updates the image of a slot in the inventory
+         * @param i The slot number
+         */
         public void updateSlot(int i) {
                 if(player.getInventory(i) == null)
                         ((ImageView)slot[i].getGraphic()).setImage(null);

@@ -36,7 +36,7 @@ import javafx.event.*;
 public class HelpMenu extends StackPane {
         private static VBox helpPane;
         private Color instructionsColor = Color.BLACK;
-        public Button nextButton;
+        private Button nextButton;
         private HashMap<String, VBox> instructions;
         
         /**

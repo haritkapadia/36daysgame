@@ -13,8 +13,10 @@ import javafx.scene.image.Image;
  *
  * Variables:
  *
+ * playerSprites -An EnumMap of the various images of the player (walking left, right, up, down etc.)
  * blocks    -An EnumMap that stores each Block object with it's associated enum value
  * items     -An EnumMap that stores each Item object with it's associated enum value
+ * fireSprite     -Stores the image of the fire
  *
  */
 public final class ResourceManager {
@@ -50,7 +52,6 @@ public final class ResourceManager {
 	private static final EnumMap<BlockKey, Block> blocks = new EnumMap<BlockKey, Block>(BlockKey.class){{
 		put(BlockKey.GROUND, new BlockGround());
 		put(BlockKey.WATER, new BlockWater());
-		put(BlockKey.POISON, new BlockPoison());
 		put(BlockKey.TREE, new BlockTree());
 		put(BlockKey.HOGWEED, new BlockHogweed());
 		put(BlockKey.WOOD, new BlockWood());

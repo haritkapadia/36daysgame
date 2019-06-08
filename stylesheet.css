@@ -18,6 +18,9 @@
 #title{
     //-fx-alignment: center;
     -fx-font-size: 30px;
+    -fx-padding: 15px;
+    -fx-border-insets: 15px;
+    -fx-background-insets: 15px;
 }
 
 #bigtitle{

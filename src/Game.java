@@ -307,6 +307,9 @@ public abstract class Game extends AnimationTimer {
 		super.start();
 	}
 
+	/**
+	 * Closes the survival guide when it is on screen.
+	 */
 	public void closeGuide(){
 		gamePane.getChildren().remove(scene.lookup("#ingameguide"));
 		resume();
@@ -353,7 +356,16 @@ public abstract class Game extends AnimationTimer {
 	 *
 	 * Variables:
 	 *
-	 * -----------------------------------------------------------------------------------
+	 * g                              -A GraphicsContext object, used to draw images
+	 * r                              -A rectangle2D object that determines what parts of the world are visible
+	 * maxRatio                       -The ratio of the rectangle side lengths
+	 * maxS, minS                     -Used to calculate screen bounds
+	 * sw, se, nw                     -The block coordinates of the South West, South East, and North West blocks respectively
+	 * m                              -The block coordinate of the mouse
+	 * screen X, screenY, screenL     -The screen coordinates
+	 * playerX, playerY               -The player coordinates
+	 * c                              -The location fo the mouse on the screen
+	 * clickX, clickY                 -The scene coordinates of where the user clicked
 	 */
 	public void drawScreen() {
 		GraphicsContext g = canvas.getGraphicsContext2D();
@@ -448,6 +460,9 @@ public abstract class Game extends AnimationTimer {
 		return questManager;
 	}
 
+	/**
+	 * @return The player of the game.
+	 */
 	public Player getPlayer() {
 		return player;
 	}

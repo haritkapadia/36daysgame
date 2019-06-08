@@ -14,8 +14,8 @@ import javafx.scene.image.Image;
  * name      -Stores what the item is called
  */
 public abstract class Item implements Drawable {
-        Image image;
-        String name;
+        private Image image;
+        private String name;
         
         /**
          * Class constructor, initializes all variables

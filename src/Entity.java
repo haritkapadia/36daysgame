@@ -35,9 +35,11 @@ import java.awt.Point;
  * MAX_HUNGER  -Stores the amount that the hunger bar is out of
  * thirst      -Stores how quenched the entity is
  * MAX_THIRST  -Stores the amount that the thirst bar is out of
- * STOMACH_REDUCTION_TIME -Stores how quickly the entity gets hungry
  * world       -A reference to the game world object
  * SPEED       -Stores how fast the entity moves
+ * invincible  -Stores whether or not the entity should take damage
+ * damageWait  -Stores how long the entity has been waiting to take damage.
+ * prevElapsed -Stores the last time the entity checked if damage had to be taken.
  */
 public abstract class Entity extends Transition implements Drawable, Serializable {
 	protected String id;
@@ -54,17 +56,11 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 	protected int MAX_EXPOSURE;
 	protected int thirst;
 	protected int MAX_THIRST;
-	public static final double STOMACH_REDUCTION_TIME = 1;
 	protected transient World world = null;
 	protected double SPEED;
 	protected boolean invincible = false;
 	long damageWait;
 	long prevElapsed;
-
-	// /*
-	//  * Overrides the abstract superclass method
-	//  */
-	// public void interpolate(double d) {}
 
 	/**
 	 * Overloaded constructor
@@ -98,6 +94,26 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 	}
 
 
+	/**
+	 * Overloaded constructor
+	 * @param id The id of the Entity
+	 * @param inventory The inventory of the Entity
+	 * @param x The x of the Entity
+	 * @param y The y of the Entity
+	 * @param radius The radius of the Entity
+	 * @param facing The facing of the Entity
+	 * @param health The health of the Entity
+	 * @param MAX_HEALTH The MAX_HEALTH of the Entity
+	 * @param hunger The hunger of the Entity
+	 * @param MAX_HUNGER The MAX_HUNGER of the Entity
+	 * @param exposure The exposure of the Entity
+	 * @param MAX_EXPOSURE The MAX_EXPOSURE of the Entity
+	 * @param thirst The thirst of the Entity
+	 * @param MAX_THIRST The MAX_THIRST of the Entity
+	 * @param id The id of the Entity
+	 * @param world A reference to the game world
+	 * @param SPEED The SPEED of the Entity
+	 */
 	public Entity(String id, ItemKey[] inventory, double x, double y, double radius, Direction facing, int health, int MAX_HEALTH, int hunger, int MAX_HUNGER, int exposure, int MAX_EXPOSURE, int thirst, int MAX_THIRST, World world, double SPEED) {
 		this.id = id;
 		this.inventory = inventory;
@@ -117,7 +133,13 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 		this.SPEED = SPEED;
 	}
 
-
+	/**
+	 * Reads an serialized Entity from a file.
+	 *
+	 * @param world the world that the entity is in.
+	 * @param file the file to read the entity from.
+	 * @return The Entity read from the file that has been associated with the specified world
+	 */
 	public static Entity readEntity(World world, File file) {
 		Entity out = null;
 		try {
@@ -135,6 +157,11 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 		return out;
 	}
 
+	/**
+	 * Writes an serialized Entity from a file.
+	 *
+	 * @param file the file to read the entity from.
+	 */
 	public void writeEntity(File file) {
 		try {
 			FileOutputStream fos = new FileOutputStream(file);
@@ -274,6 +301,9 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
 		this.invincible = invincible;
 	}
 
+	/**
+	 * Describes the actions that an entity would take involuntarily, such as becoming thirsty
+	 */
 	public abstract void exist();
 
 	/**
