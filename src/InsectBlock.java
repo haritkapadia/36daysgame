@@ -7,14 +7,31 @@
 import javafx.scene.image.Image;
 
 /**
- * The superclass of all insect blocks in the game
+ * Superclass for all insect blocks (ant, worm, grasshopper)
+ * 
+ * Variables:
+ * 
+ * image  -Stores a blank png file
  */
 public class InsectBlock extends PortableBlock{
+        private Image image;
         
         /**
-         * The class constructor, calls the super constructor
+         * Class constructor, calls the super class and initializes the image variables
          */
         public InsectBlock(String file, ItemKey equivalentItem){
                 super (file, equivalentItem);
+                try {
+                        image = new Image(file);
+                } catch(Exception e) {
+                        e.printStackTrace();
+                }
+        }
+        
+        /**
+         * @returns The insect image
+         */
+        public Image getImage() {
+                return image;
         }
 }
