@@ -9,7 +9,7 @@
  */
 public class BlockGround extends Block {
         
-        /**Constructor*/
+        /**Constructor. calls the superclass constructor*/
         BlockGround() {
                 super("Artwork/grass_small.png");
         }

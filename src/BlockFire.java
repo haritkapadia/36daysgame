@@ -10,8 +10,6 @@ import javafx.scene.image.Image;
  * Creates a fire block
  */
 public class BlockFire extends Block {
-        Image image;
-        
         /**
          * Class constructor, calls the Block constructor using the fire image
          */

@@ -34,6 +34,14 @@ public class SurvivalGuidePane extends StackPane {
          * The pane is initialised with placeholders for the survival guide.
          *
          * @param scene The window on which the pane will be displayed.
+         * @param game The game that the Survival Guide is being displayed on top of
+         * 
+         * Variables:
+         * 
+         * leftPage      -A WebView object that stores the content that is being displayed on the left page
+         * rightPage     -A WebView object that stores the content that is being displayed on the right page
+         * pages         -An array of WebView objects that stores the entire Survival Guide
+         * pagecount     -The number of pages in the Survival Guide
          */
         SurvivalGuidePane(Scene scene, Game game) {
                 this.scene = scene;

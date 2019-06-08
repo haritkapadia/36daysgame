@@ -17,7 +17,7 @@ import javafx.scene.image.Image;
  * @author Harit Kapadia, Jack Farley
  */
 public abstract class Block implements Drawable {
-        Image image;
+        private Image image;
         
         /**
          * Class constructor, initializes the image variable

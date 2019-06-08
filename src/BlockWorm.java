@@ -9,7 +9,7 @@
  */
 public class BlockWorm extends InsectBlock {
         
-        /**Constructor*/
+        /**Constructor. calls the superclass constructor*/
         BlockWorm() {
                 super("Artwork/insect.png", ItemKey.WORM);
         }      

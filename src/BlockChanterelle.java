@@ -4,7 +4,12 @@
  * 2019/June/02
  */
 
+/**
+ * Creates a chanterelle block which can be picked up and eaten
+ */
 public class BlockChanterelle extends PortableBlock {
+        
+        /**Constructor. calls the superclass constructor*/
         BlockChanterelle() {
                 super("Artwork/chanterelle_small.png", ItemKey.CHANTERELLE);
         }      

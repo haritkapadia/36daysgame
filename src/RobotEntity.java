@@ -10,7 +10,7 @@ public abstract class RobotEntity extends Entity {
         public abstract boolean isBlockImportant(Block block);
         public abstract List<Entity> getEntitiesInView();
         
-        RobotEntity(World world) {
+        RobotEntity(World world, int n) {
                 super(world);
         }
 }

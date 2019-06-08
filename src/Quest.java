@@ -159,7 +159,6 @@ public class Quest extends Thread {
                                 }
                         }
                 }
-                Platform.runLater(() -> questManager.removeQuest(this));
                 System.out.println(questName + " removed");
                 if(nextQuests != null) {
                         for(Quest q : nextQuests) {
@@ -168,6 +167,7 @@ public class Quest extends Thread {
                                 questManager.startQuest(q);
                         }
                 }
+                Platform.runLater(() -> questManager.removeQuest(this));
                 System.out.println(questName + " reached end");
                 
         }

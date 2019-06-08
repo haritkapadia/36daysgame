@@ -6,19 +6,15 @@
 
 import javafx.scene.image.Image;
 
+/**
+ * The superclass of all insect blocks in the game
+ */
 public class InsectBlock extends PortableBlock{
-        private Image image;
         
+        /**
+         * The class constructor, calls the super constructor
+         */
         public InsectBlock(String file, ItemKey equivalentItem){
                 super (file, equivalentItem);
-                try {
-                        image = new Image(file);
-                } catch(Exception e) {
-                        e.printStackTrace();
-                }
-        }
-        
-        public Image getImage() {
-                return image;
         }
 }

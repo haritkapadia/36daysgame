@@ -4,8 +4,12 @@
  * 2019/June/02
  */
 
-public class BlockNorthernBlueFlag
- extends PortableBlock {
+/**
+ * Creates a Northern Blue Flag block which is a poisonous plant
+ */
+public class BlockNorthernBlueFlag extends PortableBlock {
+        
+        /**Constructor. calls the superclass constructor*/
         BlockNorthernBlueFlag () {
                 super("Artwork/northernblueflag_small.png", ItemKey.NORTHERNBLUEFLAG);
         }      
