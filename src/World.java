@@ -156,9 +156,9 @@ public class World {
 
 		for(int y = 0; y < Chunk.CHUNK_SIDE_LENGTH; y++) {
 			for(int x = 0; x < Chunk.CHUNK_SIDE_LENGTH; x++) {
-				float nx = x + (int)p.getX() + 0.5f;
-				float ny = y + (int)p.getY() + 0.5f;
-				float e = 8 * png.noise2(1f / 8 * nx, 1f / 8 * ny);// + 0.5f * png.noise2(2 * nx, 2* ny) + 0.25f * png.noise2(4 * nx, 4 * ny);
+				float nx = x + Chunk.CHUNK_SIDE_LENGTH * (int)p.getX() + 0.5f;
+				float ny = y + Chunk.CHUNK_SIDE_LENGTH * (int)p.getY() + 0.5f;
+				float e = 8 * png.noise2(1f / 8 * nx, 1f / 8 * ny);
 				float value = (float)Math.pow(e, 6.25);
 				if(1 <= value && value < 6)
 					blocks[y][x][1] = BlockKey.CATTAIL;
