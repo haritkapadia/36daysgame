@@ -11,6 +11,7 @@ import java.nio.charset.*;
 import java.awt.Point;
 import javafx.geometry.Point2D;
 import java.util.*;
+import org.j3d.texture.procedural.PerlinNoiseGenerator;
 
 /**
  * This class is used to create a game world object and stores the identity of every block in the game
@@ -32,7 +33,7 @@ public class World {
 	public static final HashMap <BlockKey, Integer> CAPS = new HashMap<BlockKey, Integer>(){{
 			put(BlockKey.TREE, new Integer(100));
 			put(BlockKey.HOGWEED, World.FREQ/3);
-			put(BlockKey.WATER, 10);
+			// put(BlockKey.WATER, 10);
 			put(BlockKey.KINGBOLETE, World.FREQ/10);
 			put(BlockKey.NORTHERNBLUEFLAG, World.FREQ/2);
 			put(BlockKey.FLYAGARIC, World.FREQ/5);
@@ -47,7 +48,7 @@ public class World {
 			put(BlockKey.MOREL, World.FREQ/3);
 			put(BlockKey.MUSHROOM, World.FREQ);
 			put(BlockKey.STRAWBERRIES, (int)(World.FREQ*0.9));
-			put(BlockKey.CATTAIL, World.FREQ);
+			// put(BlockKey.CATTAIL, World.FREQ);
 			put(BlockKey.ANT, 30*World.FREQ);
 			put(BlockKey.WORM, 20*World.FREQ);
 			put(BlockKey.GRASSHOPPER, 20*World.FREQ);
@@ -149,35 +150,31 @@ public class World {
 	public void generateChunk(Point p) {
 		Chunk c = new Chunk();
 		BlockKey[][][] blocks = c.getBlocks();
+		PerlinNoiseGenerator png = new PerlinNoiseGenerator((int)seed);
 		Random g = new Random(seed + (int)p.getX() * 1037l + (int)p.getY());
-		System.out.println("Seeded with: " + ((int)p.getX() * 31 + (int)p.getY()));
-		System.out.println("Returns: " + g.nextInt());
 
-		// Point2D[][] rNodes = new Point2D[3][3];
-		// boolean[][] tNodes = new boolean[3][3];
-		// // Point2D riverNode = new Point2D(p.getX() + 32 * g.nextDouble(), p.getY() + 32 * g.nextDouble());
-		// // boolean terminatingNode = g.nextBoolean();
-		// for(int i = 0; i < 3; i++) {
-		//	 for(int j = 0; j < 3; j++) {
-		//		 int x = (int)p.getX() + i - 1;
-		//		 int y = (int)p.getY() + i - 1;
-		//		 Random r = new Random((x + y) * (x + y + 1) / 2 + y);
-		//		 rNodes[i][j] = new Point2D(x + 32 * r.nextDouble(), y + 32 * r.nextDouble());
-		//		 tNodes[i][j] = r.nextDouble() > 0.4; // 60% chance to be a terminating chunk
-		//	 }
-		// }
-		// if(!tNodes[1][1]) {
-		//	 if(!tNodes[0][1]) {
-		//		 for(double y = rNodes[1][1].getX(); y > rNodes[0][1].getX(); y--) {
 
-		//		 }
-		//	 }
-		// }
+		for(int y = 0; y < Chunk.CHUNK_SIDE_LENGTH; y++) {
+			for(int x = 0; x < Chunk.CHUNK_SIDE_LENGTH; x++) {
+				float nx = x + (int)p.getX() + 0.5f;
+				float ny = y + (int)p.getY() + 0.5f;
+				float e = 8 * png.noise2(1f / 8 * nx, 1f / 8 * ny);// + 0.5f * png.noise2(2 * nx, 2* ny) + 0.25f * png.noise2(4 * nx, 4 * ny);
+				float value = (float)Math.pow(e, 6.25);
+				if(1 <= value && value < 6)
+					blocks[y][x][1] = BlockKey.CATTAIL;
+				else if(6 <= value)
+					blocks[y][x][1] = BlockKey.WATER;
+			}
+		}
+
 
 		for(BlockKey block : CAPS.keySet()){
 			if(CAPS.get(block) > 0){
 				for(int i = g.nextInt(CAPS.get(block)); i > 0; i--) {
-					blocks[g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][g.nextInt(Chunk.CHUNK_SIDE_LENGTH)][1] = block;
+					int row = g.nextInt(Chunk.CHUNK_SIDE_LENGTH);
+					int col = g.nextInt(Chunk.CHUNK_SIDE_LENGTH);
+					if(blocks[row][col][1] == null)
+						blocks[row][col][1] = block;
 				}
 			}
 		}
@@ -186,7 +183,6 @@ public class World {
 			for(int j = 0; j < blocks[i].length; j++)
 				if(blocks[i][j][0] == null)
 					blocks[i][j][0] = BlockKey.GROUND;
-		// Chunk.writeChunk(c, (((long)p.getX()) << 32) | ((long)p.getY() & 0xffffffffL));
 		putChunk(p, c);
 	}
 
