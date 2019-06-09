@@ -190,7 +190,7 @@ public class HelpMenu extends StackPane {
                                 setId("instruction");
                         }});
                         
-                        getChildren().add(new Text("Then put your mouse pointer over the knife and press the key that corresponds with flint in your inventory."){{
+                        getChildren().add(new Text("Then put your mouse pointer over the knife and press the key that corresponds with flint in your toolbar."){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
@@ -211,7 +211,7 @@ public class HelpMenu extends StackPane {
                                 setId("instruction");
                         }});
                         
-                        getChildren().add(new Text("To start a fire hover your mouse pointer over a wood block and press the key that corresponds with the flint and steel item in your inventory"){{
+                        getChildren().add(new Text("To start a fire hover your mouse pointer over a wood block and press the key that corresponds with the flint and steel item in your toolbar"){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
@@ -226,13 +226,13 @@ public class HelpMenu extends StackPane {
                                 setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
                         }});
                         
-                        getChildren().add(new Text("To get water hover your mouse pointer over a water block and press the key that corresponds with the water bottle in your inventory."){{
+                        getChildren().add(new Text("To get water hover your mouse pointer over a water block and press the key that corresponds with the water bottle in your toolbar."){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
                         }});
                         
-                        getChildren().add(new Text("To purify water place your water bottle on the ground, hover over it with your mouse pointer, and press the key that corresponds with the water purification tablets in your inventory."){{
+                        getChildren().add(new Text("To purify water place your water bottle on the ground, hover over it with your mouse pointer, and press the key that corresponds with the water purification tablets in your toolbar."){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");
@@ -244,7 +244,40 @@ public class HelpMenu extends StackPane {
                                 setId("instruction");
                         }});
                         
-                        getChildren().add(new Text("To drink water press the key that corresponds with the water bottle in your inventory."){{
+                        getChildren().add(new Text("To drink water press the key that corresponds with the water bottle in your toolbar."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }});
+                
+                instructions.put("Make a Shelter", new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Text("Making a Shelter/Bed"){{
+                                setWrappingWidth(270);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To make a shelter you need to place 7 palisades in an open ring."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To place a palisade hover your mouse pointer over where you want to place it and press the key that corresponds with a wood item in your toolbar."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To make a bed pick a Cattail and then hover your mouse over the empty space in the middle of your shelter and press the key that corresponds with the Cattail in your toolbar."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("To sleep, right click the bed while standing in your shelter."){{
                                 setWrappingWidth(300);
                                 setFill(instructionsColor);
                                 setId("instruction");

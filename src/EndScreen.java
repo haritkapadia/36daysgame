@@ -53,7 +53,6 @@ public class EndScreen extends VBox {
                         getChildren().add(new Label("YOU DIED :("){{
                                 setStyle("-fx-font-size: 30px;");
                         }});
-                        getChildren().add(new Button("Save High Score"));
                         getChildren().add(new Button("Exit"){{
                                 setOnAction(e -> {
                                         Main.setPane(scene, "Main Menu");

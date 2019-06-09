@@ -51,12 +51,21 @@ public class GamePanic extends Game {
          * findTheFlint   -Quest object, quest is completed once the player has found a flint item
          */
         public void initialiseQuests() {
+                Quest makeBed = new Quest (questManager,
+                                             "Make the Bed",
+                                             "Make a bed out of cattails",
+                                             1,
+                                             ResourceManager.getItem(ItemKey.CATTAIL),
+                                             null,
+                                             "Make s Shelter",
+                                             helpMenu);
+                
                 Quest fetchWater = new Quest (questManager,
                                              "Fetch Water",
                                              "Fill up your water bottle",
                                              1,
                                              ResourceManager.getItem(ItemKey.WATERBOTTLE),
-                                             null,
+                                              new Quest[] {makeBed},
                                              "Fetch Water",
                                              helpMenu);
                 

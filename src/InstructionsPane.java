@@ -62,6 +62,11 @@ public class InstructionsPane extends VBox {
                         getChildren().add(instruction(scene, "To start a fire, first create a flint and steel item and add it to your toolbar, then hover over a wood block with your mouse and press the key that corresponds with the flint and steel item in your toolbar.", "Instructions/makeafire.gif", 3)); 
                         getChildren().add(instruction(scene, "To find and eat food right click the food object (insects are invisible until you pick them up) and then press the key that corresponds with the food item in your toolbar.", "Instructions/eatfood.gif", 3));
                 }});
+                pages.add(new VBox(){{
+                        setSpacing(10);
+                        getChildren().add(instruction(scene, "To get water, hover your mouse pointer over a water block and press the key that corresponds with your water bottle in your toolbar. To purify the water place the water bottle on the ground, hover over it with your mouse point and press the key that corresponds with your water purification tablets in your toolbar. To drink the water pick up the water bottle and press the key that corresponds with the water bottle in your toolbar.", "Instructions/getwater.gif", 0)); 
+                        getChildren().add(instruction(scene, "To build a shelter place seven palisade blocks in an open ring. To place a palisade hover your mouse over a grass block and press the key that corresponds with wood in your toolbar. To make a bed pick up a Cattail then hover your mouse over the empty spot in your shelter and press the key that corresponds with the Cattail in your toolbar. To sleep, right click the bed.", "Instructions/makeashelter.gif", 0)); 
+                }});
                 this.scene = scene;
                 getChildren().add(new HBox(){{
                         getChildren().add(new Button(){{
@@ -154,7 +159,7 @@ public class InstructionsPane extends VBox {
                                                 setFitHeight(scene.getHeight()/18);
                                         }};
                                 }
-                                if(!click.equals(null)){
+                                if(click != null){
                                         getChildren().add(click);
                                         setAlignment(click, Pos.BOTTOM_RIGHT);
                                 }

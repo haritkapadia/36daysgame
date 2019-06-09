@@ -459,7 +459,7 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
                                 inventory[i] = null;
                         }else if (nearestFreeBlock() != null){
                                 blockPos = nearestFreeBlock();
-                                world.setBlock((int)blockPos.getX(), (int)blockPos.getY(), 1, ResourceManager.getPortableBlock(inventory[i]));
+                                world.setBlockUnsafe((int)blockPos.getX(), (int)blockPos.getY(), 1, ResourceManager.getPortableBlock(inventory[i]));
                                 inventory[i] = null;
                         }
                 }
@@ -470,10 +470,14 @@ public abstract class Entity extends Transition implements Drawable, Serializabl
          * @returns the coordinates of the nearest free block
          */
         public Point nearestFreeBlock(){
-                for (int row = (int)World.blockCoordinate(getPosition()).getY() - 1; row <= (int)World.blockCoordinate(getPosition()).getY()+1; row++){
-                        for(int col = (int)World.blockCoordinate(getPosition()).getX()-1; col <= (int)World.blockCoordinate(getPosition()).getX()+1; col++){
-                                if(world.getBlock(col, row, 1)==null || ResourceManager.getBlock(world.getBlock(row, col, 1)) instanceof InsectBlock)
-                                        return new Point(col, row);
+                for (int x = ((int)World.blockCoordinate(getPosition()).getX()-1); x <= ((int)World.blockCoordinate(getPosition()).getX()+1); x++){
+                        for(int y = ((int)World.blockCoordinate(getPosition()).getY()-1); y <= ((int)World.blockCoordinate(getPosition()).getY()+1); y++){
+                                try{
+                                   if(ResourceManager.getBlock(world.getBlock(x, y, 1)) instanceof InsectBlock)
+                                           throw new NullPointerException();
+                                }catch(NullPointerException e){
+                                        return new Point(x,y);
+                                }
                         }
                 }
                 return null;
