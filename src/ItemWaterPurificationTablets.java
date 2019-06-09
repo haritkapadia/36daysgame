@@ -39,6 +39,10 @@ public class ItemWaterPurificationTablets extends Item {
                         ((ItemWaterBottle)ResourceManager.getItem(ItemKey.WATERBOTTLE)).purifyWater();
                         amountRemaining--;
                         
+                        synchronized(this) {
+                                notifyAll();
+                        }
+                        
                         if(amountRemaining==1){
                                 consumable=true;
                         }

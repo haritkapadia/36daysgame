@@ -50,7 +50,7 @@ public class GamePanic extends Game {
          * makeFlintSteel -Quest object, quest is completed once the player has made a flint and steel item
          * findTheFlint   -Quest object, quest is completed once the player has found a flint item
          */
-        public void initialiseQuests() {
+        public void initialiseQuests() {                
                 Quest makeBed = new Quest (questManager,
                                              "Make the Bed",
                                              "Make a bed out of cattails",
@@ -60,12 +60,30 @@ public class GamePanic extends Game {
                                              "Make s Shelter",
                                              helpMenu);
                 
+                Quest makeShelter = new Quest (questManager,
+                                             "Make a Shelter",
+                                             "Make a shelter out of palisades.",
+                                             1,
+                                             ResourceManager.getItem(ItemKey.CATTAIL),
+                                              new Quest[] {makeBed},
+                                             "Make a Shelter",
+                                             helpMenu);
+                
+                Quest purifyWater = new Quest (questManager,
+                                               "Purify Water",
+                                               "Use your water purification tablets to clear your water.",
+                                               1,
+                                               ResourceManager.getItem(ItemKey.WATERPURIFICATIONTABLETS),
+                                               new Quest[] {makeShelter},
+                                               "Fetch Water",
+                                               helpMenu);
+                
                 Quest fetchWater = new Quest (questManager,
                                              "Fetch Water",
                                              "Fill up your water bottle",
                                              1,
                                              ResourceManager.getItem(ItemKey.WATERBOTTLE),
-                                              new Quest[] {makeBed},
+                                             new Quest[] {purifyWater},
                                              "Fetch Water",
                                              helpMenu);
                 
@@ -93,8 +111,8 @@ public class GamePanic extends Game {
                                                 1,
                                                 ResourceManager.getBlock(BlockKey.FLINT),
                                                 new Quest[]{makeFlintSteel},
-                                                null,
-                                                null);
+                                                "Make FlintSteel",
+                                                helpMenu);
                 
                 questManager.addQuest(findTheFlint);
                 questManager.startQuest(findTheFlint);
