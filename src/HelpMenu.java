@@ -284,5 +284,32 @@ public class HelpMenu extends StackPane {
                         }});
                         setSpacing(10);
                 }});
+                
+                instructions.put("Survive", new VBox(){{
+                        setAlignment(Pos.TOP_CENTER);
+                        getChildren().add(new Text("Survive"){{
+                                setWrappingWidth(270);
+                                setStyle("-fx-font-size: 24px; -fx-text-fill: black;");
+                        }});
+                        
+                        getChildren().add(new Text("To surive you must last 36 days."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("If you are struggling consult the Survival Guide or the Instruction Manual"){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        
+                        getChildren().add(new Text("You can sleep in your shelter to skip nights and use the fast forward button in the top right corner of the screen to speed up the clock."){{
+                                setWrappingWidth(300);
+                                setFill(instructionsColor);
+                                setId("instruction");
+                        }});
+                        setSpacing(10);
+                }});
         }
 }

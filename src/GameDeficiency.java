@@ -83,8 +83,8 @@ public class GameDeficiency extends Game {
                                                  2,
                                                  ResourceManager.getBlock(BlockKey.INDIANPIPE),
                                                  new Quest[]{findingBugs},
-                                                 null,
-                                                 null);
+                                                 "Pick a Bouquet",
+                                                 helpMenu);
                 
                 Quest pickABouquet2 = new Quest (questManager,
                                                  "Pick a Bouquet Part 2",
@@ -92,8 +92,8 @@ public class GameDeficiency extends Game {
                                                  1,
                                                  ResourceManager.getBlock(BlockKey.ELDERBERRY),
                                                  new Quest[]{pickABouquet3},
-                                                 null,
-                                                 null);
+                                                 "Pick a Bouquet",
+                                                 helpMenu);
                 
                 Quest pickABouquet1 = new Quest (questManager,
                                                  "Pick a Bouquet Part 1",
@@ -110,8 +110,8 @@ public class GameDeficiency extends Game {
                                                10,
                                                ResourceManager.getBlock(BlockKey.WOOD),
                                                new Quest[]{pickABouquet1},
-                                               null,
-                                               null);
+                                               "Welcome Message",
+                                               helpMenu);
                 
                 Quest breakingTree = new Quest(questManager,
                                                "Break a Tree",
