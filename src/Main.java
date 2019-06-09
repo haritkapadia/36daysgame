@@ -42,6 +42,7 @@ public class Main extends Application {
 	public static BooleanControl muteControl;
 	public static HashMap<String, Parent> stuff;
 	public static SettingsMenu settingsMenu;
+	public static final Path rootPath = Paths.get(System.getProperty("user.home"), "Desktop", "36daysfiles");
 
 	/**
 	 * Changes the pane being displayed on the scene
@@ -99,6 +100,33 @@ public class Main extends Application {
 	public void init() {
 		panes = new HashMap<String, Parent>();
 		Font.loadFont(getClass().getResourceAsStream("/ChicagoFLF.ttf"), 16);
+		try {
+			String out = "Tier 1\t1000\n" +
+				"Tier 2\t900\n" +
+				"Tier 3\t800\n" +
+				"Tier 4\t700\n" +
+				"Tier 5\t600\n" +
+				"Tier 6\t500\n" +
+				"Tier 7\t400\n" +
+				"Tier 8\t300\n" +
+				"Tier 9\t200\n" +
+				"Tier 10\t100";
+			if(!rootPath.resolve("worlds").toFile().exists())
+				rootPath.resolve("worlds").toFile().mkdirs();
+			if(!rootPath.resolve("scores").toFile().exists())
+				rootPath.resolve("scores").toFile().mkdirs();
+			if(!rootPath.resolve("scores").resolve("Deficiency").toFile().exists())
+				Files.write(rootPath.resolve("scores").resolve("Deficiency"), out.getBytes("UTF-8"));
+			if(!rootPath.resolve("scores").resolve("Panic").toFile().exists())
+				Files.write(rootPath.resolve("scores").resolve("Panic"), out.getBytes("UTF-8"));
+			if(!rootPath.resolve("scores").resolve("Escape").toFile().exists())
+				Files.write(rootPath.resolve("scores").resolve("Escape"), out.getBytes("UTF-8"));
+
+		}
+		catch (Throwable e) {
+			System.out.println("Error " + e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**
