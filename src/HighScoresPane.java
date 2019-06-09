@@ -42,9 +42,9 @@ public class HighScoresPane extends VBox {
 			setAlignment(Pos.CENTER);
 			setSpacing(50);
 			try {
-				getChildren().add(new HighScores(scene, "Deficiency", basePath.resolve("scores").resolve("Deficiency").toFile()));
-				getChildren().add(new HighScores(scene, "Panic", basePath.resolve("scores").resolve("Panic").toFile()));
-				getChildren().add(new HighScores(scene, "Escape", basePath.resolve("scores").resolve("Escape").toFile()));
+				getChildren().add(new HighScores(scene, "Deficiency", Main.rootPath.resolve("scores").resolve("Deficiency").toFile()));
+				getChildren().add(new HighScores(scene, "Panic", Main.rootPath.resolve("scores").resolve("Panic").toFile()));
+				getChildren().add(new HighScores(scene, "Escape", Main.rootPath.resolve("scores").resolve("Escape").toFile()));
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
