@@ -57,7 +57,6 @@ public final class ResourceManager {
                 put(BlockKey.ELDERBERRY, new BlockElderberry());
                 put(BlockKey.FIDDLEHEADS, new BlockFiddleheads());
                 put(BlockKey.INDIANPIPE, new BlockIndianPipe());
-                put(BlockKey.MOONSEED, new BlockMoonseed());
                 put(BlockKey.MOREL, new BlockMorel());
                 put(BlockKey.MUSHROOM, new BlockMushroom());
                 put(BlockKey.STRAWBERRIES, new BlockStrawberries());
@@ -83,7 +82,6 @@ public final class ResourceManager {
                 put (ItemKey.ELDERBERRY, new ItemElderberry());
                 put (ItemKey.FIDDLEHEADS, new ItemFiddleheads());
                 put(ItemKey.INDIANPIPE, new ItemIndianPipe());
-                put(ItemKey.MOONSEED, new ItemMoonseed());
                 put (ItemKey.MOREL, new ItemMorel());
                 put(ItemKey.MUSHROOM, new ItemMushroom());
                 put(ItemKey.STRAWBERRIES, new ItemStrawberries());
