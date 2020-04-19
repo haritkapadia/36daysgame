@@ -13,6 +13,6 @@ public class ItemAnt extends InsectItem {
          * The class constructor, calls the super constructor
          */
         ItemAnt() {
-                super("Artwork/ant_small.png", "Ant", 5, 0);
+                super("img/ant_small.png", "Ant", 5, 0);
         }
 }

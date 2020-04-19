@@ -137,9 +137,13 @@ public class QuestManager {
                                 }
                         }
                         r.close();
+                        // System.out.println("questlog:" + out);
+                        // for(Quest v : quests)
+                        //     System.out.print(v.getQuestName() + " ");
+                        // System.out.println();
                         Files.write(Paths.get(worldPath.toString(), "/questlog"), out.getBytes("UTF-8"));
                         System.out.println("lines: " + currQuest.size());
-                        if(currQuest.size() == 2) {
+                        if(currQuest.size() != 0) {
                                 System.out.println("currQuest found");
                                 
                                 for(Quest v : quests) {
@@ -162,8 +166,25 @@ public class QuestManager {
          * Stops all the quests
          */
         public void killQuests() {
-                for(Quest q : quests)
+            for(Quest q : quests) {
                         q.stop();
+                        try {
+                        q.join();
+                        } catch(InterruptedException e) {
+                            System.out.println("Error " + e.getMessage());
+                            e.printStackTrace();
+                        }
+            }
+            try {
+                BufferedReader b = new BufferedReader(new FileReader(Paths.get(worldPath.toString(), "/currentquest").toString()));
+                String out = b.readLine() + "\n";
+                out += Integer.toString(Integer.parseInt(b.readLine()) - 1);
+                b.close();
+                Files.write(Paths.get(worldPath.toString(), "/currentquest"), out.getBytes("UTF-8"));
+            } catch(Throwable e) {                
+                        System.out.println("Error " + e.getMessage());
+                        e.printStackTrace();
+            }
         }
         
         /**
@@ -180,8 +201,9 @@ public class QuestManager {
         public void startQuest(Quest q) {
                 Platform.runLater(() -> {
                         ui.getChildren().add(q.getQuestPane());
-                        if(q.getInstr() != null)
+                        if(q.getInstr() != null) {
                                 q.getHelpMenu().setInstr(q.getInstr());
+                        }
                 });
                 q.start();
         }

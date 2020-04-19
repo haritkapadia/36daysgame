@@ -11,6 +11,6 @@ public class BlockNorthernBlueFlag extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockNorthernBlueFlag () {
-                super("Artwork/northernblueflag_small.png", ItemKey.NORTHERNBLUEFLAG);
+                super("img/northernblueflag_small.png", ItemKey.NORTHERNBLUEFLAG);
         }      
 }

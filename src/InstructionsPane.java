@@ -46,26 +46,26 @@ public class InstructionsPane extends VBox {
                 AtomicInteger currentPage = new AtomicInteger(0);
                 pages.add(new VBox(){{
                         setSpacing(10);
-                        getChildren().add(instruction (scene, "To move, left click the tile that you want to move to.", "Instructions/clicktomove.gif", 1));
-                        getChildren().add(instruction(scene, "To break an object (only some objects are breakable), left click the object that you want to break.", "Instructions/breaktree.gif", 1));
-                        getChildren().add(instruction(scene, "To pick up an object, right click the object that you want to pick up.", "Instructions/pickupwood.gif", 2));
+                        getChildren().add(instruction (scene, "To move, left click the tile that you want to move to.", "img/clicktomove.gif", 1));
+                        getChildren().add(instruction(scene, "To break an object (only some objects are breakable), left click the object that you want to break.", "img/breaktree.gif", 1));
+                        getChildren().add(instruction(scene, "To pick up an object, right click the object that you want to pick up.", "img/pickupwood.gif", 2));
                 }});
                 pages.add(new VBox(){{
                         setSpacing(10);
-                        getChildren().add(instruction(scene, "To open the survival guide click on the book icon at the top right corner of the screen.", "Instructions/openguide.gif", 1));
-                        getChildren().add(instruction(scene, "To swap items in your inventory click on the item that you want to move then click on the slot that you'd like to move it to.", "Instructions/swapinventory.gif", 1));
-                        getChildren().add(instruction(scene, "To discard an item from your inventory hold the ctrl key then press the key that corresponds with the item you want to discard.", "Instructions/dropitem.gif", 4));
+                        getChildren().add(instruction(scene, "To open the survival guide click on the book icon at the top right corner of the screen.", "img/openguide.gif", 1));
+                        getChildren().add(instruction(scene, "To swap items in your inventory click on the item that you want to move then click on the slot that you'd like to move it to.", "img/swapinventory.gif", 1));
+                        getChildren().add(instruction(scene, "To discard an item from your inventory hold the ctrl key then press the key that corresponds with the item you want to discard.", "img/dropitem.gif", 4));
                 }});
                 pages.add(new VBox(){{
                         setSpacing(10);
-                        getChildren().add(instruction(scene, "To make flint and steel, place your knife on the ground, hover over the item with your mouse pointer, and press the key that corresponds with the flint item in your toolbar.", "Instructions/makeflintsteel.gif", 3)); 
-                        getChildren().add(instruction(scene, "To start a fire, first create a flint and steel item and add it to your toolbar, then hover over a wood block with your mouse and press the key that corresponds with the flint and steel item in your toolbar.", "Instructions/makeafire.gif", 3)); 
-                        getChildren().add(instruction(scene, "To find and eat food right click the food object (insects are invisible until you pick them up) and then press the key that corresponds with the food item in your toolbar.", "Instructions/eatfood.gif", 3));
+                        getChildren().add(instruction(scene, "To make flint and steel, place your knife on the ground, hover over the item with your mouse pointer, and press the key that corresponds with the flint item in your toolbar.", "img/makeflintsteel.gif", 3)); 
+                        getChildren().add(instruction(scene, "To start a fire, first create a flint and steel item and add it to your toolbar, then hover over a wood block with your mouse and press the key that corresponds with the flint and steel item in your toolbar.", "img/makeafire.gif", 3)); 
+                        getChildren().add(instruction(scene, "To find and eat food right click the food object (insects are invisible until you pick them up) and then press the key that corresponds with the food item in your toolbar.", "img/eatfood.gif", 3));
                 }});
                 pages.add(new VBox(){{
                         setSpacing(10);
-                        getChildren().add(instruction(scene, "To get water, hover your mouse pointer over a water block and press the key that corresponds with your water bottle in your toolbar. To purify the water place the water bottle on the ground, hover over it with your mouse point and press the key that corresponds with your water purification tablets in your toolbar. To drink the water pick up the water bottle and press the key that corresponds with the water bottle in your toolbar.", "Instructions/getwater.gif", 0)); 
-                        getChildren().add(instruction(scene, "To build a shelter place seven palisade blocks in an open ring. To place a palisade hover your mouse over a grass block and press the key that corresponds with wood in your toolbar. To make a bed pick up a Cattail then hover your mouse over the empty spot in your shelter and press the key that corresponds with the Cattail in your toolbar. To sleep, right click the bed.", "Instructions/makeashelter.gif", 0)); 
+                        getChildren().add(instruction(scene, "To get water, hover your mouse pointer over a water block and press the key that corresponds with your water bottle in your toolbar. To purify the water place the water bottle on the ground, hover over it with your mouse point and press the key that corresponds with your water purification tablets in your toolbar. To drink the water pick up the water bottle and press the key that corresponds with the water bottle in your toolbar.", "img/getwater.gif", 0)); 
+                        getChildren().add(instruction(scene, "To build a shelter place seven palisade blocks in an open ring. To place a palisade hover your mouse over a grass block and press the key that corresponds with wood in your toolbar. To make a bed pick up a Cattail then hover your mouse over the empty spot in your shelter and press the key that corresponds with the Cattail in your toolbar. To sleep, right click the bed.", "img/makeashelter.gif", 0)); 
                 }});
                 this.scene = scene;
                 getChildren().add(new HBox(){{
@@ -136,25 +136,25 @@ public class InstructionsPane extends VBox {
                                 }});
                                 if(mouse==1){
                                         click = new ImageView(){{
-                                                setImage(new Image("Instructions/leftclick.gif"));
+                                                setImage(new Image("img/leftclick.gif"));
                                                 setPreserveRatio(true);
                                                 setFitHeight (scene.getHeight()/12);
                                         }};
                                 }else if (mouse == 2){
                                         click = new ImageView(){{
-                                                setImage(new Image("Instructions/rightclick.gif"));
+                                                setImage(new Image("img/rightclick.gif"));
                                                 setPreserveRatio(true);
                                                 setFitHeight (scene.getHeight()/12);
                                         }};
                                 }else if (mouse == 3){
                                         click = new ImageView(){{
-                                                setImage(new Image("Instructions/key_q.png"));
+                                                setImage(new Image("img/key_q.png"));
                                                 setPreserveRatio(true);
                                                 setFitHeight(scene.getHeight()/18);
                                         }};
                                 }else if (mouse == 4){
                                         click = new ImageView(){{
-                                                setImage(new Image("Instructions/ctrl_q.png"));
+                                                setImage(new Image("img/ctrl_q.png"));
                                                 setPreserveRatio(true);
                                                 setFitHeight(scene.getHeight()/18);
                                         }};

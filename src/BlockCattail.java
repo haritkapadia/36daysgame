@@ -6,6 +6,6 @@
 
 public class BlockCattail extends PortableBlock {
 	BlockCattail() {
-		super("Artwork/cattail_small.png", ItemKey.CATTAIL);
+		super("img/cattail_small.png", ItemKey.CATTAIL);
 	}
 }

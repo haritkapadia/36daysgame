@@ -70,6 +70,7 @@ public abstract class Game extends AnimationTimer {
  protected ProgressBar hunger;
  protected ProgressBar exposure;
  protected ProgressBar thirst;
+    protected Label days;
  protected InputManager i;
  protected QuestManager questManager;
  protected Point2D prevPosition;
@@ -124,6 +125,7 @@ public abstract class Game extends AnimationTimer {
   hunger = new ProgressBar ((double)player.getHunger()/player.getMaxHunger());
   exposure = new ProgressBar ((double)player.getExposure()/player.getMaxExposure());
   thirst = new ProgressBar((double)player.getThirst()/player.getMaxThirst());
+  days = new Label("0");
   gamePane.getChildren().add(canvas);
 
   inventoryPane = new InventoryPane(scene, this, player){{
@@ -156,6 +158,11 @@ public abstract class Game extends AnimationTimer {
      getChildren().add(new Label("Thirst:\t\t"));
      setId("thirstbar");
      getChildren().add(thirst);
+    }});
+    getChildren().add(new HBox(){{
+     getChildren().add(new Label("Days:\t\t"));
+     setId("daysbar");
+     getChildren().add(days);
     }});
    }});
   }});
@@ -275,6 +282,7 @@ public abstract class Game extends AnimationTimer {
   */
  public void start() {
   world.getStopwatch().start();
+  System.out.println("Stopwatch started, " + world.getStopwatch().getElapsed() + " elapsed.");
   super.start();
  }
 
@@ -348,6 +356,7 @@ public abstract class Game extends AnimationTimer {
   hunger.setProgress((double)player.getHunger() / player.getMaxHunger());
   exposure.setProgress((double)player.getExposure() / player.getMaxExposure());
   thirst.setProgress((double)player.getThirst() / player.getMaxThirst());
+  this.days.setText(Long.toString(world.getStopwatch().getElapsed() / 1000000000 / 600));
   drawScreen();
  }
 

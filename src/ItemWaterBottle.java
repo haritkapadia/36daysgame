@@ -23,7 +23,7 @@ public class ItemWaterBottle extends Item {
          * Class constructor, calls the Item constructor using the water bottle image file
          */
         ItemWaterBottle() {
-                super("Artwork/emptywaterbottle.png", "Water Bottle");
+                super("img/emptywaterbottle.png", "Water Bottle");
                 amountRemaining = 0;
                 MAX_AMOUNT = 10;
                 purified = false;
@@ -55,9 +55,9 @@ public class ItemWaterBottle extends Item {
          */
         public void updateWaterBottle(){
                 if (amountRemaining > 0)
-                        setImage("Artwork/waterbottle.png");
+                        setImage("img/waterbottle.png");
                 else if (amountRemaining == 0){
-                        setImage("Artwork/emptywaterbottle.png");
+                        setImage("img/emptywaterbottle.png");
                 }
         }
         

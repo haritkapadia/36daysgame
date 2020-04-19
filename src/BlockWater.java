@@ -11,7 +11,7 @@ public class BlockWater extends Block {
         
         /**Constructor. calls the superclass constructor*/
         BlockWater() {
-                super("Artwork/water_small.png");
+                super("img/water_small.png");
         }
         
         /**

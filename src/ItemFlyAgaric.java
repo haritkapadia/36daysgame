@@ -13,6 +13,6 @@ public class ItemFlyAgaric extends FoodItem {
          * The class constructor, calls the super constructor
          */
         ItemFlyAgaric() {
-                super("Artwork/flyagaric_small.png", "Fly Agaric", 1, 3);
+                super("img/flyagaric_small.png", "Fly Agaric", 1, 3);
         }
 }

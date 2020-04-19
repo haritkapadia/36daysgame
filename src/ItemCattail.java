@@ -12,7 +12,7 @@ public class ItemCattail extends Item {
          * Class constructor, calls the super constructor
          */
         ItemCattail() {
-                super("Artwork/cattail_small.png", "Cattail");
+                super("img/cattail_small.png", "Cattail");
         }
         
         /**

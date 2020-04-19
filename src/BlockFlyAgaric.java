@@ -11,6 +11,6 @@ public class BlockFlyAgaric extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockFlyAgaric() {
-                super("Artwork/flyagaric_small.png", ItemKey.FLYAGARIC);
+                super("img/flyagaric_small.png", ItemKey.FLYAGARIC);
         }      
 }

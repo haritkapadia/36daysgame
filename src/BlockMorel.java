@@ -11,6 +11,6 @@ public class BlockMorel extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockMorel() {
-                super("Artwork/morel_small.png", ItemKey.MOREL);
+                super("img/morel_small.png", ItemKey.MOREL);
         }      
 }

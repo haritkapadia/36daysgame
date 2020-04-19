@@ -11,6 +11,6 @@ public class BlockGrasshopper extends InsectBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockGrasshopper() {
-                super("Artwork/insect.png", ItemKey.GRASSHOPPER);
+                super("img/insect.png", ItemKey.GRASSHOPPER);
         }      
 }

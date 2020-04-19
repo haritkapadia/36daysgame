@@ -11,6 +11,6 @@ public class BlockStrawberries extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockStrawberries() {
-                super("Artwork/strawberries_small.png", ItemKey.STRAWBERRIES);
+                super("img/strawberries_small.png", ItemKey.STRAWBERRIES);
         }      
 }

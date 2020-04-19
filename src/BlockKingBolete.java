@@ -11,6 +11,6 @@ public class BlockKingBolete extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockKingBolete() {
-                super("Artwork/kingbolete_small.png", ItemKey.KINGBOLETE);
+                super("img/kingbolete_small.png", ItemKey.KINGBOLETE);
         }      
 }

@@ -14,7 +14,7 @@ public class BlockFire extends Block {
          * Class constructor, calls the Block constructor using the fire image
          */
         BlockFire(){
-                super("Artwork/fire_small.png");
+                super("img/fire_small.png");
         }
         
         /**

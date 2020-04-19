@@ -13,7 +13,7 @@ public class BlockPalisade extends Block implements Destroyable {
 	 * Class constructor, calls the block constructor
 	 */
 	BlockPalisade() {
-		super("Artwork/palisade_small.png");
+		super("img/palisade_small.png");
 	}
 
 	/**

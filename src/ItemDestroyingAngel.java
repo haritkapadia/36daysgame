@@ -13,6 +13,6 @@ public class ItemDestroyingAngel extends FoodItem {
          * The class constructor, calls the super constructor
          */
         ItemDestroyingAngel() {
-                super("Artwork/destroyingangel_small.png", "Destroying Angel", 1, 10);
+                super("img/destroyingangel_small.png", "Destroying Angel", 1, 10);
         }
 }

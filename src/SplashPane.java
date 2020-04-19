@@ -42,7 +42,7 @@ public class SplashPane extends VBox {
          */
         SplashPane(Scene scene) {
                 ImageView iv = new ImageView();
-                iv.setImage(new Image("sierratech-logo.png"));
+                iv.setImage(new Image("img/sierratech-logo.png"));
                 iv.setPreserveRatio(true);
                 iv.setFitHeight(scene.getHeight()*0.9);
                 

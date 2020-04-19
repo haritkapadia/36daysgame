@@ -11,6 +11,6 @@ public class BlockHogweed extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockHogweed() {
-                super("Artwork/gianthogweed_small.png", ItemKey.HOGWEED);
+                super("img/gianthogweed_small.png", ItemKey.HOGWEED);
         }
 }

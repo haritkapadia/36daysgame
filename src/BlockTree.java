@@ -13,7 +13,7 @@ public class BlockTree extends Block implements Destroyable {
          * Class constructor, calls the block constructor
          */
         BlockTree() {
-                super("Artwork/tree_small.png");
+                super("img/tree_small.png");
         }
         
         /**

@@ -88,6 +88,7 @@ public class World {
 			}
 			catch (NoSuchFileException e) {
 				s = new Stopwatch(0);
+                System.out.println("Made new world");
 			}
 
 			File[] _entities = Paths.get(worldPath.toString(), "entities").toFile().listFiles();

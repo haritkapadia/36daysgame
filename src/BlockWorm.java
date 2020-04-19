@@ -11,6 +11,6 @@ public class BlockWorm extends InsectBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockWorm() {
-                super("Artwork/insect.png", ItemKey.WORM);
+                super("img/insect.png", ItemKey.WORM);
         }      
 }

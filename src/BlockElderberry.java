@@ -10,6 +10,6 @@
 public class BlockElderberry extends PortableBlock {
         /**Constructor. calls the superclass constructor*/
         BlockElderberry() {
-                super("Artwork/elderberry_small.png", ItemKey.ELDERBERRY);
+                super("img/elderberry_small.png", ItemKey.ELDERBERRY);
         }      
 }

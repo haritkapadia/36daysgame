@@ -13,6 +13,6 @@ public class ItemFiddleheads extends FoodItem {
          * The class constructor, calls the super constructor
          */
         ItemFiddleheads() {
-                super("Artwork/fiddleheads_small.png", "Fiddleheads", 3, 1);
+                super("img/fiddleheads_small.png", "Fiddleheads", 3, 1);
         }
 }

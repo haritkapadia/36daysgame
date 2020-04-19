@@ -13,6 +13,6 @@ public class ItemWorm extends InsectItem {
          * The class constructor, calls the super constructor
          */
         ItemWorm() {
-                super("Artwork/worm_small.png", "Worm", 5, 0);
+                super("img/worm_small.png", "Worm", 5, 0);
         }
 }

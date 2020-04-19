@@ -23,7 +23,7 @@
 hs_err_pid*
 
 #java sdk
-javafx-sdk-11.0.2/
+lib/javafx-sdk-14.0.1/
 
 #backup files
 *.*~

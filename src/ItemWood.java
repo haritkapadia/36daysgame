@@ -12,7 +12,7 @@ public class ItemWood extends Item {
 	 * The class constructor, calls the super constructor
 	 */
 	ItemWood() {
-		super("Artwork/wood_small.png", "Wood");
+		super("img/wood_small.png", "Wood");
 	}
 
 	/**

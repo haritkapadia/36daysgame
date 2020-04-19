@@ -54,10 +54,7 @@ public class GameEscape extends Game {
 	@Override
 	public void handle(long time) {
 		super.handle(time);
-		if(/*getWorld().getStopwatch().getElapsed() > 600 * 36 * 1e9 && */ !planeFlown) {
-			// synchronized(this) {
-			//	notifyAll();
-			// }
+		if(getWorld().getStopwatch().getElapsed() > 600 * 36 * 1e9 && !planeFlown) {
 			try {
 				worldPath.resolve("plane").toFile().createNewFile();
 			}
@@ -65,7 +62,7 @@ public class GameEscape extends Game {
 				System.out.println("Error " + e.getMessage());
 				e.printStackTrace();
 			}
-			ImageView plane = new ImageView("Artwork/bushplane.png");
+			ImageView plane = new ImageView("img/bushplane.png");
 			plane.setTranslateX(scene.getWidth());
 			gamePane.getChildren().add(plane);
 			Rectangle blackBox = new Rectangle(0, 0, scene.getWidth(), scene.getHeight());
@@ -113,6 +110,9 @@ public class GameEscape extends Game {
 			planeTransition = new SequentialTransition(new ZoomTransition(this), tt, new PauseTransition(new Duration(500)), ft1, ft2);
 			planeTransition.play();
 			planeFlown = true;
+			synchronized(this) {
+				notifyAll();
+			}
 		}
 	}
 

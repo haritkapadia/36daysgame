@@ -33,7 +33,7 @@
 }
 
 #pausebutton{
-    -fx-graphic: url("pause.png");
+    -fx-graphic: url("img/pause.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
@@ -45,7 +45,7 @@
 }
 
 #guidebutton{
-    -fx-graphic: url("bookicon.png");
+    -fx-graphic: url("img/bookicon.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
@@ -67,7 +67,7 @@
 }
 
 #mutebutton{
-    -fx-graphic: url("unmutebutton.png");
+    -fx-graphic: url("img/unmutebutton.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
@@ -79,7 +79,7 @@
 }
 
 #speedbutton{
-    -fx-graphic: url("speedup.png");
+    -fx-graphic: url("img/speedup.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
@@ -91,7 +91,7 @@
 }
 
 #exitbutton{
-    -fx-graphic: url("exit.png");
+    -fx-graphic: url("img/exit.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
@@ -119,11 +119,11 @@
 }
 
 #mutebutton:selected{
-    -fx-graphic: url("mutebutton.png");
+    -fx-graphic: url("img/mutebutton.png");
 }
 
 #speedbutton:selected{
-    -fx-graphic: url("slowdown.png");
+    -fx-graphic: url("img/slowdown.png");
 }
 
 

@@ -12,7 +12,7 @@ public class ItemKnife extends Item {
          * Class constructor, calls the Item constructor using the knife image file
          */
         ItemKnife() {
-                super("Artwork/knife_small.png", "Butter Knife (Harmless)");
+                super("img/knife_small.png", "Butter Knife (Harmless)");
         }
         
         /**

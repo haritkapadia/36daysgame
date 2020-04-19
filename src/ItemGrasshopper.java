@@ -13,6 +13,6 @@ public class ItemGrasshopper extends InsectItem {
          * The class constructor, calls the super constructor
          */
         ItemGrasshopper() {
-                super("Artwork/grasshopper_small.png", "Grasshopper", 5, 0);
+                super("img/grasshopper_small.png", "Grasshopper", 5, 0);
         }
 }

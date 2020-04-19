@@ -20,7 +20,7 @@ public class ItemWaterPurificationTablets extends Item {
          * Class constructor, calls the super constructor
          */
         ItemWaterPurificationTablets() {
-                super("Artwork/pillbottle.png", "Water Purification Tablets");
+                super("img/pillbottle.png", "Water Purification Tablets");
                 amountRemaining = 15;
         }
         

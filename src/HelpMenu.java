@@ -63,7 +63,8 @@ public class HelpMenu extends StackPane {
          */
         public void setInstr(String next){
                 getChildren().clear();
-                getChildren().add(instructions.get(next));
+                if(instructions.get(next) != null)
+                    getChildren().add(instructions.get(next));
                 if(next.equals("Welcome Message")){
                         getChildren().add(nextButton);
                         nextButton.setOnAction(e -> setInstr("First Instructions"));

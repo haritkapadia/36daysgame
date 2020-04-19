@@ -16,7 +16,7 @@ public class ItemFlintSteel extends Item {
          * Calls the Item constructor with the name of the item and the file name for the flint and steel image
          */
         ItemFlintSteel() {
-                super("Artwork/flintsteel_small.png", "Flint and Steel");
+                super("img/flintsteel_small.png", "Flint and Steel");
         }
         
         /**

@@ -26,7 +26,7 @@
 }
 
 #helpbutton{
-    -fx-graphic: url("help.png");
+    -fx-graphic: url("img/help.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
@@ -66,12 +66,12 @@
 }
 
 #upbutton{
-    -fx-graphic: url("uparrow.png");
+    -fx-graphic: url("img/uparrow.png");
     -fx-background-color: white, white;
 }
 
 #upbutton: selected{
-    -fx-graphic: url("downarrow.png");
+    -fx-graphic: url("img/downarrow.png");
 }
 
 

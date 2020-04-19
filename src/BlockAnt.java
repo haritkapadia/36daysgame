@@ -13,6 +13,6 @@ public class BlockAnt extends InsectBlock {
          * Constructor, calls the super class constructor to create an ant object
          */
         BlockAnt() { 
-                super("Artwork/insect.png", ItemKey.ANT);
+                super("img/insect.png", ItemKey.ANT);
         }      
 }

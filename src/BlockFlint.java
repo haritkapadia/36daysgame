@@ -11,6 +11,6 @@ public class BlockFlint extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockFlint() {
-                super("Artwork/flint_small.png", ItemKey.FLINT);
+                super("img/flint_small.png", ItemKey.FLINT);
         }
 }

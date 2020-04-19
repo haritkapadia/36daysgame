@@ -13,6 +13,6 @@ public class ItemNorthernBlueFlag extends FoodItem {
          * The class constructor, calls the super constructor
          */
         ItemNorthernBlueFlag() {
-                super("Artwork/northernblueflag_small.png", "Northern Blue Flag",0, 1);
+                super("img/northernblueflag_small.png", "Northern Blue Flag",0, 1);
         }
 }

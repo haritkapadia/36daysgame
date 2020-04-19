@@ -12,7 +12,7 @@ public class ItemFlint extends Item {
          * Class constructor, calls the item constructor using the flint image file
          */
         ItemFlint() {
-                super("Artwork/flint_small.png", "Flint");
+                super("img/flint_small.png", "Flint");
         }
         
         /**
@@ -29,6 +29,7 @@ public class ItemFlint extends Item {
                 if (w.getBlock((int)x, (int)y, (int)z)!= null && w.getBlock((int)x,(int)y,(int)z).equals(BlockKey.KNIFE)){
                         w.setBlockUnsafe((int)x, (int)y, (int)z, null);
                         w.setBlock((int)x,(int)y,(int)z, BlockKey.FLINTSTEEL);
+                        System.out.println("We did it!");
                         synchronized(this) {
                                 notifyAll();
                         }

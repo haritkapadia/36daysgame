@@ -11,6 +11,6 @@ public class BlockDestroyingAngel extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockDestroyingAngel() {
-                super("Artwork/destroyingangel_small.png", ItemKey.DESTROYINGANGEL);
+                super("img/destroyingangel_small.png", ItemKey.DESTROYINGANGEL);
         }      
 }

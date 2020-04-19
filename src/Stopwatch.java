@@ -69,10 +69,14 @@ public class Stopwatch implements java.io.Serializable {
          * @returns The amount of time that has elapsed
          */
         public long getElapsed() {
+            if(running) {
                 long now = System.nanoTime();
                 elapsed += (long)(speed * (now - prevTime));
                 prevTime = now;
                 return elapsed;
+            } else {
+                return 0;
+            }
         }
         
         /**

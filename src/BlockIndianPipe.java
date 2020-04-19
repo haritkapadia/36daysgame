@@ -11,6 +11,6 @@ public class BlockIndianPipe extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockIndianPipe() {
-                super("Artwork/indianpipe_small.png", ItemKey.INDIANPIPE);
+                super("img/indianpipe_small.png", ItemKey.INDIANPIPE);
         }      
 }

@@ -11,6 +11,6 @@ public class BlockWood extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockWood() {
-                super("Artwork/wood_small.png", ItemKey.WOOD);
+                super("img/wood_small.png", ItemKey.WOOD);
         }      
 }

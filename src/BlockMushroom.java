@@ -11,6 +11,6 @@ public class BlockMushroom extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockMushroom() {
-                super("Artwork/mushroom_small.png", ItemKey.MUSHROOM);
+                super("img/mushroom_small.png", ItemKey.MUSHROOM);
         }      
 }

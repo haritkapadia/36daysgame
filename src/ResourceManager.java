@@ -26,7 +26,7 @@ public final class ResourceManager {
                                 Image[] images = new Image[3];
                                 System.out.print(d + "\t");
                                 for(int i = 0; i < images.length; i++) {
-                                        images[i] = new Image("Characters/sprite" + (i + 1 + d.ordinal() * 3) + ".png");
+                                        images[i] = new Image("img/sprite" + (i + 1 + d.ordinal() * 3) + ".png");
                                         System.out.print((i + 1 + d.ordinal() * 3) + " ");
                                         
                                 }
@@ -39,7 +39,7 @@ public final class ResourceManager {
                 }
         }};
         
-        private static final Image fireSprite = new Image("Artwork/fire_small.png");
+        private static final Image fireSprite = new Image("img/fire_small.png");
         
         private static final EnumMap<BlockKey, Block> blocks = new EnumMap<BlockKey, Block>(BlockKey.class){{
                 put(BlockKey.GROUND, new BlockGround());
@@ -120,7 +120,7 @@ public final class ResourceManager {
                 Block c = blocks.get(b);
                 if(c == null) {
                         if(ItemKey.valueOf(b.name()) != null)
-                                blocks.put(b, new PortableBlock("Artwork/missing.png", ItemKey.valueOf(b.name())));
+                                blocks.put(b, new PortableBlock("img/missing.png", ItemKey.valueOf(b.name())));
                 }
                 return blocks.get(b);
         }
@@ -139,7 +139,7 @@ public final class ResourceManager {
          */
         public static BlockKey getPortableBlock(ItemKey k) {
                 if(blocks.get(BlockKey.valueOf(k.name())) == null)
-                        blocks.put(BlockKey.valueOf(k.name()), new PortableBlock("Artwork/missing.png", k));
+                        blocks.put(BlockKey.valueOf(k.name()), new PortableBlock("img/missing.png", k));
                 return BlockKey.valueOf(k.name());
         }
 }

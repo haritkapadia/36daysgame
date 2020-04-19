@@ -13,6 +13,6 @@ public class ItemHogweed extends FoodItem {
          * The class constructor, calls the super constructor
          */
         ItemHogweed() {
-                super("Artwork/gianthogweed_small.png", "Hogweed", 1, 3);
+                super("img/gianthogweed_small.png", "Hogweed", 1, 3);
         }
 }

@@ -11,6 +11,6 @@ public class BlockChanterelle extends PortableBlock {
         
         /**Constructor. calls the superclass constructor*/
         BlockChanterelle() {
-                super("Artwork/chanterelle_small.png", ItemKey.CHANTERELLE);
+                super("img/chanterelle_small.png", ItemKey.CHANTERELLE);
         }      
 }

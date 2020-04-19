@@ -249,4 +249,8 @@ public class Quest extends Thread {
                         waitOn.notifyAll();
                 }
         }
+
+    public Quest[] getNextQuests() {
+        return nextQuests;
+    }
 }

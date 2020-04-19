@@ -13,6 +13,6 @@ public class ItemIndianPipe extends FoodItem {
          * The class constructor, calls the super constructor
          */
         ItemIndianPipe() {
-                super("Artwork/indianpipe_small.png", "Indian Pipe", 2, 0);
+                super("img/indianpipe_small.png", "Indian Pipe", 2, 0);
         }
 }

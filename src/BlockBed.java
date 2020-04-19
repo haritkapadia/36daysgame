@@ -13,7 +13,7 @@ public class BlockBed extends Block implements Interactable {
 	 * Class constructor, calls the block constructor
 	 */
 	BlockBed() {
-		super("Artwork/bed_small.png");
+		super("img/bed_small.png");
 	}
 
 	/**
