@@ -1,0 +1,84 @@
+/* @font-face { */
+/*      src: url("ChicagoFLF.ttf"); */
+/* } */
+
+.root{
+    -fx-font-family: "ChicagoFLF";
+    -fx-background-color: black;
+}
+
+.text{
+    -fx-font-family: "ChicagoFLF";
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+#instruction{
+    -fx-font-family: "ChicagoFLF";
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.label{
+    -fx-font-family: "ChicagoFLF";
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+#helpbutton{
+    -fx-graphic: url("img/help.png");
+    -fx-background-color: white, white;
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-padding: 0;
+    -fx-font-size: 0;
+}
+
+
+#nextbutton:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-scale-z: 1.1;
+}
+
+#nextbutton{
+    -fx-padding: 10 30 10 30;
+    -fx-background-color: green;
+    -fx-margin: auto;
+    -fx-text-alignment: center;
+    -fx-shape: "M200 150 L75 200 L75 100 Z";
+}
+
+#redbar .bar{
+    -fx-background-color: red;
+}
+
+#greenbar .bar{
+    -fx-background-color: green;
+}
+
+#bluebar .bar{
+    -fx-background-color: cyan;
+}
+
+#thirstbar .bar{
+    -fx-background-color: mediumblue;
+}
+
+#upbutton{
+    -fx-graphic: url("img/uparrow.png");
+    -fx-background-color: white, white;
+}
+
+#upbutton: selected{
+    -fx-graphic: url("img/downarrow.png");
+}
+
+
+#heading{
+    -fx-font-size: 18px;
+}
+
+#title{
+    -fx-font-size: 25px;
+}

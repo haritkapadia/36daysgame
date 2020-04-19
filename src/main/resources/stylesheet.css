@@ -1,0 +1,138 @@
+/* @font-face { */
+/*      src: url("ChicagoFLF.ttf"); */
+/* } */
+
+.root{
+    -fx-font-family: "ChicagoFLF";
+}
+
+.text{
+    -fx-font-family: "ChicagoFLF";
+}
+
+.label{
+    -fx-font-family: "ChicagoFLF";
+    -fx-font-size: 16px;
+}
+
+#title{
+    //-fx-alignment: center;
+    -fx-font-size: 30px;
+    -fx-padding: 15px;
+    -fx-border-insets: 15px;
+    -fx-background-insets: 15px;
+}
+
+#bigtitle{
+    //-fx-alignment: center;
+    -fx-font-size: 50px;
+}
+
+#heading{
+    -fx-font-size: 22px;
+}
+
+#pausebutton{
+    -fx-graphic: url("img/pause.png");
+    -fx-background-color: white, white;
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-border-color: dimgrey;
+    -fx-padding: 0;
+    -fx-font-size: 0;
+}
+
+#guidebutton{
+    -fx-graphic: url("img/bookicon.png");
+    -fx-background-color: white, white;
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-border-color: dimgrey;
+    -fx-padding: 0;
+    -fx-font-size: 0;
+}
+
+
+.button {
+    -fx-font-family: "ChicagoFLF";
+    -fx-padding: 10 30 10 30;
+    -fx-background-color: red;
+    -fx-text-fill:white;
+    -fx-margin: auto;
+    -fx-text-alignment: center;
+}
+
+#mutebutton{
+    -fx-graphic: url("img/unmutebutton.png");
+    -fx-background-color: white, white;
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-border-color: dimgrey;
+    -fx-padding: 0;
+    -fx-font-size: 0;
+}
+
+#speedbutton{
+    -fx-graphic: url("img/speedup.png");
+    -fx-background-color: white, white;
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-border-color: dimgrey;
+    -fx-padding: 0;
+    -fx-font-size: 0;
+}
+
+#exitbutton{
+    -fx-graphic: url("img/exit.png");
+    -fx-background-color: white, white;
+    -fx-background-radius: 16.4, 15;
+    -fx-background-insets: -1.4, 0;
+    -fx-border-radius: 15;
+    -fx-border-width: 2;
+    -fx-border-color: dimgrey;
+    -fx-padding: 0;
+    -fx-font-size: 0;
+}
+
+#nextbutton{
+    -fx-padding: 10 30 10 30;
+    -fx-background-color: green;
+    -fx-margin: auto;
+    -fx-text-alignment: center;
+    -fx-shape: "M125 125 L75 200 L75 50 Z";
+}
+
+#prevbutton{
+    -fx-padding: 10 30 10 30;
+    -fx-background-color: green;
+    -fx-margin: auto;
+    -fx-text-alignment: center;
+    -fx-shape: "M50 125 L75 200 L75 50 Z";
+}
+
+#mutebutton:selected{
+    -fx-graphic: url("img/mutebutton.png");
+}
+
+#speedbutton:selected{
+    -fx-graphic: url("img/slowdown.png");
+}
+
+
+.button:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-scale-z: 1.1;
+}
+
+#settingsmenu{
+    -fx-background-color: transparent;
+}
