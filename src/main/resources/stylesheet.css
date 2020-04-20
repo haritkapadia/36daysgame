@@ -45,7 +45,7 @@
 }
 
 #guidebutton{
-    -fx-graphic: url("img/bookicon.png");
+    -fx-graphic: url("img/bookIcon.png");
     -fx-background-color: white, white;
     -fx-background-radius: 16.4, 15;
     -fx-background-insets: -1.4, 0;
